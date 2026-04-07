@@ -1,0 +1,1 @@
+<?php echo "<script> localStorage.removeItem('SESSION_EXPIRED');</script>";?>
