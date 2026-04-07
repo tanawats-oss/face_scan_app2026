@@ -508,7 +508,7 @@
             UniqueID: fd.get('UniqueID'),
             Name: fd.get('Name'),
             AuthInfo: getAuthInfoValue(),
-            Privilege: 1,
+            Privilege: Number(fd.get('Privilege')),
             GroupCode: 1000,
             AAccessGroupCode: 3000,
             UserType: Number(fd.get('UserType')),
