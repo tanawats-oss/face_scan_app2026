@@ -509,7 +509,7 @@
             Name: fd.get('Name'),
             AuthInfo: getAuthInfoValue(),
             Privilege: Number(fd.get('Privilege')),
-            GroupCode: Number(fd.get('GroupCode')),
+            GroupCode: 1000,
             AccessGroupCode: Number(fd.get('AccessGroupCode')),
             UserType: Number(fd.get('UserType')),
             VerifyLevel: Number(fd.get('VerifyLevel')),
