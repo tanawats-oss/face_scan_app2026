@@ -126,40 +126,52 @@ Developed   : 2025
       redirectToRegister($buasri_id);
     }
 
-    $person_id = $_SESSION['peson_id'];
+    $person_id = trim($_SESSION['peson_id']);
+    $length = strlen($person_id);
     echo "<p><b>รหัสผู้ใช้บริการ:</b> {$person_id}</p>";
 
     /* ================== userList ================== */
     $apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apidoor/userList"
       . "?person_id={$person_id}"
-      . "&searchCategory=uniqueid"
-      . "&groupID=0&subInclude=true&offset=0&limit=1";
+      . "&searchCategory=UniqueID"
+      . "&groupID=0&subInclude=true&offset=0&limit=10";
 
     $data = json_decode(callApi($apiUrl), true);
-    $userInfo = $data['users'][0] ?? null;
+    
+    //  filter หา “คนจริง”
+    $userInfo = null;
+    if (!empty($data['users'])) {
+        foreach ($data['users'] as $u) {
 
-    if (!$userInfo) {
-      redirectToRegister($buasri_id);
+
+            if (isset($u['UniqueID']) && $u['UniqueID'] === $person_id) {
+                $userInfo = $u;
+                break;
+            }
+        }
     }
-
-    $userId = $userInfo['ID'];
-
+    //  ตรวจผลลัพธ์แบบชัดเจน
+    if (!$userInfo) {
+        echo "<p style='color:red;'>❌ ไม่พบผู้ใช้ที่ตรงกับรหัส {$person_id}</p>";
+        redirectToRegister($buasri_id);
+        exit;
+    }
+    //  ยืนยันความถูกต้อง 100%
+    if (!isset($userInfo['UniqueID']) || $userInfo['UniqueID'] !== $person_id) {
+        echo "<p style='color:red;'>❌ ข้อมูลไม่ตรง</p>";
+        exit;
+    }
+    // ✅ ผ่านแล้ว
+        echo "<p style='color:green;'>✔️ พบผู้ใช้: {$userInfo['Name']}</p>";
+        // 🔥 กัน undefined index
+        if (!isset($userInfo['ID'])) {
+            echo "<p style='color:red;'>❌ ไม่มี ID ในข้อมูล</p>";
+            exit;
+        }
+        $userId = $userInfo['ID'];
     echo "
     <h2 style='text-align:center;'>Selfie to Scan<br>ระบบลงทะเบียนใบหน้าอัตโนมัติ<br>(LIBSWU Automated Face Registration System)</h2>";
 
-
-    /* ================== userList ================== */
-    $apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apidoor/userList?person_id={$person_id}&searchCategory=uniqueid&groupID=0&subInclude=true&offset=0&limit=1";
-
-    $data = json_decode(callApi($apiUrl), true);
-    $userInfo = $data['users'][0] ?? null;
-
-    if (!$userInfo) {
-      echo "<p>❌ No user info found</p>";
-      exit;
-    }
-
-    $userId = $userInfo['ID'];
 
 
     /* ================== userDetail ================== */

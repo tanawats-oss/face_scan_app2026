@@ -19,7 +19,7 @@ Developed   : 2025
     <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
     <meta name="developer-email" content="tanawats@g.swu.ac.th">
     <meta name="system" content="Face Recognition Registration System">
-    <title>ทดสอบ ระบบลงทะเบียนใบหน้า</title>
+    <title>ระบบลงทะเบียนใบหน้า</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>

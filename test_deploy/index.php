@@ -5,24 +5,24 @@ define('SESSION_TIMEOUT', 600); // 10 นาที
 
 // ยังไม่ login
 if (empty($_SESSION['auth_ldap'])) {
-  header("Location: login.php");
-  exit;
+    header("Location: login.php");
+    exit;
 }
 
 // หมดเวลา
 if (
-  isset($_SESSION['last_activity']) &&
-  (time() - $_SESSION['last_activity']) > SESSION_TIMEOUT
+    isset($_SESSION['last_activity']) &&
+    (time() - $_SESSION['last_activity']) > SESSION_TIMEOUT
 ) {
-  session_unset();
-  session_destroy();
+    session_unset();
+    session_destroy();
 
-  // ❗ ไม่ redirect ตรง ๆ เพื่อให้ JS จัดการ
-  echo "<script>
+    // ❗ ไม่ redirect ตรง ๆ เพื่อให้ JS จัดการ
+    echo "<script>
         alert('Session หมดเวลา กรุณาเข้าสู่ระบบใหม่');
         window.location.href = 'login.php?timeout=1';
     </script>";
-  exit;
+    exit;
 }
 
 // ต่ออายุ session ทุกครั้งที่ใช้งาน
@@ -79,33 +79,33 @@ Developed   : 2025
   </div>
     <?php
     session_start();
-    $buasri_id = $_SESSION['user_login'] ?? '';
+$buasri_id = $_SESSION['user_login'] ?? '';
 
 
-    /* ================== helper ================== */
-    function callApi($url)
-    {
-      $ch = curl_init($url);
-      curl_setopt_array($ch, [
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_SSL_VERIFYPEER => false
-      ]);
-      $resp = curl_exec($ch);
-      curl_close($ch);
-      return $resp ?: false;
-    }
-    /* ================== error + redirect ================== */
-    function redirectToRegister($buasri_id)
-    {
-      // ลบข้อมูล session ทั้งหมด
-      if (session_status() === PHP_SESSION_NONE) {
+/* ================== helper ================== */
+function callApi($url)
+{
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_SSL_VERIFYPEER => false
+    ]);
+    $resp = curl_exec($ch);
+    curl_close($ch);
+    return $resp ?: false;
+}
+/* ================== error + redirect ================== */
+function redirectToRegister($buasri_id)
+{
+    // ลบข้อมูล session ทั้งหมด
+    if (session_status() === PHP_SESSION_NONE) {
         session_start();
-      }
-      $_SESSION = [];
+    }
+    $_SESSION = [];
 
-      // ทำลาย session
-      session_destroy();
-      echo "
+    // ทำลาย session
+    session_destroy();
+    echo "
     <div style='min-height:100vh;display:flex;justify-content:center;align-items:center;'>
         <div style='background:#ffffff;width:100%;max-width:420px;padding:30px;
                     border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,0.08);
@@ -117,70 +117,93 @@ Developed   : 2025
     <script>
         setTimeout(() => window.location.href = 'login.php', 2000);
     </script>";
-      exit;
+    exit;
+}
+
+
+/* ================== ตรวจ session ================== */
+if (!isset($_SESSION['peson_id'])) {
+    redirectToRegister($buasri_id);
+}
+
+ $person_id = trim($_SESSION['peson_id']);
+// $person_id = trim('701011');
+//ตรวจจำนวนหลัก
+$length = strlen($person_id);
+echo "<p><b>รหัสผู้ใช้บริการ:</b> {$person_id}</p>";
+echo "<p><b>จำนวนหลัก:</b> {$length}</p>";
+
+/* ================== userList ================== */
+$apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apidoor/userList"
+  . "?person_id={$person_id}"
+  . "&searchCategory=UniqueID"
+  . "&groupID=0&subInclude=true&offset=0&limit=10";
+
+$data = json_decode(callApi($apiUrl), true);
+
+//  filter หา “คนจริง”
+$userInfo = null;
+
+if (!empty($data['users'])) {
+    foreach ($data['users'] as $u) {
+
+        //  debug (เปิดตอนทดสอบ)
+        // echo "<p>API เจอ: {$u['UniqueID']}</p>";
+
+        if (isset($u['UniqueID']) && $u['UniqueID'] === $person_id) {
+            $userInfo = $u;
+            break;
+        }
     }
+}
 
+//  ตรวจผลลัพธ์แบบชัดเจน
+if (!$userInfo) {
+    echo "<p style='color:red;'>❌ ไม่พบผู้ใช้ที่ตรงกับรหัส {$person_id}</p>";
+    redirectToRegister($buasri_id);
+    exit;
+}
 
-    /* ================== ตรวจ session ================== */
-    if (!isset($_SESSION['peson_id'])) {
-      redirectToRegister($buasri_id);
-    }
+//  ยืนยันความถูกต้อง 100%
+if (!isset($userInfo['UniqueID']) || $userInfo['UniqueID'] !== $person_id) {
+    echo "<p style='color:red;'>❌ ข้อมูลไม่ตรง</p>";
+    exit;
+}
 
-    $person_id = $_SESSION['peson_id'];
-    echo "<p><b>รหัสผู้ใช้บริการ:</b> {$person_id}</p>";
+// ✅ ผ่านแล้ว
+echo "<p style='color:green;'>✔️ พบผู้ใช้: {$userInfo['Name']}</p>";
 
-    /* ================== userList ================== */
-    $apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apidoor/userList"
-      . "?person_id={$person_id}"
-      . "&searchCategory=uniqueid"
-      . "&groupID=0&subInclude=true&offset=0&limit=1";
+// 🔥 กัน undefined index
+if (!isset($userInfo['ID'])) {
+    echo "<p style='color:red;'>❌ ไม่มี ID ในข้อมูล</p>";
+    exit;
+}
 
-    $data = json_decode(callApi($apiUrl), true);
-    $userInfo = $data['users'][0] ?? null;
-
-    if (!$userInfo) {
-      redirectToRegister($buasri_id);
-    }
-
-    $userId = $userInfo['ID'];
-
-    echo "
+$userId = $userInfo['ID'];
+echo "
     <h2 style='text-align:center;'>ทดสอบ ระบบลงทะเบียนสแกนใบหน้า</h2>";
 
 
-    /* ================== userList ================== */
-    $apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apidoor/userList?person_id={$person_id}&searchCategory=uniqueid&groupID=0&subInclude=true&offset=0&limit=1";
 
-    $data = json_decode(callApi($apiUrl), true);
-    $userInfo = $data['users'][0] ?? null;
+/* ================== userDetail ================== */
+$detailResp = json_decode(
+    callApi("https://lib.swu.ac.th/app/ci4_new/public/apidoor/userDetail/" . urlencode($userId)),
+    true
+);
 
-    if (!$userInfo) {
-      echo "<p>❌ No user info found</p>";
-      exit;
-    }
+if (!$detailResp || ($detailResp['status'] ?? '') !== 'success') {
+    echo "<p>⚠️ {$userId} : ไม่พบข้อมูลผู้ใช้บริการ กรุณาติดต่อเจ้าหน้าที่</p>";
+    exit;
+}
 
-    $userId = $userInfo['ID'];
-
-
-    /* ================== userDetail ================== */
-    $detailResp = json_decode(
-      callApi("https://lib.swu.ac.th/app/ci4_new/public/apidoor/userDetail/" . urlencode($userId)),
-      true
-    );
-
-    if (!$detailResp || ($detailResp['status'] ?? '') !== 'success') {
-      echo "<p>⚠️ {$userId} : ไม่พบข้อมูลผู้ใช้บริการ กรุณาติดต่อเจ้าหน้าที่</p>";
-      exit;
-    }
-
-    $detail = $detailResp['userDetail'];
-    $userInfoDetail = $detail['UserInfo'];
+$detail = $detailResp['userDetail'];
+$userInfoDetail = $detail['UserInfo'];
 
 
-    /* ================== ตรวจสิทธิ์ใบหน้า ================== */
-    $authInfo = $userInfoDetail['AuthInfo'] ?? [];
-    $hasFacePermission = in_array(9, $authInfo, true);
-    ?>
+/* ================== ตรวจสิทธิ์ใบหน้า ================== */
+$authInfo = $userInfoDetail['AuthInfo'] ?? [];
+$hasFacePermission = in_array(9, $authInfo, true);
+?>
 
 
 
@@ -196,11 +219,11 @@ Developed   : 2025
         </div>
       <?php else: ?>
         <?php
-        $faceResp = json_decode(
-          callApi("https://lib.swu.ac.th/app/ci4_new/public/apidoor/showFaceTemplate/" . urlencode($userId)),
-          true
-        );
-        ?>
+    $faceResp = json_decode(
+        callApi("https://lib.swu.ac.th/app/ci4_new/public/apidoor/showFaceTemplate/" . urlencode($userId)),
+        true
+    );
+          ?>
         <?php if (!empty($faceResp['template'])): ?>
           <div class="center">
             <img src="data:image/jpeg;base64,<?= $faceResp['template'] ?>" style="max-width:200px">
@@ -269,24 +292,24 @@ Developed   : 2025
               <th>รายละเอียด</th>
             </tr>
             <?php
-            $hiddenFields = ['Privilege', 'CreateDate', 'UsePeriodFlag', 'RegistDate', 'ExpireDate', 'Password', 'GroupCode', 'AccessGroupCode', 'UserType', 'TimezoneCode', 'BlackList', 'FPIdentify', 'FaceIdentify', 'DuressFinger', 'Partition', 'APBExcept', 'APBZone', 'WorkCode', 'MealCode', 'MoneyCode', 'MessageCode', 'VerifyLevel', 'PositionCode', 'EmployeeNum', 'LoginPW', 'LoginAllowed', 'IrisIdentify', 'VoipUse', 'VoipDoorOpen', 'VoipAutoAnswer', 'Gender', 'Mobile', 'UnavailableTime', 'Birthday', 'Phone', 'Department', 'UserCardInfo', 'UniqueID', 'ID', 'Email', 'AuthInfo'];
-            $readonlyFields = ['ID', 'UniqueID', 'Name'];
-            foreach ($userInfoDetail as $key => $value) {
-              if ($key === 'Picture' || in_array($key, $hiddenFields)) {
-                $val = is_array($value) ? json_encode($value) : $value;
-                echo "<input type='hidden' name='{$key}' value='" . htmlspecialchars($val) . "'>";
-                continue;
-              }
-              $attr = in_array($key, $readonlyFields) ? 'readonly' : '';
-              echo "<tr><td>{$key}</td><td>";
-              if (is_array($value)) {
-                echo "<textarea class='form-control' name='{$key}' {$attr}>" . htmlspecialchars(implode("\n", $value)) . "</textarea>";
-              } else {
-                echo "<input class='form-control' type='text' name='{$key}' value='" . htmlspecialchars($value) . "' {$attr}>";
-              }
-              echo "</td></tr>";
-            }
-            ?>
+              $hiddenFields = ['Privilege', 'CreateDate', 'UsePeriodFlag', 'RegistDate', 'ExpireDate', 'Password', 'GroupCode', 'AccessGroupCode', 'UserType', 'TimezoneCode', 'BlackList', 'FPIdentify', 'FaceIdentify', 'DuressFinger', 'Partition', 'APBExcept', 'APBZone', 'WorkCode', 'MealCode', 'MoneyCode', 'MessageCode', 'VerifyLevel', 'PositionCode', 'EmployeeNum', 'LoginPW', 'LoginAllowed', 'IrisIdentify', 'VoipUse', 'VoipDoorOpen', 'VoipAutoAnswer', 'Gender', 'Mobile', 'UnavailableTime', 'Birthday', 'Phone', 'Department', 'UserCardInfo', 'UniqueID', 'ID', 'Email', 'AuthInfo'];
+$readonlyFields = ['ID', 'UniqueID', 'Name'];
+foreach ($userInfoDetail as $key => $value) {
+    if ($key === 'Picture' || in_array($key, $hiddenFields)) {
+        $val = is_array($value) ? json_encode($value) : $value;
+        echo "<input type='hidden' name='{$key}' value='" . htmlspecialchars($val) . "'>";
+        continue;
+    }
+    $attr = in_array($key, $readonlyFields) ? 'readonly' : '';
+    echo "<tr><td>{$key}</td><td>";
+    if (is_array($value)) {
+        echo "<textarea class='form-control' name='{$key}' {$attr}>" . htmlspecialchars(implode("\n", $value)) . "</textarea>";
+    } else {
+        echo "<input class='form-control' type='text' name='{$key}' value='" . htmlspecialchars($value) . "' {$attr}>";
+    }
+    echo "</td></tr>";
+}
+?>
             <tr>
               <td>เปิด-ปิดการใช้สแกนใบหน้า</td>
               <td>
