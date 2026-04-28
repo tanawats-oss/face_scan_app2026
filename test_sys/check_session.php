@@ -2,7 +2,7 @@
 session_start();
 header('Content-Type: application/json');
 
-define('SESSION_TIMEOUT', 600);
+define('SESSION_TIMEOUT', 3000);
 
 // ยังไม่ login
 if (empty($_SESSION['auth_ldap'])) {

@@ -2,7 +2,7 @@
 session_start();
 
 /* ================== CONFIG ================== */
-define('SESSION_TIMEOUT', 300); // วินาที
+define('SESSION_TIMEOUT', 5000); // วินาที
 
 /* ================== AUTH CHECK ================== */
 if (empty($_SESSION['auth_ldap'])) {
@@ -68,6 +68,7 @@ $userLname = $data['user']['lname_th'] ?? null;
 $userType = $data['user']['type'] ?? null;
 $fullName = trim(($userName ?? '') . ' ' . ($userLname ?? ''));
 $departMent = $data['user']['department_th'] ?? null;
+$faculty = $data['user']['faculty_th'] ?? null;
 
 /* ================== SYNC SESSION ================== */
 $_SESSION['person_id'] = $userId;
@@ -176,7 +177,7 @@ $_SESSION['person_id'] = $userId;
           </div>
           <div class="col-md-4 mb-3">
             <label>Privilege</label>
-            <input class="form-control" value="<?= $u['Privilege'] ?>" readonly>
+            <input class="form-control" value="<?php echo $faculty ?>" readonly>
           </div>
         </div>
 

@@ -147,9 +147,6 @@ $userInfo = null;
 if (!empty($data['users'])) {
     foreach ($data['users'] as $u) {
 
-        //  debug (เปิดตอนทดสอบ)
-        // echo "<p>API เจอ: {$u['UniqueID']}</p>";
-
         if (isset($u['UniqueID']) && $u['UniqueID'] === $person_id) {
             $userInfo = $u;
             break;
