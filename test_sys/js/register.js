@@ -466,7 +466,15 @@
 
     console.log('%c--- [เริ่มการตรวจสอบข้อมูลก่อนส่ง] ---', 'font-weight: bold;');
     const fd = new FormData(form);
-    const userId = fd.get('ID');
+    // --- ส่วนตรวจเช็คจำนวนหลัก (6 หลักเติม 00) ---
+    let rawId = String(fd.get('ID') || "").trim();
+    let userId = rawId;
+    if (rawId.length === 6) {
+        userId = "00" + rawId; // เติม 00 นำหน้าเฉพาะกรณีมี 6 หลัก
+        console.log(`%c[ID Padding]: เปลี่ยนจาก ${rawId} -> ${userId}`);
+    }else {
+        console.log(`%c[ID No Padding]: ใช้ค่าเดิม ${rawId} (เนื่องจากไม่ใช่ 6 หลัก)`);
+    }
     // DATA Face Scan
     if (allowFaceCheckbox.checked && allowCam && !userFaceArray.length && !oldFaceTemplate) {
       console.warn('⚠️ Warning: ติ๊กเปิดกล้องไว้แต่ยังไม่ได้ถ่ายรูป');
@@ -475,49 +483,72 @@
     }
     //UserInfo เหมือนเดิม
     const userInfo = {
-      ID: fd.get('ID'),
-      UniqueID: fd.get('UniqueID'),
-      Name: fd.get('Name'),
-
-      //  FIX: ต้องเป็น string
-      AuthInfo: getAuthInfoValue(),
-
-      Privilege: Number(fd.get('Privilege')),
-      GroupCode: Number(fd.get('GroupCode')),
-      AccessGroupCode: Number(fd.get('AccessGroupCode')),
-      UserType: Number(fd.get('UserType')),
-
-      // 🔥 FIX: กันพังบางเครื่อง
-      VerifyLevel: Number(fd.get('VerifyLevel')),
-
-      Email: fd.get('Email') || '',
-      Department: fd.get('Department') || ''
+      ID: userId,                              // string
+      UniqueID: String(fd.get('UniqueID')),    // string
+      Name: String(fd.get('Name')),            // string
+      // Index 1 เป็น 9 ถ้าเปิดใช้หน้า, เป็น 0 ถ้าปิด
+      AuthInfo: [2, (allowFaceCheckbox.checked ? 9 : 0), 30, 0, 0, 0, 0, 0],
+      Privilege: 2, // integer 2 is user 1 is admin
+      CreateDate: new Date().toISOString().replace('T', ' ').split('.')[0],
+      UsePeriodFlag: 0,                        // integer
+      RegistDate: String(fd.get('RegistDate')),// string
+      ExpireDate: String(fd.get('ExpireDate')),// string
+      Password: "",                            // string
+      GroupCode: 1000,                         // integer ค่านี้เท่านั้น
+      AccessGroupCode: parseInt(fd.get('UserType')) || 3000, // integer
+      UserType: 0,                             // integer
+      TimezoneCode: 0,                         // integer
+      BlackList: 0,                            // integer (Schema ใช้ L ตัวใหญ่)
+      FPIdentify: 0,                           // integer
+      FaceIdentify: (allowFaceCheckbox.checked && userFaceArray.length) ? 1 : 0, // integer
+      DuressFinger: null,                      // list [integer]
+      Partition: 0,                            // integer
+      APBExcept: 0,                            // integer
+      APBZone: 0,                              // integer
+      WorkCode: "0000",                        // string
+      MealCode: "0000",                        // string
+      MoneyCode: "0000",                       // string
+      MessageCode: 0,
+      VerifyLevel: 0, 
+      PositionCode: parseInt(fd.get('Position')) || 1,                             // string
+      EmployeeNum: "0",                        // string
+      Email: String(fd.get('Email')),          // string
+      Phone: "",
+      Department: String(fd.get('Department')),
+      LoginPW: "****",  
+      LoginAllowed: "0", 
+      Picture: "",                               // string
+      IrisIdentify: 0,                         // integer
+      VoipUse: 0,                              // integer
+      VoipDoorOpen: 0,                         // integer
+      VoipAutoAnswer: 0,                       // integer
+      Gender: 0,                               // integer
+      Mobile: "",                              // string
+      UnavailableTime: "",                     // string
+      Birthday: ""                             // string
     };
+
+    const cards = [{
+     "CardNum": rawId, 
+     "UserID": userId
+    }];
 
 
     if (!userInfo.ID) {
-            alert('❌ ไม่พบรหัสผู้ใช้ (ตรวจสอบ name="ID" ใน HTML)');
-            return;
-        }
+      alert('❌ ไม่พบรหัสผู้ใช้ (ตรวจสอบ name="ID" ใน HTML)');
+      return;
+    }
 
-    const cards = fd.getAll('CardNum[]').map(c => ({
-      CardNum: c,
-      UserID: userInfo.ID
-    }));
+
 
     let faceInfo = null;
-    let strategy = "บันทึกเฉพาะข้อมูล (No Photo)";
-
-    if (allowFaceCheckbox.checked) {
-      if (userFaceArray.length) {
-        strategy = "บันทึกข้อมูล + รูปถ่ายใหม่";
-        faceInfo = [{
-          UserID: userInfo.ID,
-          TemplateType: 1,
-          TemplateSize: userFaceArray[0].TemplateSize,
-          TemplateData: userFaceArray[0].TemplateData
-        }];
-      }
+    if (allowFaceCheckbox.checked && userFaceArray.length > 0) {
+      faceInfo = [{
+        UserID: userId,                      // string
+        TemplateSize: userFaceArray[0].TemplateSize, // integer
+        TemplateData: userFaceArray[0].TemplateData, // string (Base64)
+        TemplateType: 1                      // integer (1: Image)
+      }];
     }
 
     const payload = {
@@ -534,18 +565,20 @@
 
     // showLoading('กำลังอัปโหลดข้อมูล...');
 
- // --- Log Output ---
-   // --- 🟢 FIX LOG OUTPUT (แก้ไขตรงนี้) ---
-        console.group('📝 REGISTER PAYLOAD');
-        
-        // แบบไม่มีสี (แก้ปัญหาค่าหาย)
-        console.log('กลยุทธ์:', strategy);
-        console.log('ข้อมูลผู้ใช้:', userInfo);
-        console.log('ข้อมูลใบหน้า:', faceInfo);
-        console.log('Payload ทั้งหมด:', payload);
+    // --- Log Output ---
+    // --- 🟢 FIX LOG OUTPUT (แก้ไขตรงนี้) ---
+    console.group('📝 REGISTER PAYLOAD (Format Match)');
+    
+    // แสดงแบบ Object เพื่อให้กดขยายดูได้ใน Console
+    console.log('Object View:', payload);
+    
+    // แสดงแบบ JSON String (ก๊อปปี้ไปใช้งานได้ทันที เหมือนต้นแบบ)
+    console.log('%cJSON String Ready for API:');
+    console.log(JSON.stringify(payload, null, 2)); 
+    
     console.groupEnd();
 
- 
+
   });
 
 

@@ -69,6 +69,7 @@ $userType = $data['user']['type'] ?? null;
 $fullName = trim(($userName ?? '') . ' ' . ($userLname ?? ''));
 $departMent = $data['user']['department_th'] ?? null;
 $faculty = $data['user']['faculty_th'] ?? null;
+$faculty_num = $data['user']['faculty_num'] ?? null;
 
 /* ================== SYNC SESSION ================== */
 $_SESSION['person_id'] = $userId;
@@ -148,8 +149,13 @@ $_SESSION['person_id'] = $userId;
         </div>
 
         <div class="row">
+          <div class="col-md-6 mb-3">
+                <label>คณะ/สังกัดหน่วยงาน</label>
+                <input class="form-control" name="Faculty" value="<?= htmlspecialchars($faculty_th) ?>" readonly>
+                <input type="hidden" name="Position" value="<?= htmlspecialchars($faculty_num) ?>">
+            </div>
             <div class="col-md-6 mb-3">
-                <label>สาขา/สังกัดหน่วยงาน</label>
+                <label>สาขา/ส่วนงาน</label>
                 <input class="form-control" name="Department" value="<?= htmlspecialchars($departMent) ?>" readonly>
             </div>
             <div class="col-md-6 mb-3">
