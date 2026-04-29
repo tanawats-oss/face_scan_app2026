@@ -396,7 +396,7 @@
     const size = Math.max(box.width, box.height) * 2;
 
     ctx.save();
-    ctx.scale(-1, 1);   // ⭐ กลับซ้ายขวา
+    ctx.scale(-1, 1);   // กลับซ้ายขวา
 
     ctx.drawImage(
       video,
@@ -404,7 +404,7 @@
       cy - size / 2,
       size,
       size,
-      -300, 0, 300, 300   // ⭐ ค่า X ต้องติดลบ
+      -300, 0, 300, 300   // ค่า X ต้องติดลบ
     );
 
     ctx.restore();
@@ -453,8 +453,8 @@
 
     status.textContent = 'พร้อมตรวจจับใบหน้า';
     status.style.color = '#333';
-    captureBtn.style.display = 'inline-block'; // ⭐ แสดงปุ่มกลับ
-    status.style.display = 'block';            // ⭐ แสดงข้อความกลับ
+    captureBtn.style.display = 'inline-block'; //  แสดงปุ่มกลับ
+    status.style.display = 'block';            //  แสดงข้อความกลับ
 
     updateCameraPanel();
   });
@@ -483,49 +483,49 @@
     }
     //UserInfo เหมือนเดิม
     const userInfo = {
-      ID: userId,                              // string
-      UniqueID: String(fd.get('UniqueID')),    // string
-      Name: String(fd.get('Name')),            // string
+      ID: userId,                              
+      UniqueID: String(fd.get('UniqueID')),    
+      Name: String(fd.get('Name')),            
       // Index 1 เป็น 9 ถ้าเปิดใช้หน้า, เป็น 0 ถ้าปิด
       AuthInfo: [2, (allowFaceCheckbox.checked ? 9 : 0), 30, 0, 0, 0, 0, 0],
       Privilege: 2, // integer 2 is user 1 is admin
       CreateDate: new Date().toISOString().replace('T', ' ').split('.')[0],
-      UsePeriodFlag: 0,                        // integer
-      RegistDate: String(fd.get('RegistDate')),// string
-      ExpireDate: String(fd.get('ExpireDate')),// string
-      Password: "",                            // string
-      GroupCode: 1000,                         // integer ค่านี้เท่านั้น
-      AccessGroupCode: parseInt(fd.get('UserType')) || 3000, // integer
-      UserType: 0,                             // integer
-      TimezoneCode: 0,                         // integer
-      BlackList: 0,                            // integer (Schema ใช้ L ตัวใหญ่)
-      FPIdentify: 0,                           // integer
-      FaceIdentify: (allowFaceCheckbox.checked && userFaceArray.length) ? 1 : 0, // integer
-      DuressFinger: null,                      // list [integer]
-      Partition: 0,                            // integer
-      APBExcept: 0,                            // integer
-      APBZone: 0,                              // integer
-      WorkCode: "0000",                        // string
-      MealCode: "0000",                        // string
-      MoneyCode: "0000",                       // string
+      UsePeriodFlag: 0,                        
+      RegistDate: String(fd.get('RegistDate')),
+      ExpireDate: String(fd.get('ExpireDate')),
+      Password: "",                            
+      GroupCode: 1000,                         
+      AccessGroupCode: parseInt(fd.get('UserType')) || 3000, 
+      UserType: 0,                             
+      TimezoneCode: 0,                         
+      BlackList: 0,                            
+      FPIdentify: 0,                           
+      FaceIdentify: (allowFaceCheckbox.checked && userFaceArray.length) ? 1 : 0, 
+      DuressFinger: null,                      
+      Partition: 0,                            
+      APBExcept: 0,                            
+      APBZone: 0,                              
+      WorkCode: "0000",                        
+      MealCode: "0000",                        
+      MoneyCode: "0000",                       
       MessageCode: 0,
-      VerifyLevel: 0, 
-      PositionCode: parseInt(fd.get('Position')) || 1,                             // string
-      EmployeeNum: "0",                        // string
-      Email: String(fd.get('Email')),          // string
+      VerifyLevel: 5, 
+      PositionCode: parseInt(fd.get('Position')) || 1,                             
+      EmployeeNum: "0",                        
+      Email: String(fd.get('Email')),          
       Phone: "",
       Department: String(fd.get('Department')),
       LoginPW: "****",  
-      LoginAllowed: "0", 
-      Picture: "",                               // string
-      IrisIdentify: 0,                         // integer
-      VoipUse: 0,                              // integer
-      VoipDoorOpen: 0,                         // integer
-      VoipAutoAnswer: 0,                       // integer
-      Gender: 0,                               // integer
-      Mobile: "",                              // string
-      UnavailableTime: "",                     // string
-      Birthday: ""                             // string
+      LoginAllowed: parseInt(0), 
+      Picture: "",                               
+      IrisIdentify: 0,                         
+      VoipUse: 0,                              
+      VoipDoorOpen: 0,                         
+      VoipAutoAnswer: 0,                       
+      Gender: 0,                               
+      Mobile: "",                              
+      UnavailableTime: "",                     
+      Birthday: ""                             
     };
 
     const cards = [{
@@ -579,7 +579,42 @@
     console.groupEnd();
 
 
-  });
+// 2. ส่งข้อมูลไปยัง PHP Controller (ส่วนที่เพิ่มใหม่)
+    try {
+        // แสดง loading (ถ้ามี)
+        // showLoading(true); 
+
+        console.log('🚀 Sending payload to PHP Controller...');
+
+        const response = await fetch('https://lib.swu.ac.th/app/ci4_new/public/apidoor/addusers', { // เรียกตาม Route ที่ตั้งไว้
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // หากใช้ CodeIgniter CSRF อาจต้องส่ง X-Requested-With
+                'X-Requested-With': 'XMLHttpRequest' 
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.status === 'success') {
+            console.log('%c✅ Success:', 'color: green; font-weight: bold;', result);
+            alert('บันทึกข้อมูลเรียบร้อยแล้ว');
+            // อาจจะสั่ง window.location.reload() หรือล้างฟอร์มที่นี่
+        } else {
+            console.error('%c❌ API Error:', 'color: red;', result);
+            alert('เกิดข้อผิดพลาด: ' + (result.message || 'Unknown Error'));
+        }
+
+    } catch (error) {
+        console.error('%c❌ Network Error:', 'color: red;', error);
+        alert('ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้');
+    } finally {
+        // ปิด loading
+        // showLoading(false);
+    }
+});
 
 
 
