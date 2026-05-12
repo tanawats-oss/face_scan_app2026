@@ -30,6 +30,8 @@
       const pdpaAcceptBtn = document.getElementById('pdpaAcceptBtn');
       const pdpaDeclineBtn = document.getElementById('pdpaDeclineBtn');
 
+
+
       /* =======================
          Guard DOM
       ======================= */
@@ -72,7 +74,8 @@
 
       const userFaceArray = [];
       function getAuthInfoValue() { return (allowFaceCheckbox && allowFaceCheckbox.checked) ? [2, 9, 30, 0, 0, 0, 0, 0] : [2, 0, 30, 0, 0, 0, 0, 0]; }
-
+      
+      
       /* =======================
         PDPA
       ======================= */
@@ -104,33 +107,33 @@
       ======================= */
       function updateCameraPanel() {
 
-    // ❌ ยังไม่อนุญาตใบหน้า
-    if (!allowFaceCheckbox.checked) {
-      panelNewphoto.style.display = 'none';
-      panelResult.style.display = 'none';
-      panelFaceDB.style.display = 'block';
-      panelUpdateData.style.display = 'block';
-      stopCamera();
-      return;
-    }
+      // ❌ ยังไม่อนุญาตใบหน้า
+      if (!allowFaceCheckbox.checked) {
+        panelNewphoto.style.display = 'none';
+        panelResult.style.display = 'none';
+        panelFaceDB.style.display = 'block';
+        panelUpdateData.style.display = 'block';
+        stopCamera();
+        return;
+      }
 
-    // ❌ ยังไม่กดเปิดกล้อง
-    if (!allowCam) {
-      panelNewphoto.style.display = 'none';
-      panelResult.style.display = 'none';
-      panelFaceDB.style.display = 'block';
+      // ❌ ยังไม่กดเปิดกล้อง
+      if (!allowCam) {
+        panelNewphoto.style.display = 'none';
+        panelResult.style.display = 'none';
+        panelFaceDB.style.display = 'block';
+        panelUpdateData.style.display = 'none';
+        stopCamera();
+        return;
+      }
+
+      // ✅ พร้อมถ่าย
+      panelNewphoto.style.display = 'block';
+      panelFaceDB.style.display = 'none';
       panelUpdateData.style.display = 'none';
-      stopCamera();
-      return;
+
+      startCamera();
     }
-
-    // ✅ พร้อมถ่าย
-    panelNewphoto.style.display = 'block';
-    panelFaceDB.style.display = 'none';
-    panelUpdateData.style.display = 'none';
-
-    startCamera();
-  }
           /* ====== initial state from backend ====== */
           if (allowFaceCheckbox.checked) {
             allowCamBtn.disabled = false;
@@ -156,10 +159,9 @@
 
             updateCameraPanel();
           });
-
-
-
-        /* ====== ปุ่มเปิดกล้อง ====== */
+        
+        
+          /* ====== ปุ่มเปิดกล้อง ====== */
         allowCamBtn.addEventListener('click', () => {
 
           // 🔹 ถ้ากล้องเปิดอยู่ → ปิดได้ทันที (ไม่เช็ค PDPA)
@@ -208,9 +210,6 @@
           return t;
         }
       };
-
-
-
 
       async function loadFaceModelOnce() {
         if (window._faceModelLoaded) return;
@@ -404,10 +403,10 @@
       //   captureFace();
       // });
 
-      /* =======================
+       /* =======================
          CAPTURE
       ======================= */
-      function captureFace() {
+    function captureFace() {
         captureBtn.disabled = true;
 
         const box = lastFaceBox;
@@ -450,8 +449,8 @@
         panelResult.style.display = 'block';
         videoContainer.style.display = 'none';
 
-        captureBtn.style.display = 'none';   // ⭐ ซ่อนปุ่มถ่ายรูป
-        status.style.display = 'none';       // ⭐ ซ่อนข้อความพบใบหน้า
+        captureBtn.style.display = 'none';   
+        status.style.display = 'none';      
 
         status.textContent = '✅ จับใบหน้าแล้ว';
         stopCamera();
@@ -466,6 +465,7 @@
         }
         captureFace();
       });
+
       /* =======================
          RETAKE
       ======================= */
@@ -489,112 +489,136 @@
       /* =======================
          UPDATE SERVER
       ======================= */
-         updateBtn.addEventListener('click', async (e) => {
-        e.preventDefault(); // ⭐ กัน submit form
+        updateBtn.addEventListener('click', async (e) => {
+  e.preventDefault();
 
-        console.log('📤 CLICK UPLOAD');
+  console.log('📤 CLICK UPLOAD');
 
-        // ✅ guard: ต้องมีใบหน้าก่อน upload
-       if (allowFaceCheckbox.checked && !userFaceArray.length && !oldFaceTemplate) {
-          alert('⚠️ ยังไม่ได้ถ่ายรูปใบหน้า');
-          return;
-        }
+  // ✅ guard
+  if (allowFaceCheckbox.checked && !userFaceArray.length && !oldFaceTemplate) {
+    alert('⚠️ ยังไม่ได้ถ่ายรูปใบหน้า');
+    return;
+  }
 
+  const fd = new FormData(form);
 
-        const fd = new FormData(form);
+  // =======================
+  // USER INFO
+  // =======================
+  const userInfo = {
+    ID: fd.get('ID'),
+    UniqueID: fd.get('UniqueID'),
+    Name: fd.get('Name'),
 
-        const userInfo = {
-            ID: fd.get('ID'),
-            UniqueID: fd.get('UniqueID'),
-            Name: fd.get('Name'),
-            AuthInfo: getAuthInfoValue(),
-            Privilege: Number(fd.get('Privilege')),
-            GroupCode: Number(fd.get('GroupCode')),
-            AAccessGroupCode: 3000,
-            UserType: Number(fd.get('UserType')),
-            VerifyLevel: Number(fd.get('VerifyLevel')),
-            Email: fd.get('Email') || '',
-            Department: fd.get('Department') || ''
-        };
+    // 🔥 FIX: ต้องเป็น string
+    AuthInfo: getAuthInfoValue(),
 
-        if (!userInfo.ID) {
-          alert('❌ ไม่พบรหัสผู้ใช้');
-          return;
-        }
+    Privilege: Number(fd.get('Privilege')),
+    GroupCode: Number(fd.get('GroupCode')),
+    AccessGroupCode: Number(fd.get('AccessGroupCode')),
+    UserType: Number(fd.get('UserType')),
 
-        const cards = fd.getAll('CardNum[]').map(c => ({
-          CardNum: c,
-          UserID: userInfo.ID
-        }));
+    // 🔥 FIX: กันพังบางเครื่อง
+    VerifyLevel: Number(fd.get('VerifyLevel')),
 
-        let faceInfo = null;
+    Email: fd.get('Email') || '',
+    Department: fd.get('Department') || ''
+  };
 
-        if (allowFaceCheckbox.checked) {
-          if (userFaceArray.length) {
-            faceInfo = [{
-              UserID: userInfo.ID,
-              TemplateType: 1,
-              TemplateSize: userFaceArray[0].TemplateSize,
-              TemplateData: userFaceArray[0].TemplateData
-            }];
-          } else if (oldFaceTemplate) {
-            faceInfo = [{
-              UserID: userInfo.ID,
-              TemplateType: 1,
-              TemplateSize: oldFaceTemplate.TemplateSize,
-              TemplateData: oldFaceTemplate.TemplateData
-            }];
-          }
-        }
+  if (!userInfo.ID) {
+    alert('❌ ไม่พบรหัสผู้ใช้');
+    return;
+  }
 
-        const payload = {
-          UserInfo: userInfo,
-          UserCardInfo: cards,
-          UserCarInfo: null,
-          UserFPInfo: null,
-          UserCustomArmyHQ: null,
-          UserElevatorInfo: null,
-          UserFaceWTInfo: faceInfo
-        };
+  // =======================
+  // CARD
+  // =======================
+  const cards = fd.getAll('CardNum[]').map(c => ({
+    CardNum: c,
+    UserID: userInfo.ID
+  }));
 
-        console.group('📦 PAYLOAD');
-        console.log(payload);
-        console.groupEnd();
+  // =======================
+  // FACE
+  // =======================
+  let faceInfo = null;
 
-        showLoading('กำลังอัปโหลดข้อมูล...');
-        updateBtn.disabled = true;
+  if (allowFaceCheckbox.checked) {
+    if (userFaceArray.length) {
+      faceInfo = [{
+        UserID: userInfo.ID,
+        TemplateType: 1,
+        TemplateSize: userFaceArray[0].TemplateSize,
+        TemplateData: userFaceArray[0].TemplateData
+      }];
+    } else if (oldFaceTemplate) {
+      faceInfo = [{
+        UserID: userInfo.ID,
+        TemplateType: 1,
+        TemplateSize: oldFaceTemplate.TemplateSize,
+        TemplateData: oldFaceTemplate.TemplateData
+      }];
+    }
+  }
 
-        try {
-          const res = await fetch(
-            `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`, {
-              method: 'PUT',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(payload)
-            }
-          );
+  // 🔥 FIX: ต้องอยู่หลังสร้าง faceInfo
+  if (faceInfo) {
+    userInfo.FaceIdentify = 1;
+  }
 
-          const result = await res.json();
+  // =======================
+  // PAYLOAD
+  // =======================
+  const payload = {
+    UserInfo: userInfo,
+    UserCardInfo: cards,
+    UserCarInfo: null,
+    UserFPInfo: null,
+    UserCustomArmyHQ: null,
+    UserElevatorInfo: null,
+    UserFaceWTInfo: faceInfo
+  };
 
-          if (res.ok) {
-            alert('✅ อัปเดตสำเร็จ');
-            location.reload();
-          } else {
-            alert('❌ อัปเดตไม่สำเร็จ');
-            console.error(result);
-          }
+  console.group('📦 PAYLOAD');
+  console.log(payload);
+  console.log("AuthInfo TYPE:", typeof userInfo.AuthInfo);
+  console.log("FaceIdentify:", userInfo.FaceIdentify);
+  console.log("FACE INFO:", faceInfo);
+  console.groupEnd();
 
-        } catch (e) {
-          alert('⚠️ API error');
-          console.error(e);
-        } finally {
-          hideLoading();
-          updateBtn.disabled = false;
-        }
-      });
+  showLoading('กำลังอัปโหลดข้อมูล...');
+  updateBtn.disabled = true;
 
+  try {
+    const res = await fetch(
+      `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      }
+    );
 
+    const result = await res.json();
+
+    if (res.ok) {
+      alert('✅ อัปเดตสำเร็จ');
+       location.reload();
+    } else {
+      alert('❌ อัปเดตไม่สำเร็จ');
+      console.error(result);
+    }
+
+  } catch (e) {
+    alert('⚠️ API error');
+    console.error(e);
+  } finally {
+    hideLoading();
+    updateBtn.disabled = false;
+  }
+});
 
       /* =======================
               UPDATE DATA SERVER
@@ -606,7 +630,7 @@
 
         const fd = new FormData(form);
 
-       const userInfo = {
+        const userInfo = {
             ID: fd.get('ID'),
             UniqueID: fd.get('UniqueID'),
             Name: fd.get('Name'),
@@ -630,11 +654,29 @@
           UserID: userInfo.ID
         }));
 
+		let faceInfo = null;
+		// ถ้ามี face ใหม่ที่ถ่าย
+		if (userFaceArray.length) {
+		  faceInfo = [{
+			UserID: userInfo.ID,
+			TemplateType: 1,
+			TemplateSize: userFaceArray[0].TemplateSize,
+			TemplateData: userFaceArray[0].TemplateData
+		  }];
+		}
         const payload = {
-          UserInfo: userInfo,
-          UserCardInfo: cards,
-          UserFaceWTInfo: null
-        };
+			  UserInfo: userInfo,
+			  UserCardInfo: cards
+			};
+
+			if (userFaceArray.length) {
+			  payload.UserFaceWTInfo = [{
+				UserID: userInfo.ID,
+				TemplateType: 1,
+				TemplateSize: userFaceArray[0].TemplateSize,
+				TemplateData: userFaceArray[0].TemplateData
+			  }];
+			}
 
         showLoading('กำลังบันทึกข้อมูล...');
         btnUpdateData.disabled = true;
@@ -652,16 +694,16 @@
 
           const result = await res.json();
 
-          if (res.ok && result.status === 'success') {
+          if (res.ok) {
             alert('✅ บันทึกข้อมูลสำเร็จ');
             location.reload();
           } else {
-            alert('❌ บันทึกไม่สำเร็จ กรุณาลองใหม่');
+            alert('❌ บันทึกไม่สำเร็จ');
             console.error(result);
           }
 
         } catch (e) {
-          alert('⚠️ การเชื่อมต่อขัดข้อง กรุณาลองใหม่');
+          alert('⚠️ API error');
           console.error(e);
         } finally {
           hideLoading();

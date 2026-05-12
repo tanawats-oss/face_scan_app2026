@@ -107,7 +107,7 @@ header("Expires: 0");
     $apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apidoor/userList"
       . "?person_id={$person_id}"
       . "&searchCategory=uniqueid"
-      . "&groupID=0&subInclude=true&offset=0&limit=1";
+      . "&groupID=0&subInclude=true&offset=0&limit=10";
 
     $data = json_decode(callApi($apiUrl), true);
     $userInfo = $data['users'][0] ?? null;

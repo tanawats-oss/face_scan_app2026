@@ -103,8 +103,6 @@ Developed   : 2025
                 transform: rotate(360deg);
             }
         }
-
-       
     </style>
 </head>
 
@@ -125,7 +123,7 @@ Developed   : 2025
             // ส่วนด้านล่างนี้จะทำงานเฉพาะ "Android ที่เปิดผ่าน LINE" เท่านั้น
             // -----------------------------------------------------------
 
-            const domainPath = "lib.swu.ac.th/app/face_scan/test_deploy/login.php";
+            const domainPath = "lib.swu.ac.th/app/face_scan/login.php";
             const fullUrl = "https://" + domainPath;
 
             document.documentElement.innerHTML = `
@@ -183,13 +181,13 @@ Developed   : 2025
     </script>
 
 
-      <div class="login-card">
+     <div class="login-card">
         <img src="SWU_Central_Library_EN_Color.png" class="center" alt="Lib_Logo" width="500 px" height="150 px"
         style="display: block;
             margin-left: auto;
             margin-right: auto;
             width: 100%;">
-        <h2>ทดสอบ  Selfie to Scan<br>ระบบลงทะเบียนใบหน้าอัตโนมัติ<br>(LIBSWU Automated Face Registration System)</h2><br>
+        <h2>Selfie to Scan<br>TEST  ระบบลงทะเบียนใบหน้าอัตโนมัติ<br>(LIBSWU Automated Face Registration System)</h2><br>
         <form method="post" action="auth.php" onsubmit="return showLoading()">
             <div class="form-group">
                 <label for="user_login">รหัสบัวศรี (Buasri ID)</label>
@@ -206,17 +204,17 @@ Developed   : 2025
     <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
     </div>
-    <footer style="
+<footer style="
     margin-top:40px;
     text-align:center;
     font-size:13px;
     color:#777;
 ">
-        พัฒนาระบบโดย
-        <b>นายธนวัฒน์ เสริฐสุวรรณกุล</b>
-        <br>
-        งานเทคโนโลยีวิทยทรัพยากรดิจิทัล
-    </footer>
+    พัฒนาระบบโดย  
+    <b>นายธนวัฒน์ เสริฐสุวรรณกุล</b>  
+    <br>
+    งานเทคโนโลยีวิทยทรัพยากรดิจิทัล  
+</footer>
 
     <script>
         function showLoading() {

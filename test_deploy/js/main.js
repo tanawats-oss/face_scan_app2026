@@ -492,7 +492,7 @@
         updateBtn.addEventListener('click', async (e) => {
   e.preventDefault();
 
-  console.log('CLICK UPLOAD');
+  console.log('📤 CLICK UPLOAD');
 
   // ✅ guard
   if (allowFaceCheckbox.checked && !userFaceArray.length && !oldFaceTemplate) {

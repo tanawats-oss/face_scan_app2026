@@ -11,8 +11,8 @@ Developed   : 2025
 */
 ?>
 <?php
-$user_login     = "tanawats";   // $_REQUEST["user_login"];
-$user_password  = "Lordpooh@2534";    // $_REQUEST["user_password"];
+$user_login     = "";   // $_REQUEST["user_login"];
+$user_password  = "";    // $_REQUEST["user_password"];
 
 // กำหนด RDN ของผู้ใช้ (ขึ้นอยู่กับโครงสร้าง LDAP จริงของ SWU)
 // ถ้าโครงสร้างเป็น uid=xxxx,dc=swu,dc=ac,dc=th
