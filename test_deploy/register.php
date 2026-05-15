@@ -105,10 +105,10 @@ $_SESSION['person_id'] = $userId;
                 </div>
                 <?php else: ?>
                 <?php
-          $faceResp = json_decode(
-              callApi("https://lib.swu.ac.th/app/ci4_new/public/apidoor/showFaceTemplate/" . urlencode($userId)),
-              true
-          );
+                $faceResp = json_decode(
+                    callApi("https://lib.swu.ac.th/app/ci4_new/public/apidoor/showFaceTemplate/" . urlencode($userId)),
+                    true
+                );
                     ?>
                 <?php if (!empty($faceResp['template'])): ?>
                 <div class="center">
@@ -129,85 +129,87 @@ $_SESSION['person_id'] = $userId;
             </div>
 
             <!-- ================== USER INFO ================== -->
-            <div class="col-md-6 mb-3">
-                <label>ID</label>
-                <input class="form-control" name="ID" value="<?= htmlspecialchars($userId) ?>" readonly>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label>Unique ID</label>
-                <input class="form-control" name="UniqueID" value="<?= htmlspecialchars($userId) ?>" readonly>
-            </div>
+            <div class="container center">
+                <div class="panel col-md-12">
+                    <h4 class="mt-5 text-center">สิทธิ์การใช้งาน (AuthInfo)</h4>
+                <div class="col-md-8 mx-auto mb-3">
+                    <label>รหัสผู้ใช้งาน(ID)</label>
+                    <input class="form-control" name="ID" value="<?= htmlspecialchars($userId) ?>" readonly>
+                </div>
 
-            <div class="col-md-6 mb-3">
-                <label>ชื่อผู้ใช้</label>
-                <input class="form-control" name="Name" value="<?= htmlspecialchars($fullName) ?>" readonly>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label>Employee Number</label>
-                <input class="form-control" name="EmployeeNo" value="">
-            </div>
+                <div class="col-md-8 mx-auto mb-3">
+                    <label>รหัสประจำตัว(Unique ID)</label>
+                    <input class="form-control" name="UniqueID" value="<?= htmlspecialchars($userId) ?>" readonly>
+                </div>
+
+        <div class="col-md-8 mx-auto mb-3">
+            <label>ชื่อผู้ใช้</label>
+            <input class="form-control" name="Name" value="<?= htmlspecialchars($fullName) ?>" readonly>
         </div>
 
-        <div class="row">
-          <div class="col-md-6 mb-3">
-                <label>คณะ/สังกัดหน่วยงาน</label>
-                <input class="form-control" name="Faculty" value="<?= htmlspecialchars($faculty_th) ?>" readonly>
-                <input type="hidden" name="Position" value="<?= htmlspecialchars($faculty_num) ?>">
-            </div>
-            <div class="col-md-6 mb-3">
-                <label>สาขา/ส่วนงาน</label>
-                <input class="form-control" name="Department" value="<?= htmlspecialchars($departMent) ?>" readonly>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label>ตำแหน่ง (AccessGroupCode)</label>
-                <select class="form-control" name="UserType">
-                    <option value="">----------กรุณาเลือก----------</option>
-                    <option value="1000" <?= $userType == 'student' ? 'selected' : '' ?>>นิสิต </option>
-                    <option value="3000" <?= $userType == 'staff' ? 'selected' : '' ?>>บุคลากร </option>
-                    <option value="3000" <?= ($userType == 'testlib007' || $userType == 'testlib008') ? 'selected' : '' ?>>ทดสอบระบบ</option>
-                </select>
-                <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' ? '3000' : '1000') ?>">
-            </div>
+        <div class="col-md-8 mx-auto mb-3">
+            <label>คณะ/สังกัดหน่วยงาน</label>
+            <input class="form-control" name="Faculty" value="<?= htmlspecialchars($faculty_th) ?>" readonly>
+            <input type="hidden" name="Position" value="<?= htmlspecialchars($faculty_num) ?>">
         </div>
-                <input  type="hidden" name="Email" value="<?= htmlspecialchars($userMail) ?>" readonly>
-                <input  type="hidden" name="Phone" value="" readonly>
-                <input  type="hidden" name="Privilege" value="2" readonly> </div>
-                <input  type="hidden" name="RegistDate" value="<?= date('Y-m-d H:i:s') ?>" readonly>
-                <input  type="hidden" name="ExpireDate" value="<?= date('Y-m-d H:i:s', strtotime('+1 year')) ?>" readonly>
-                <input  type="hidden" name="Blacklist" value="0" readonly>
-                <input type="hidden" name="GroupCode" value="0">
-                <input type="hidden" name="VerifyLevel" value="0">
 
-        <br>
-        <h4 class="mt-4">ข้อมูลบัตร (UserCardInfo)</h4>
-        <p><b>Card Number:</b> 
+        <div class="col-md-8 mx-auto mb-3">
+            <label>สาขา/ส่วนงาน</label>
+            <input class="form-control" name="Department" value="<?= htmlspecialchars($departMent) ?>" readonly>
+        </div>
+
+        <div class="col-md-8 mx-auto mb-3">
+            <label>ตำแหน่ง (AccessGroupCode)</label>
+            <select class="form-control" name="UserType">
+                <option value="">----------กรุณาเลือก----------</option>
+                <option value="1000" <?= $userType == 'student' ? 'selected' : '' ?>>นิสิต </option>
+                <option value="3000" <?= $userType == 'staff' ? 'selected' : '' ?>>บุคลากร </option>
+                <option value="3000" <?= ($userType == 'testlib007' || $userType == 'testlib008') ? 'selected' : '' ?>>ทดสอบระบบ</option>
+            </select>
+            <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' ? '3000' : '1000') ?>">
+        </div>
+
+        <hr> <h4 class="mt-4 text-center">ข้อมูลบัตร (UserCardInfo)</h4>
+        <div class="col-md-8 mx-auto mb-3 text-center">
+            <p><b>Card Number:</b></p> 
             <input class="form-control" name="CardNum[]" value="<?= htmlspecialchars($userId) ?>">
-        </p>
+        </div>
 
-        <br>
-        <h4 class="mt-5">สิทธิ์การใช้งาน (AuthInfo)</h4>
-        <table class="table table-sm">
-            <tr>
-                <td>เปิด-ปิดการใช้สแกนใบหน้า</td>
-                <td>
-                    <label>
-                        <input type="checkbox" id="AllowFaceRegister" name="AllowFaceRegister"
-                            <?= $hasFacePermission ? 'checked' : '' ?>>
-                        อนุญาตลงทะเบียนใบหน้า
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td>อนุญาตเปิดกล้อง</td>
-                <td>
-                    <button type="button" id="AllowCamBtn" class="btn btn-primary" disabled>
-                        เปิดกล้องถ่ายรูป
-                    </button>
-                </td>
-            </tr>
-        </table>
-        <br>
+        <h4 class="mt-5 text-center">สิทธิ์การใช้งาน (AuthInfo)</h4>
+        <div class="col-md-8 mx-auto mb-3">
+            <table class="table table-sm">
+                <tr>
+                    <td>เปิด-ปิดการใช้สแกนใบหน้า</td>
+                    <td>
+                        <label>
+                            <input type="checkbox" id="AllowFaceRegister" name="AllowFaceRegister" <?= $hasFacePermission ? 'checked' : '' ?>>
+                            อนุญาตลงทะเบียนใบหน้า
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>อนุญาตเปิดกล้อง</td>
+                    <td>
+                        <button type="button" id="AllowCamBtn" class="btn btn-primary" disabled>
+                            เปิดกล้องถ่ายรูป
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+                        <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' ? '3000' : '1000') ?>">   
+                        <input  type="hidden" name="Email" value="<?= htmlspecialchars($userMail) ?>" readonly>
+                        <input  type="hidden" name="Phone" value="" readonly>
+                        <input  type="hidden" name="Privilege" value="2" readonly> </div>
+                        <input  type="hidden" name="RegistDate" value="<?= date('Y-m-d H:i:s') ?>" readonly>
+                        <input  type="hidden" name="ExpireDate" value="<?= date('Y-m-d H:i:s', strtotime('+1 year')) ?>" readonly>
+                        <input  type="hidden" name="Blacklist" value="0" readonly>
+                        <input type="hidden" name="GroupCode" value="0">
+                        <input type="hidden" name="VerifyLevel" value="0">
+                        <input type="hidden" class="form-control" name="EmployeeNo" value="">
 
+    </div>
+</div>
         <!-- ================== Camera & Capture ================== -->
         <div class="panel" id="Newtakephoto" name="Newtakephoto" style="display:none">
 
