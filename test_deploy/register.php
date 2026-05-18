@@ -56,7 +56,7 @@ $data = json_decode($response, true);
 /* ================== VALIDATE API ================== */
 if (empty($data) || ($data['status'] ?? '') !== 'success' || empty($data['user']['peson_id'])) {
     echo "<p>{$buasri_id} ไม่มีสิทธิ์เข้าใช้ระบบ</p><br>
-<a href='https://lib.swu.ac.th/app/face_scan/test_sys/login.php'><button >กลับหน้า Login</button>";
+<a href='https://lib.swu.ac.th/app/face_scan/test_deploy/login.php'><button >กลับหน้า Login</button>";
     exit;
 }
 
@@ -83,7 +83,7 @@ $_SESSION['person_id'] = $userId;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Face Capture & Update Template</title>
-    <link rel="stylesheet" href="../css/face_scan.css">
+    <link rel="stylesheet" href="./css/face_scan.css">
     <script>
     const SESSION_TIMEOUT = <?= SESSION_TIMEOUT ?>;
     </script>
@@ -96,51 +96,23 @@ $_SESSION['person_id'] = $userId;
         <form id="editUserForm" action="" method="post">
 
             <!-- ================== Face Template ================== -->
-            <div class="panel" id="facePanel">
-                <h4>Face Template</h4>
-                <?php if (!$hasFacePermission): ?>
-                <div class="center">
-                    <img src="./no_face.png" style="max-width:200px;opacity:.6">
-                    <p>ยังไม่ได้เปิดใช้งานใบหน้า</p>
-                </div>
-                <?php else: ?>
-                <?php
-                $faceResp = json_decode(
-                    callApi("https://lib.swu.ac.th/app/ci4_new/public/apidoor/showFaceTemplate/" . urlencode($userId)),
-                    true
-                );
-                    ?>
-                <?php if (!empty($faceResp['template'])): ?>
-                <div class="center">
-                    <img src="data:image/jpeg;base64,<?= $faceResp['template'] ?>" style="max-width:200px">
-                </div>
-                <div class="center">
-                    <p>ขนาดรูป: <?= $faceResp['size'] ?? 0 ?> bytes</p>
-                </div>
-                <?php else: ?>
-                <div class="center">
-                    <img src="./no_face.png" style="max-width:100px">
-                </div>
-                <div class="center">
-                    <p>⚠️ ยังไม่มีข้อมูลใบหน้า</p>
-                </div>
-                <?php endif; ?>
-                <?php endif; ?>
+            <div class="panel"  id="facePanel">
+                    <p style="text-align: center;">ยังไม่ได้เปิดใช้งานใบหน้า</p> 
             </div>
 
             <!-- ================== USER INFO ================== -->
             <div class="container center">
                 <div class="panel col-md-12">
-                    <h4 class="mt-5 text-center">สิทธิ์การใช้งาน (AuthInfo)</h4>
-                <div class="col-md-8 mx-auto mb-3">
-                    <label>รหัสผู้ใช้งาน(ID)</label>
-                    <input class="form-control" name="ID" value="<?= htmlspecialchars($userId) ?>" readonly>
-                </div>
+                    <h4 class="mt-5 text-center">ข้อมูลผู้ใช้งาน (AuthInfo)</h4>
+                <!-- <div class="col-md-8 mx-auto mb-3">
+                    <label>รหัสผู้ใช้งาน(ID)</label> -->
+                    <input class="form-control" type="hidden" name="ID" value="<?= htmlspecialchars($userId) ?>" readonly>
+                <!-- </div><br> -->
 
-                <div class="col-md-8 mx-auto mb-3">
-                    <label>รหัสประจำตัว(Unique ID)</label>
-                    <input class="form-control" name="UniqueID" value="<?= htmlspecialchars($userId) ?>" readonly>
-                </div>
+                <!-- <div class="col-md-8 mx-auto mb-3">
+                    <label>รหัสประจำตัว(Unique ID)</label> -->
+                    <input class="form-control" type="hidden" name="UniqueID" value="<?= htmlspecialchars($userId) ?>" readonly>
+                <!-- </div><br> -->
 
         <div class="col-md-8 mx-auto mb-3">
             <label>ชื่อผู้ใช้</label>
@@ -149,7 +121,7 @@ $_SESSION['person_id'] = $userId;
 
         <div class="col-md-8 mx-auto mb-3">
             <label>คณะ/สังกัดหน่วยงาน</label>
-            <input class="form-control" name="Faculty" value="<?= htmlspecialchars($faculty_th) ?>" readonly>
+            <input class="form-control" name="Faculty" value="<?= htmlspecialchars($faculty) ?>" readonly>
             <input type="hidden" name="Position" value="<?= htmlspecialchars($faculty_num) ?>">
         </div>
 
@@ -158,7 +130,7 @@ $_SESSION['person_id'] = $userId;
             <input class="form-control" name="Department" value="<?= htmlspecialchars($departMent) ?>" readonly>
         </div>
 
-        <div class="col-md-8 mx-auto mb-3">
+        <div class="col-md-8 mx-auto mb-3" >
             <label>ตำแหน่ง (AccessGroupCode)</label>
             <select class="form-control" name="UserType">
                 <option value="">----------กรุณาเลือก----------</option>
@@ -169,15 +141,14 @@ $_SESSION['person_id'] = $userId;
             <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' ? '3000' : '1000') ?>">
         </div>
 
-        <hr> <h4 class="mt-4 text-center">ข้อมูลบัตร (UserCardInfo)</h4>
         <div class="col-md-8 mx-auto mb-3 text-center">
-            <p><b>Card Number:</b></p> 
+            <label>รหัสผู้ใช้งาน:</lable> 
             <input class="form-control" name="CardNum[]" value="<?= htmlspecialchars($userId) ?>">
-        </div>
+        </div><br>
 
-        <h4 class="mt-5 text-center">สิทธิ์การใช้งาน (AuthInfo)</h4>
+     <h4 class="mt-5 text-center">สิทธิ์การใช้งาน (AuthInfo)</h4>
         <div class="col-md-8 mx-auto mb-3">
-            <table class="table table-sm">
+            <table class="table table-sm" id="tableAuth">
                 <tr>
                     <td>เปิด-ปิดการใช้สแกนใบหน้า</td>
                     <td>
@@ -262,6 +233,7 @@ $_SESSION['person_id'] = $userId;
 
         </div>
         <!-- Regis button -->
+       <div class="action-bar" style="display: flex; gap: 16px; margin-top: 20px; justify-content: center;">
         <div class="panel" style="text-align:center;">
             <!-- <button type="submit" class="register">บันทึกข้อมูล</button> -->
             <button type="button" id="updateServerBtn" class="btn-update btn-large">
@@ -273,10 +245,12 @@ $_SESSION['person_id'] = $userId;
         <!-- Logout button -->
         <div class="panel" style="text-align:center;">
             <form action="logout.php" method="post">
-                <button type="submit" class="danger">ออกจากระบบ</button>
+                <button type="submit" class="btn-update btn-large-danger">ออกจากระบบ</button>
             </form>
         </div>
     </div>
+    </div>
+   
 
 
     <!-- ===============     PDPA        =================== -->
