@@ -110,7 +110,7 @@ Developed   : 2025
             const isLine = /Line/i.test(ua);
             const isAndroid = /Android/i.test(ua);
 
-            // 🟢 LOGIC ใหม่: 
+            //  LOGIC ใหม่: 
             // ถ้า "ไม่ใช่ LINE" หรือ "ไม่ใช่ Android" (แปลว่าเป็น iOS หรือ PC) 
             // ให้ return ออกไปเลย (เพื่อไปแสดงหน้า Login ด้านล่าง)
             if (!isLine || !isAndroid) return;
