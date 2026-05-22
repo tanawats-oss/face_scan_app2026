@@ -1,6 +1,6 @@
 <?php
 session_start();
-define('SESSION_TIMEOUT', 600);
+define('SESSION_TIMEOUT', 1000);
 
 header('Content-Type: application/json');
 

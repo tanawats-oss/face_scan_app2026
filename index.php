@@ -397,7 +397,7 @@ Developed   : 2025
     <br>
     <div class="panel" style="text-align:center;">
       <form action="logout.php" method="post">
-        <button type="submit" class="danger" style="font: size 16px;">ออกจากระบบ</button>
+        <button type="submit" class="btn-large-danger" style="font: size 16px;">ออกจากระบบ</button>
       </form>
     </div>
   </div>

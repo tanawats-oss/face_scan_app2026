@@ -315,6 +315,25 @@
       filter: brightness(1.1);
       transform: scale(1.03);
     }
+    
+    .btn-large-danger:hover {
+      background: var(--danger);
+      color: #000;
+    }
+
+    .btn-large-danger {
+      flex: 1.5;
+      font-size: 18px;
+      padding: 14px 20px;
+      background-color: var(--danger);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .btn-large:hover {
+      filter: brightness(1.1);
+      transform: scale(1.03);
+    }
 
     /* ปุ่มถ่ายรูปเล็กกว่า */
     .btn-muted {

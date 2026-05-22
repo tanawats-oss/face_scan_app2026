@@ -292,11 +292,10 @@ Developed   : 2025
             }
             ?>
             <tr>
-              <td>เปิด-ปิดการใช้สแกนใบหน้า</td>
+              <td>อนุญาตลงทะเบียนใบหน้า</td>
               <td>
                 <label>
-                  <input type="checkbox" id="AllowFaceRegister" name="AllowFaceRegister" <?= $hasFacePermission ? 'checked' : '' ?>>
-                  อนุญาตลงทะเบียนใบหน้า
+                  <input class="center" type="checkbox" id="AllowFaceRegister" name="AllowFaceRegister" <?= $hasFacePermission ? 'checked' : '' ?>>
                 </label>
               </td>
             </tr>
@@ -381,12 +380,10 @@ Developed   : 2025
       </div>
     </div>
     <!-- Update not use face -->
-    <br>
     <div class="panel" id="updatedata" name="updatedata" style="text-align:center;">
       <button type="submit" id="btn-updatedata" name="btn-updatedata" class="btn-updatedata ">แก้ไขข้อมูล</button>
     </div>
     <!-- Row Logout -->
-    <br>
     <div class="panel" style="text-align:center;">
       <form action="logout.php" method="post">
         <button type="submit" class="danger" style="font: size 16px;">ออกจากระบบ</button>

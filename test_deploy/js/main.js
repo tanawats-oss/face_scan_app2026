@@ -436,14 +436,15 @@
 
         ctx.restore();
 
-        const base64 = outCanvas
-          .toDataURL('image/jpeg', 0.9)
-          .split(',')[1];
+       const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
+        const base64 = base64DataUrl.split(',')[1];
+        const padding = (base64.endWith === '=') ? (base64.endsWith('==') ? 2 : 1) : 0;
+        const actualByteSize = (base64.length * 0.75) - padding;
 
         userFaceArray.length = 0;
         userFaceArray.push({
           TemplateData: base64,
-          TemplateSize: base64.length
+          TemplateSize: Math.floor(actualByteSize)
         });
 
         panelResult.style.display = 'block';
@@ -454,7 +455,7 @@
 
         status.textContent = '✅ จับใบหน้าแล้ว';
         stopCamera();
-      }
+    }
       /* =======================
         BIND CAPTURE BUTTON
       ======================= */
@@ -487,221 +488,225 @@
         updateCameraPanel();
       });
       /* =======================
-         UPDATE SERVER
+         UPDATE SERVER (ปุ่มถ่ายรูป)
       ======================= */
-        updateBtn.addEventListener('click', async (e) => {
-  e.preventDefault();
-
-  console.log('📤 CLICK UPLOAD');
-
-  // ✅ guard
-  if (allowFaceCheckbox.checked && !userFaceArray.length && !oldFaceTemplate) {
-    alert('⚠️ ยังไม่ได้ถ่ายรูปใบหน้า');
-    return;
-  }
-
-  const fd = new FormData(form);
-
-  // =======================
-  // USER INFO
-  // =======================
-  const userInfo = {
-    ID: fd.get('ID'),
-    UniqueID: fd.get('UniqueID'),
-    Name: fd.get('Name'),
-
-    // 🔥 FIX: ต้องเป็น string
-    AuthInfo: getAuthInfoValue(),
-
-    Privilege: Number(fd.get('Privilege')),
-    GroupCode: Number(fd.get('GroupCode')),
-    AccessGroupCode: Number(fd.get('AccessGroupCode')),
-    UserType: Number(fd.get('UserType')),
-
-    // 🔥 FIX: กันพังบางเครื่อง
-    VerifyLevel: Number(fd.get('VerifyLevel')),
-
-    Email: fd.get('Email') || '',
-    Department: fd.get('Department') || ''
-  };
-
-  if (!userInfo.ID) {
-    alert('❌ ไม่พบรหัสผู้ใช้');
-    return;
-  }
-
-  // =======================
-  // CARD
-  // =======================
-  const cards = fd.getAll('CardNum[]').map(c => ({
-    CardNum: c,
-    UserID: userInfo.ID
-  }));
-
-  // =======================
-  // FACE
-  // =======================
-  let faceInfo = null;
-
-  if (allowFaceCheckbox.checked) {
-    if (userFaceArray.length) {
-      faceInfo = [{
-        UserID: userInfo.ID,
-        TemplateType: 1,
-        TemplateSize: userFaceArray[0].TemplateSize,
-        TemplateData: userFaceArray[0].TemplateData
-      }];
-    } else if (oldFaceTemplate) {
-      faceInfo = [{
-        UserID: userInfo.ID,
-        TemplateType: 1,
-        TemplateSize: oldFaceTemplate.TemplateSize,
-        TemplateData: oldFaceTemplate.TemplateData
-      }];
-    }
-  }
-
-  // 🔥 FIX: ต้องอยู่หลังสร้าง faceInfo
-  if (faceInfo) {
-    userInfo.FaceIdentify = 1;
-  }
-
-  // =======================
-  // PAYLOAD
-  // =======================
-  const payload = {
-    UserInfo: userInfo,
-    UserCardInfo: cards,
-    UserCarInfo: null,
-    UserFPInfo: null,
-    UserCustomArmyHQ: null,
-    UserElevatorInfo: null,
-    UserFaceWTInfo: faceInfo
-  };
-
-  console.group('📦 PAYLOAD');
-  console.log(payload);
-  console.log("AuthInfo TYPE:", typeof userInfo.AuthInfo);
-  console.log("FaceIdentify:", userInfo.FaceIdentify);
-  console.log("FACE INFO:", faceInfo);
-  console.groupEnd();
-
-  showLoading('กำลังอัปโหลดข้อมูล...');
-  updateBtn.disabled = true;
-
-  try {
-    const res = await fetch(
-      `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      }
-    );
-
-    const result = await res.json();
-
-    if (res.ok) {
-      alert('✅ อัปเดตสำเร็จ');
-       location.reload();
-    } else {
-      alert('❌ อัปเดตไม่สำเร็จ');
-      console.error(result);
-    }
-
-  } catch (e) {
-    alert('⚠️ API error');
-    console.error(e);
-  } finally {
-    hideLoading();
-    updateBtn.disabled = false;
-  }
-});
-
-      /* =======================
-              UPDATE DATA SERVER
-           ======================= */
-      btnUpdateData.addEventListener('click', async (e) => {
+      updateBtn.addEventListener('click', async (e) => {
         e.preventDefault();
 
-        console.log('💾 CLICK UPDATE DATA');
+        console.log('📤 CLICK UPLOAD (WITH PHOTO)');
 
-        const fd = new FormData(form);
-
-        const userInfo = {
-            ID: fd.get('ID'),
-            UniqueID: fd.get('UniqueID'),
-            Name: fd.get('Name'),
-            AuthInfo: getAuthInfoValue(),
-            Privilege: Number(fd.get('Privilege')),
-            GroupCode: Number(fd.get('GroupCode')),
-            AccessGroupCode: Number(fd.get('AccessGroupCode')),
-            UserType: Number(fd.get('UserType')),
-            VerifyLevel: Number(fd.get('VerifyLevel')),
-            Email: fd.get('Email') || '',
-            Department: fd.get('Department') || ''
-        };
-
-        if (!userInfo.ID) {
-          alert('❌ ไม่พบรหัสผู้ใช้');
+        // ✅ เช็กก่อนส่ง: ถ้าติ๊กอนุญาตหน้า แต่ยังไม่มีรูปใหม่ และไม่มีรูปเก่าเลย ให้เตือน
+        if (allowFaceCheckbox.checked && !userFaceArray.length && !oldFaceTemplate) {
+          alert('⚠️ ยังไม่ได้ถ่ายรูปใบหน้า หรือปิดกล้องก่อนบันทึกข้อมูล');
           return;
         }
 
-        const cards = fd.getAll('CardNum[]').map(c => ({
-          CardNum: c,
-          UserID: userInfo.ID
+        const fd = new FormData(form);
+
+        // ดึงการ์ดแบบปลอดภัย (รองรับทั้ง CardNum[] และ CardNum ธรรมดา)
+        let cardValues = fd.getAll('CardNum[]').filter(Boolean);
+        if (cardValues.length === 0) {
+          const singleCard = fd.get('CardNum') || fd.get('ID');
+          if (singleCard) cardValues.push(singleCard);
+        }
+        const cards = cardValues.map(c => ({
+          CardNum: String(c).trim(),
+          UserID: String(fd.get('ID')).trim()
         }));
 
-		let faceInfo = null;
-		// ถ้ามี face ใหม่ที่ถ่าย
-		if (userFaceArray.length) {
-		  faceInfo = [{
-			UserID: userInfo.ID,
-			TemplateType: 1,
-			TemplateSize: userFaceArray[0].TemplateSize,
-			TemplateData: userFaceArray[0].TemplateData
-		  }];
-		}
-        const payload = {
-			  UserInfo: userInfo,
-			  UserCardInfo: cards
-			};
+        // 🌟 ตรวจสอบเงื่อนไขรูปภาพ: มีรูป = 1 / ไม่มีรูป = 0
+        let hasFace = false;
+        let faceInfo = null;
 
-			if (userFaceArray.length) {
-			  payload.UserFaceWTInfo = [{
-				UserID: userInfo.ID,
-				TemplateType: 1,
-				TemplateSize: userFaceArray[0].TemplateSize,
-				TemplateData: userFaceArray[0].TemplateData
-			  }];
-			}
+        if (allowFaceCheckbox.checked) {
+          if (userFaceArray.length > 0) {
+            // 1. กรณีผู้ใช้ถ่ายรูปใหม่สำเร็จ
+            hasFace = true;
+            faceInfo = [{
+              UserID: String(fd.get('ID')).trim(),
+              TemplateType: 1,
+              TemplateSize: userFaceArray[0].TemplateSize,
+              TemplateData: userFaceArray[0].TemplateData
+            }];
+          } else if (oldFaceTemplate) {
+            // 2. กรณีไม่ได้ถ่ายรูปใหม่ แต่มีรูปเดิมในระบบอยู่แล้ว
+            hasFace = true;
+            faceInfo = [{
+              UserID: String(fd.get('ID')).trim(),
+              TemplateType: 1,
+              TemplateSize: oldFaceTemplate.TemplateSize,
+              TemplateData: oldFaceTemplate.TemplateData
+            }];
+          }
+        }
+
+        // สร้าง UserInfo ให้ถูกต้องตามสเปกเครื่องสแกน
+        const userInfo = {
+          ID: String(fd.get('ID')).trim(),
+          UniqueID: fd.get('UniqueID'),
+          Name: fd.get('Name'),
+          AuthInfo: getAuthInfoValue(), // ดึงอาเรย์สิทธิ์เปิด-ปิดกล้อง
+          Privilege: Number(fd.get('Privilege')) || 2,
+          GroupCode: Number(fd.get('GroupCode')) || 1000,
+          AccessGroupCode: Number(fd.get('AccessGroupCode')) || 3000,
+          UserType: Number(fd.get('UserType')) || 0,
+          VerifyLevel: Number(fd.get('VerifyLevel')) || 0,
+          FaceIdentify: hasFace ? 1 : 0, // 🌟 มีรูปให้เป็น 1 ไม่มีให้เป็น 0 ตามที่ต้องการแล้ว!
+          Email: fd.get('Email') || '',
+          Department: fd.get('Department') || '',
+          Picture: "" // ฟิลด์จำเป็นของฝั่งเซิร์ฟเวอร์
+        };
+
+        const payload = {
+          UserInfo: userInfo,
+          UserCardInfo: cards,
+          UserCarInfo: null,
+          UserFPInfo: null,
+          UserCustomArmyHQ: null,
+          UserElevatorInfo: null,
+          UserFaceWTInfo: faceInfo
+        };
+
+        console.group('📦 PAYLOAD - UPDATE SERVER');
+        console.log("FaceIdentify:", userInfo.FaceIdentify);
+        console.log("Payload Object:", payload);
+        console.groupEnd();
+
+        showLoading('กำลังอัปโหลดข้อมูล...');
+        updateBtn.disabled = true;
+
+        try {
+          const res = await fetch(
+            `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`,
+            {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            }
+          );
+
+          const result = await res.json();
+          if (res.ok) {
+            alert('✅ อัปเดตข้อมูลและใบหน้าสำเร็จ');
+            location.reload();
+          } else {
+            alert('❌ อัปเดตไม่สำเร็จ');
+            console.error(result);
+          }
+        } catch (e) {
+          alert('⚠️ API error');
+          console.error(e);
+        } finally {
+          hideLoading();
+          updateBtn.disabled = false;
+        }
+      });
+
+      /* =======================
+            UPDATE DATA SERVER (ปุ่มท้ายฟอร์ม บันทึกข้อมูลทั่วไป)
+         ======================= */
+      btnUpdateData.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        console.log('💾 CLICK UPDATE DATA (GENERAL)');
+
+        const fd = new FormData(form);
+        const currentUserId = String(fd.get('ID')).trim();
+
+        // ดึงการ์ดแบบปลอดภัยเหมือนปุ่มบน
+        let cardValues = fd.getAll('CardNum[]').filter(Boolean);
+        if (cardValues.length === 0) {
+          const singleCard = fd.get('CardNum') || fd.get('ID');
+          if (singleCard) cardValues.push(singleCard);
+        }
+        const cards = cardValues.map(c => ({
+          CardNum: String(c).trim(),
+          UserID: currentUserId
+        }));
+
+        // 🌟 ตรวจสอบเงื่อนไขรูปภาพซ้ำอีกครั้ง (กันปุ่มล่างพัง)
+        let hasFace = false;
+        let faceInfo = null;
+
+        if (allowFaceCheckbox.checked) {
+          if (userFaceArray.length > 0) {
+            hasFace = true;
+            faceInfo = [{
+              UserID: currentUserId,
+              TemplateType: 1,
+              TemplateSize: userFaceArray[0].TemplateSize,
+              TemplateData: userFaceArray[0].TemplateData
+            }];
+          } else if (oldFaceTemplate) {
+            hasFace = true;
+            faceInfo = [{
+              UserID: currentUserId,
+              TemplateType: 1,
+              TemplateSize: oldFaceTemplate.TemplateSize,
+              TemplateData: oldFaceTemplate.TemplateData
+            }];
+          }
+        }
+
+        const userInfo = {
+            ID: currentUserId,
+            UniqueID: fd.get('UniqueID'),
+            Name: fd.get('Name'),
+            AuthInfo: getAuthInfoValue(),
+            Privilege: Number(fd.get('Privilege')) || 2,
+            GroupCode: Number(fd.get('GroupCode')) || 1000,
+            AccessGroupCode: Number(fd.get('AccessGroupCode')) || 3000,
+            UserType: Number(fd.get('UserType')) || 0,
+            VerifyLevel: Number(fd.get('VerifyLevel')) || 0,
+            FaceIdentify: hasFace ? 1 : 0, // 🌟 อุดรอยรั่วปุ่มล่าง บังคับเช็ก 1 หรือ 0 ตรงนี้ด้วย!
+            Email: fd.get('Email') || '',
+            Department: fd.get('Department') || '',
+            Picture: ""
+        };
+
+        // 🌟 ถมโครงสร้างให้เต็มและสมบูรณ์แบบที่สุด ป้องกันระบบหลังบ้านสลัดข้อมูลทิ้ง
+        const payload = {
+          UserInfo: userInfo,
+          UserCardInfo: cards,
+          UserCarInfo: null,
+          UserFPInfo: null,
+          UserCustomArmyHQ: null,
+          UserElevatorInfo: null,
+          UserFaceWTInfo: faceInfo
+        };
+
+        console.group('📦 PAYLOAD - UPDATE DATA');
+        console.log("FaceIdentify:", userInfo.FaceIdentify);
+        console.log("Payload Object:", payload);
+        console.groupEnd();
 
         showLoading('กำลังบันทึกข้อมูล...');
         btnUpdateData.disabled = true;
 
         try {
           const res = await fetch(
-            `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`, {
+            `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`, 
+            {
               method: 'PUT',
-              headers: {
-                'Content-Type': 'application/json'
-              },
+              headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(payload)
             }
           );
 
           const result = await res.json();
-
           if (res.ok) {
-            alert('✅ บันทึกข้อมูลสำเร็จ');
-            location.reload();
+            alert('✅ บันทึกข้อมูลเรียบร้อยแล้ว');
+            const userPhotoImg = document.getElementById('userPhoto') || document.querySelector('.user-profile-img'); // ใส่ ID หรือ Class ของแท็กรูปภาพจริงในหน้าเว็บคุณ
+            if (userPhotoImg) {
+              const currentSrc = userPhotoImg.src.split('?')[0];
+              userPhotoImg.src = currentSrc + '?t=' + Date.now();
+            }
+            const cleanUrl = window.location.href.split('?')[0];
+            window.location.href = cleanUrl + '?refresh=' + Date.now();
           } else {
             alert('❌ บันทึกไม่สำเร็จ');
             console.error(result);
           }
-
         } catch (e) {
           alert('⚠️ API error');
           console.error(e);

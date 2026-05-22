@@ -103,7 +103,7 @@ $_SESSION['person_id'] = $userId;
             <!-- ================== USER INFO ================== -->
             <div class="container center">
                 <div class="panel col-md-12">
-                    <h4 class="mt-5 text-center">ข้อมูลผู้ใช้งาน (AuthInfo)</h4>
+                    <h4 class="mt-5 ">ข้อมูลผู้ใช้งาน</h4>
                 <!-- <div class="col-md-8 mx-auto mb-3">
                     <label>รหัสผู้ใช้งาน(ID)</label> -->
                     <input class="form-control" type="hidden" name="ID" value="<?= htmlspecialchars($userId) ?>" readonly>
@@ -113,48 +113,60 @@ $_SESSION['person_id'] = $userId;
                     <label>รหัสประจำตัว(Unique ID)</label> -->
                     <input class="form-control" type="hidden" name="UniqueID" value="<?= htmlspecialchars($userId) ?>" readonly>
                 <!-- </div><br> -->
-
-        <div class="col-md-8 mx-auto mb-3">
-            <label>ชื่อผู้ใช้</label>
+<div class="userInfo">
+        <div class="col-md-8 mx-auto mb-3 ">
+            <label>ชื่อผู้ใช้:</label>
             <input class="form-control" name="Name" value="<?= htmlspecialchars($fullName) ?>" readonly>
         </div>
 
         <div class="col-md-8 mx-auto mb-3">
-            <label>คณะ/สังกัดหน่วยงาน</label>
-            <input class="form-control" name="Faculty" value="<?= htmlspecialchars($faculty) ?>" readonly>
+            <label>คณะ/สังกัดหน่วยงาน:</label>
+            <input   class="form-control" name="Faculty" value="<?= htmlspecialchars($faculty) ?>" readonly>
             <input type="hidden" name="Position" value="<?= htmlspecialchars($faculty_num) ?>">
         </div>
 
         <div class="col-md-8 mx-auto mb-3">
-            <label>สาขา/ส่วนงาน</label>
+            <label>สาขา/ส่วนงาน:</label>
             <input class="form-control" name="Department" value="<?= htmlspecialchars($departMent) ?>" readonly>
         </div>
 
         <div class="col-md-8 mx-auto mb-3" >
-            <label>ตำแหน่ง (AccessGroupCode)</label>
-            <select class="form-control" name="UserType">
-                <option value="">----------กรุณาเลือก----------</option>
-                <option value="1000" <?= $userType == 'student' ? 'selected' : '' ?>>นิสิต </option>
-                <option value="3000" <?= $userType == 'staff' ? 'selected' : '' ?>>บุคลากร </option>
-                <option value="3000" <?= ($userType == 'testlib007' || $userType == 'testlib008') ? 'selected' : '' ?>>ทดสอบระบบ</option>
-            </select>
-            <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' ? '3000' : '1000') ?>">
+            <label>ตำแหน่ง:</label>
+            <input class="form-control" value="<?php 
+                if ($userType == 'student' || $userType == '1000') {
+                    echo 'นิสิต';
+                } elseif ($userType == 'staff' || $userType == '3000') {
+                   
+                    if ($userType == '3000' && ($fullName == 'testap008 api008' || $fullName == 'testap007 api007')) {
+                        echo 'ทดสอบระบบ';
+                    } else {
+                        echo 'บุคลากร';
+                    }
+                } elseif ($userType == 'testlib007' || $userType == 'testlib008') {
+                    echo 'ทดสอบระบบ';
+                } else {
+                    echo htmlspecialchars($userType);
+                }
+            ?>" readonly>
         </div>
+        <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' || $userType == '1000' ? '3000' : '1000') ?>">
 
-        <div class="col-md-8 mx-auto mb-3 text-center">
-            <label>รหัสผู้ใช้งาน:</lable> 
-            <input class="form-control" name="CardNum[]" value="<?= htmlspecialchars($userId) ?>">
-        </div><br>
+         <div class="col-md-8 mx-auto mb-3">
+            <label>รหัสผู้ใช้งาน:</label>
+            <input class="form-control" name="CardNum[]" value="<?= htmlspecialchars($userId) ?>" readonly>
+        </div>
+ 
+</div>
 
-     <h4 class="mt-5 text-center">สิทธิ์การใช้งาน (AuthInfo)</h4>
+
+     <h4 class="mt-5 ">สิทธิ์การใช้งานสแกนใบหน้า</h4>
         <div class="col-md-8 mx-auto mb-3">
             <table class="table table-sm" id="tableAuth">
                 <tr>
-                    <td>เปิด-ปิดการใช้สแกนใบหน้า</td>
+                    <td>อนุญาตลงทะเบียนใบหน้า</td>
                     <td>
                         <label>
                             <input type="checkbox" id="AllowFaceRegister" name="AllowFaceRegister" <?= $hasFacePermission ? 'checked' : '' ?>>
-                            อนุญาตลงทะเบียนใบหน้า
                         </label>
                     </td>
                 </tr>
@@ -168,7 +180,7 @@ $_SESSION['person_id'] = $userId;
                 </tr>
             </table>
         </div>
-                        <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' ? '3000' : '1000') ?>">   
+                           
                         <input  type="hidden" name="Email" value="<?= htmlspecialchars($userMail) ?>" readonly>
                         <input  type="hidden" name="Phone" value="" readonly>
                         <input  type="hidden" name="Privilege" value="2" readonly> </div>
@@ -179,6 +191,7 @@ $_SESSION['person_id'] = $userId;
                         <input type="hidden" name="VerifyLevel" value="0">
                         <input type="hidden" class="form-control" name="EmployeeNo" value="">
 
+        
     </div>
 </div>
         <!-- ================== Camera & Capture ================== -->

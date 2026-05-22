@@ -187,7 +187,7 @@ Developed   : 2025
             margin-left: auto;
             margin-right: auto;
             width: 100%;">
-        <h2>Selfie to Scan<br>TEST  ระบบลงทะเบียนใบหน้าอัตโนมัติ<br>(LIBSWU Automated Face Registration System)</h2><br>
+        <h2 style="color:red;">Selfie to Scan<br>TEST  ระบบลงทะเบียนใบหน้าอัตโนมัติ<br>(LIBSWU Automated Face Registration System)</h2><br>
         <form method="post" action="auth.php" onsubmit="return showLoading()">
             <div class="form-group">
                 <label for="user_login">รหัสบัวศรี (Buasri ID)</label>
