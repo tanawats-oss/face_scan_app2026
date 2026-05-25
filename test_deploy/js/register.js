@@ -144,18 +144,21 @@
   // กันการแสดงกล้องตอนโหลด
   updateCameraPanel();
 
-  /* ====== อนุญาตใบหน้า ====== */
-  allowFaceCheckbox.addEventListener('change', () => {
-    if (!allowFaceCheckbox.checked) {
-      allowCam = false;
-      allowCamBtn.disabled = true;
-      allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
-    } else {
-      allowCamBtn.disabled = false;
-    }
+/* ====== อนุญาตใบหน้า ====== */
+allowFaceCheckbox.addEventListener('change', () => {
+  if (!allowFaceCheckbox.checked) {
+    allowCam = false;
+    allowCamBtn.disabled = true;
+    allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
+  } else {
+    // 💡 เพิ่มเติมแก้ไขจุดนี้: เคลียร์สถานะกล้องให้พร้อมเปิดใหม่เมื่อมีการติ๊กเลือก
+    allowCam = false; 
+    allowCamBtn.disabled = false;
+    allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
+  }
 
-    updateCameraPanel();
-  });
+  updateCameraPanel();
+});
 
 
 
@@ -376,8 +379,12 @@
     requestAnimationFrame(drawOverlay);
   }
 
+  /* ===================================================
+     [REGIS FILE] - JAVASCRIPT CODE FOR REGISTER PAGE
+     =================================================== */
+
   /* =======================
-     CAPTURE
+     CAPTURE (ถ่ายรูปและคำนวณขนาดไฟล์จริง)
   ======================= */
   function captureFace() {
     captureBtn.disabled = true;
@@ -390,13 +397,12 @@
     outCanvas.height = 300;
 
     const mirroredX = video.videoWidth - box.x - box.width;
-
     const cx = mirroredX + box.width / 2;
     const cy = box.y + box.height / 2;
     const size = Math.max(box.width, box.height) * 2;
 
     ctx.save();
-    ctx.scale(-1, 1);   // กลับซ้ายขวา
+    ctx.scale(-1, 1); // กลับซ้ายขวา
 
     ctx.drawImage(
       video,
@@ -404,30 +410,36 @@
       cy - size / 2,
       size,
       size,
-      -300, 0, 300, 300   // ค่า X ต้องติดลบ
+      -300, 0, 300, 300   
     );
 
     ctx.restore();
 
-    const base64 = outCanvas
-      .toDataURL('image/jpeg', 0.9)
-      .split(',')[1];
+    const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
+    const base64 = base64DataUrl.split(',')[1];
+
+    // ✅ [แก้ไขแล้ว] คำนวณขนาดไบต์จริงของไฟล์ JPEG ไม่ให้เครื่องสแกนมองว่าเป็นไฟล์เสีย
+    const padding = (base64.endsWith('=')) ? (base64.endsWith('==') ? 2 : 1) : 0;
+    const actualByteSize = Math.floor((base64.length * 0.75) - padding);
 
     userFaceArray.length = 0;
     userFaceArray.push({
       TemplateData: base64,
-      TemplateSize: base64.length
+      TemplateSize: actualByteSize 
     });
+
+    console.log(`📸 Captured! Size: ${actualByteSize} Bytes`);
 
     panelResult.style.display = 'block';
     videoContainer.style.display = 'none';
 
-    captureBtn.style.display = 'none';   //  ซ่อนปุ่มถ่ายรูป
-    status.style.display = 'none';       //  ซ่อนข้อความพบใบหน้า
+    captureBtn.style.display = 'none';   
+    status.style.display = 'none';      
 
     status.textContent = '✅ จับใบหน้าแล้ว';
     stopCamera();
   }
+
   /* =======================
     BIND CAPTURE BUTTON
   ======================= */
@@ -438,8 +450,9 @@
     }
     captureFace();
   });
+
   /* =======================
-     RETAKE
+     RETAKE (ถ่ายใหม่)
   ======================= */
   retakeBtn?.addEventListener('click', (e) => {
     if (e) e.preventDefault();
@@ -459,43 +472,44 @@
 
     status.textContent = 'พร้อมตรวจจับใบหน้า';
     status.style.color = '#333';
-    captureBtn.style.display = 'inline-block'; //  แสดงปุ่มกลับ
-    status.style.display = 'block';            //  แสดงข้อความกลับ
+    status.style.display = 'block';            
 
     cameraStarted = false;
     updateCameraPanel();
   });
+
   /* =======================
-     UPDATE SERVER
+     UPDATE SERVER (ปุ่มลงทะเบียน)
   ======================= */
   updateBtn.addEventListener('click', async (e) => {
-    e.preventDefault(); // กัน submit form
+    e.preventDefault(); 
 
-    console.log('%c--- [เริ่มการตรวจสอบข้อมูลก่อนส่ง] ---', 'font-weight: bold;');
+    console.log('%c--- [เริ่มการตรวจสอบข้อมูลลงทะเบียน] ---', 'font-weight: bold;');
     const fd = new FormData(form);
-    // --- ส่วนตรวจเช็คจำนวนหลัก (6 หลักเติม 00) ---
+
+    // ✅ [แก้ไขแล้ว] แปลง ID เติม 00 นำหน้ากรณีมี 6 หลักให้เป็น 8 หลักตั้งแต่สมัคร
     let rawId = String(fd.get('ID') || "").trim();
     let userId = rawId;
     if (rawId.length === 6) {
-      userId = "00" + rawId; // เติม 00 นำหน้าเฉพาะกรณีมี 6 หลัก
-      console.log(`%c[ID Padding]: เปลี่ยนจาก ${rawId} -> ${userId}`);
-    } else {
-      console.log(`%c[ID No Padding]: ใช้ค่าเดิม ${rawId} (เนื่องจากไม่ใช่ 6 หลัก)`);
+      userId = "00" + rawId; 
+      console.log(`%c[ID Padding]: เปลี่ยนจาก ${rawId} -> ${userId}`, 'color: orange;');
     }
-    // DATA Face Scan
-    if (allowFaceCheckbox.checked && allowCam && !userFaceArray.length && !oldFaceTemplate) {
+
+    if (allowFaceCheckbox.checked && allowCam && !userFaceArray.length) {
       console.warn('⚠️ Warning: ติ๊กเปิดกล้องไว้แต่ยังไม่ได้ถ่ายรูป');
       alert('⚠️ กรุณากดถ่ายรูปใบหน้า หรือปิดกล้องก่อนบันทึกข้อมูล');
       return;
     }
-    //UserInfo เหมือนเดิม
+
+    const hasFace = !!(allowFaceCheckbox.checked && userFaceArray.length > 0);
+
     const userInfo = {
       ID: userId,
       UniqueID: String(fd.get('UniqueID')),
       Name: String(fd.get('Name')),
-      // Index 1 เป็น 9 ถ้าเปิดใช้หน้า, เป็น 0 ถ้าปิด
+      // Index 1 เป็น 9 ถ้าใช้หน้า, เป็น 0 ถ้าปิด
       AuthInfo: [2, (allowFaceCheckbox.checked ? 9 : 0), 30, 0, 0, 0, 0, 0],
-      Privilege: 2, // integer 2 is user 1 is admin
+      Privilege: 2, 
       CreateDate: new Date().toISOString().replace('T', ' ').split('.')[0],
       UsePeriodFlag: 0,
       RegistDate: String(fd.get('RegistDate')),
@@ -507,7 +521,7 @@
       TimezoneCode: 0,
       BlackList: 0,
       FPIdentify: 0,
-      FaceIdentify: (allowFaceCheckbox.checked && userFaceArray.length) ? 1 : 0,
+      FaceIdentify: hasFace ? 1 : 0, 
       DuressFinger: null,
       Partition: 0,
       APBExcept: 0,
@@ -523,7 +537,7 @@
       Phone: "",
       Department: String(fd.get('Department')),
       LoginPW: "****",
-      LoginAllowed: parseInt(0),
+      LoginAllowed: 0,
       Picture: "",
       IrisIdentify: 0,
       VoipUse: 0,
@@ -540,21 +554,18 @@
       "UserID": userId
     }];
 
-
     if (!userInfo.ID) {
       alert('❌ ไม่พบรหัสผู้ใช้ (ตรวจสอบ name="ID" ใน HTML)');
       return;
     }
 
-
-
     let faceInfo = null;
-    if (allowFaceCheckbox.checked && userFaceArray.length > 0) {
+    if (hasFace) {
       faceInfo = [{
-        UserID: userId,                      // string
-        TemplateSize: userFaceArray[0].TemplateSize, // integer
-        TemplateData: userFaceArray[0].TemplateData, // string (Base64)
-        TemplateType: 1                      // integer (1: Image)
+        UserID: userId,                      
+        TemplateSize: userFaceArray[0].TemplateSize, 
+        TemplateData: userFaceArray[0].TemplateData, 
+        TemplateType: 1                      
       }];
     }
 
@@ -568,36 +579,16 @@
       UserFaceWTInfo: faceInfo
     };
 
-
-
-    // showLoading('กำลังอัปโหลดข้อมูล...');
-
-    // --- Log Output ---
-    // --- 🟢 FIX LOG OUTPUT (แก้ไขตรงนี้) ---
-    console.group('📝 REGISTER PAYLOAD (Format Match)');
-
-    // แสดงแบบ Object เพื่อให้กดขยายดูได้ใน Console
+    console.group('📝 REGISTER PAYLOAD');
     console.log('Object View:', payload);
-
-    // แสดงแบบ JSON String (ก๊อปปี้ไปใช้งานได้ทันที เหมือนต้นแบบ)
-    console.log('%cJSON String Ready for API:');
-    console.log(JSON.stringify(payload, null, 2));
-
     console.groupEnd();
 
-
-    // 2. ส่งข้อมูลไปยัง PHP Controller (ส่วนที่เพิ่มใหม่)
     try {
-      // แสดง loading (ถ้ามี)
-      // showLoading(true); 
-
       console.log('🚀 Sending payload to PHP Controller...');
-
-      const response = await fetch('https://lib.swu.ac.th/app/ci4_new/public/apidoor/addusers', { // เรียกตาม Route ที่ตั้งไว้
+      const response = await fetch('https://lib.swu.ac.th/app/ci4_new/public/apidoor/addusers', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // หากใช้ CodeIgniter CSRF อาจต้องส่ง X-Requested-With
           'X-Requested-With': 'XMLHttpRequest'
         },
         body: JSON.stringify(payload)
@@ -607,21 +598,17 @@
 
       if (response.ok && result.status === 'success') {
         console.log('%c✅ Success:', 'color: green; font-weight: bold;', result);
-        alert('✅ บันทึกข้อมูลเรียบร้อยแล้ว กรุณาเข้าสู่ระบบใหม่อีกครั้ง');
-
-        // อาจจะสั่ง window.location.reload() หรือล้างฟอร์มที่นี่
+        alert('✅ บันทึกข้อมูลและลงทะเบียนใบหน้าเรียบร้อยแล้ว');
+        // ✅ [แก้ไขแล้ว] ย้ายมาใส่ตรงนี้ สำเร็จจริงค่อยเปลี่ยนหน้า ไม่ปล่อยเบลอเด้งหนีเหมือนเดิม
+        window.location.href = 'login.php?timeout=1'; 
       } else {
         console.error('%c❌ API Error:', 'color: red;', result);
-        alert('เกิดข้อผิดพลาด: ' + (result.message || 'Unknown Error'));
+        alert('เกิดข้อผิดพลาดจากระบบ: ' + (result.message || 'Unknown Error'));
       }
 
     } catch (error) {
       console.error('%c❌ Network Error:', 'color: red;', error);
       alert('ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้');
-    } finally {
-      // ปิด loading
-      // showLoading(false);
-      window.location.href = 'login.php?timeout=1';
     }
   });
 
