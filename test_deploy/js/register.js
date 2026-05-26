@@ -144,18 +144,21 @@
   // กันการแสดงกล้องตอนโหลด
   updateCameraPanel();
 
-  /* ====== อนุญาตใบหน้า ====== */
-  allowFaceCheckbox.addEventListener('change', () => {
-    if (!allowFaceCheckbox.checked) {
-      allowCam = false;
-      allowCamBtn.disabled = true;
-      allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
-    } else {
-      allowCamBtn.disabled = false;
-    }
+/* ====== อนุญาตใบหน้า ====== */
+allowFaceCheckbox.addEventListener('change', () => {
+  if (!allowFaceCheckbox.checked) {
+    allowCam = false;
+    allowCamBtn.disabled = true;
+    allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
+  } else {
+    // 💡 เพิ่มเติมแก้ไขจุดนี้: เคลียร์สถานะกล้องให้พร้อมเปิดใหม่เมื่อมีการติ๊กเลือก
+    allowCam = false; 
+    allowCamBtn.disabled = false;
+    allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
+  }
 
-    updateCameraPanel();
-  });
+  updateCameraPanel();
+});
 
 
 
@@ -376,8 +379,12 @@
     requestAnimationFrame(drawOverlay);
   }
 
+  /* ===================================================
+     [REGIS FILE] - JAVASCRIPT CODE FOR REGISTER PAGE
+     =================================================== */
+
   /* =======================
-     CAPTURE
+     CAPTURE (ถ่ายรูปและคำนวณขนาดไฟล์จริง)
   ======================= */
   function captureFace() {
     captureBtn.disabled = true;
@@ -386,17 +393,21 @@
     if (!box) return;
 
     const ctx = outCanvas.getContext('2d');
-    outCanvas.width = 300;
-    outCanvas.height = 300;
+    
+    // 🌟 [ปรับปรุงจุดที่ 1] ลดขนาด Canvas ลงเหลือ 200x200 หรือ 240x240 พิกเซล
+    // เครื่องสแกนใบหน้าส่วนใหญ่ไม่ต้องการรูปใหญ่ครับ ยิ่งเล็กยิ่งเซฟลงเครื่องง่าย
+    outCanvas.width = 240;
+    outCanvas.height = 240;
 
     const mirroredX = video.videoWidth - box.x - box.width;
-
     const cx = mirroredX + box.width / 2;
     const cy = box.y + box.height / 2;
-    const size = Math.max(box.width, box.height) * 2;
+    
+    // 🌟 [ปรับปรุงจุดที่ 2] ลดขนาดการขยายขอบสี่เหลี่ยมลงมาเล็กน้อย (เดิมคูณ 2 กว้างเกินไป)
+    const size = Math.max(box.width, box.height) * 1.6;
 
     ctx.save();
-    ctx.scale(-1, 1);   // กลับซ้ายขวา
+    ctx.scale(-1, 1); // กลับซ้ายขวาให้เหมือนกระจก
 
     ctx.drawImage(
       video,
@@ -404,30 +415,38 @@
       cy - size / 2,
       size,
       size,
-      -300, 0, 300, 300   // ค่า X ต้องติดลบ
+      -240, 0, 240, 240   // ให้วาดลงตามขนาด Canvas ใหม่
     );
 
     ctx.restore();
 
-    const base64 = outCanvas
-      .toDataURL('image/jpeg', 0.9)
-      .split(',')[1];
+    // 🌟 [ปรับปรุงจุดที่ 3] ลด Quality จาก 0.9 เหลือ 0.5 - 0.6 
+    // ขั้นตอนนี้จะทำให้ขนาดไฟล์ไบต์จริง (Byte Size) ลดลงไปมากกว่า 60% แต่หน้ายังชัดอยู่
+    const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.55);
+    const base64 = base64DataUrl.split(',')[1];
+
+    // คำนวณขนาดไบต์จริงของไฟล์ JPEG ที่ถูกบีบอัดแล้ว
+    const padding = (base64.endsWith('=')) ? (base64.endsWith('==') ? 2 : 1) : 0;
+    const actualByteSize = Math.floor((base64.length * 0.75) - padding);
 
     userFaceArray.length = 0;
     userFaceArray.push({
-      TemplateData: base64,
-      TemplateSize: base64.length
+      TemplateData: base64,       // ส่งภาพที่บีบอัดจนเล็กแล้ว
+      TemplateSize: actualByteSize 
     });
+
+    console.log(`📸 Captured & Compressed! New Size: ${actualByteSize} Bytes`);
 
     panelResult.style.display = 'block';
     videoContainer.style.display = 'none';
 
-    captureBtn.style.display = 'none';   //  ซ่อนปุ่มถ่ายรูป
-    status.style.display = 'none';       //  ซ่อนข้อความพบใบหน้า
+    captureBtn.style.display = 'none';   
+    status.style.display = 'none';      
 
     status.textContent = '✅ จับใบหน้าแล้ว';
     stopCamera();
   }
+
   /* =======================
     BIND CAPTURE BUTTON
   ======================= */
@@ -438,8 +457,9 @@
     }
     captureFace();
   });
+
   /* =======================
-     RETAKE
+     RETAKE (ถ่ายใหม่)
   ======================= */
   retakeBtn?.addEventListener('click', (e) => {
     if (e) e.preventDefault();
@@ -459,43 +479,46 @@
 
     status.textContent = 'พร้อมตรวจจับใบหน้า';
     status.style.color = '#333';
-    captureBtn.style.display = 'inline-block'; //  แสดงปุ่มกลับ
-    status.style.display = 'block';            //  แสดงข้อความกลับ
+    status.style.display = 'block';            
 
     cameraStarted = false;
     updateCameraPanel();
   });
-  /* =======================
-     UPDATE SERVER
-  ======================= */
-  updateBtn.addEventListener('click', async (e) => {
-    e.preventDefault(); // กัน submit form
 
-    console.log('%c--- [เริ่มการตรวจสอบข้อมูลก่อนส่ง] ---', 'font-weight: bold;');
+  /* =======================
+     UPDATE SERVER (ปุ่มลงทะเบียน)
+  ======================= */
+ updateBtn.addEventListener('click', async (e) => {
+    e.preventDefault(); 
+
+    console.log('%c--- [เริ่มการตรวจสอบข้อมูลลงทะเบียน] ---', 'font-weight: bold;');
     const fd = new FormData(form);
-    // --- ส่วนตรวจเช็คจำนวนหลัก (6 หลักเติม 00) ---
+
     let rawId = String(fd.get('ID') || "").trim();
     let userId = rawId;
     if (rawId.length === 6) {
-      userId = "00" + rawId; // เติม 00 นำหน้าเฉพาะกรณีมี 6 หลัก
-      console.log(`%c[ID Padding]: เปลี่ยนจาก ${rawId} -> ${userId}`);
-    } else {
-      console.log(`%c[ID No Padding]: ใช้ค่าเดิม ${rawId} (เนื่องจากไม่ใช่ 6 หลัก)`);
+      userId = "00" + rawId; 
     }
-    // DATA Face Scan
-    if (allowFaceCheckbox.checked && allowCam && !userFaceArray.length && !oldFaceTemplate) {
-      console.warn('⚠️ Warning: ติ๊กเปิดกล้องไว้แต่ยังไม่ได้ถ่ายรูป');
+
+    // 1️⃣ ตรวจสอบเงื่อนไขการกรอก: ติ๊กเปิดกล้องไว้แต่ยังไม่ได้กดถ่ายรูปใบหน้า
+    if (allowFaceCheckbox.checked && allowCam && !userFaceArray.length) {
       alert('⚠️ กรุณากดถ่ายรูปใบหน้า หรือปิดกล้องก่อนบันทึกข้อมูล');
       return;
     }
-    //UserInfo เหมือนเดิม
+
+    // ตรวจสอบสถานะการติ๊กและภาพที่ถ่ายจริง
+    const isFaceEnabled = allowFaceCheckbox.checked;
+    const hasFacePhoto = userFaceArray.length > 0;
+
+    // ดึงค่า Base64 รูปภาพที่ถ่ายไว้ (ถ้าติ๊กและถ่ายรูปแล้ว ให้ส่งไป / ถ้าไม่ติ๊ก ให้ส่งค่าว่าง)
+    const capturedBase64 = (isFaceEnabled && hasFacePhoto) ? userFaceArray[0].TemplateData : "";
+
     const userInfo = {
       ID: userId,
       UniqueID: String(fd.get('UniqueID')),
       Name: String(fd.get('Name')),
-      // Index 1 เป็น 9 ถ้าเปิดใช้หน้า, เป็น 0 ถ้าปิด
-      AuthInfo: [2, (allowFaceCheckbox.checked ? 9 : 0), 30, 0, 0, 0, 0, 0],
-      Privilege: 2, // integer 2 is user 1 is admin
+      AuthInfo: [2, (isFaceEnabled ? 9 : 0), 30, 0, 0, 0, 0, 0],
+      Privilege: 2, 
       CreateDate: new Date().toISOString().replace('T', ' ').split('.')[0],
       UsePeriodFlag: 0,
       RegistDate: String(fd.get('RegistDate')),
@@ -507,7 +530,7 @@
       TimezoneCode: 0,
       BlackList: 0,
       FPIdentify: 0,
-      FaceIdentify: (allowFaceCheckbox.checked && userFaceArray.length) ? 1 : 0,
+      FaceIdentify: (isFaceEnabled && hasFacePhoto) ? 1 : 0, 
       DuressFinger: null,
       Partition: 0,
       APBExcept: 0,
@@ -523,8 +546,8 @@
       Phone: "",
       Department: String(fd.get('Department')),
       LoginPW: "****",
-      LoginAllowed: parseInt(0),
-      Picture: "",
+      LoginAllowed: "0",
+      Picture: capturedBase64, // ส่ง Base64 หรือค่าว่าง "" ตามเงื่อนไขด้านบน
       IrisIdentify: 0,
       VoipUse: 0,
       VoipDoorOpen: 0,
@@ -540,22 +563,24 @@
       "UserID": userId
     }];
 
-
     if (!userInfo.ID) {
-      alert('❌ ไม่พบรหัสผู้ใช้ (ตรวจสอบ name="ID" ใน HTML)');
+      alert('❌ ไม่พบรหัสผู้ใช้');
       return;
     }
 
-
-
+    // 2️⃣ [จุดประสงค์หลัก] ตรวจสอบเงื่อนไข Checkbox เพื่อแยกก้อนข้อมูลส่ง
     let faceInfo = null;
-    if (allowFaceCheckbox.checked && userFaceArray.length > 0) {
+    if (isFaceEnabled && hasFacePhoto) {
+      // ติ๊กเลือก -> ส่งอาร์เรย์ข้อมูลใบหน้าตามโครงสร้าง API ของเครื่องสแกน
       faceInfo = [{
-        UserID: userId,                      // string
-        TemplateSize: userFaceArray[0].TemplateSize, // integer
-        TemplateData: userFaceArray[0].TemplateData, // string (Base64)
-        TemplateType: 1                      // integer (1: Image)
+        UserID: userId,                      
+        TemplateSize: 0,    
+        TemplateData: "",   
+        TemplateType: 1                      
       }];
+    } else {
+      // ไม่ติ๊กเลือก -> ส่งเป็น null ชัดเจน ข้อมูลใบหน้าจะไม่ถูกลงทะเบียนเข้าไปกวนฐานข้อมูล
+      faceInfo = null;
     }
 
     const payload = {
@@ -565,39 +590,19 @@
       UserFPInfo: null,
       UserCustomArmyHQ: null,
       UserElevatorInfo: null,
-      UserFaceWTInfo: faceInfo
+      UserFaceWTInfo: faceInfo // ผูกตัวแปรที่ผ่านการตรวจสอบเงื่อนไขแล้ว
     };
 
-
-
-    // showLoading('กำลังอัปโหลดข้อมูล...');
-
-    // --- Log Output ---
-    // --- 🟢 FIX LOG OUTPUT (แก้ไขตรงนี้) ---
-    console.group('📝 REGISTER PAYLOAD (Format Match)');
-
-    // แสดงแบบ Object เพื่อให้กดขยายดูได้ใน Console
+    console.group('📝 REGISTER PAYLOAD');
     console.log('Object View:', payload);
-
-    // แสดงแบบ JSON String (ก๊อปปี้ไปใช้งานได้ทันที เหมือนต้นแบบ)
-    console.log('%cJSON String Ready for API:');
-    console.log(JSON.stringify(payload, null, 2));
-
     console.groupEnd();
 
-
-    // 2. ส่งข้อมูลไปยัง PHP Controller (ส่วนที่เพิ่มใหม่)
     try {
-      // แสดง loading (ถ้ามี)
-      // showLoading(true); 
-
       console.log('🚀 Sending payload to PHP Controller...');
-
-      const response = await fetch('https://lib.swu.ac.th/app/ci4_new/public/apidoor/addusers', { // เรียกตาม Route ที่ตั้งไว้
+      const response = await fetch('https://lib.swu.ac.th/app/ci4_new/public/apidoor/addusers', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // หากใช้ CodeIgniter CSRF อาจต้องส่ง X-Requested-With
           'X-Requested-With': 'XMLHttpRequest'
         },
         body: JSON.stringify(payload)
@@ -607,21 +612,16 @@
 
       if (response.ok && result.status === 'success') {
         console.log('%c✅ Success:', 'color: green; font-weight: bold;', result);
-        alert('✅ บันทึกข้อมูลเรียบร้อยแล้ว กรุณาเข้าสู่ระบบใหม่อีกครั้ง');
-
-        // อาจจะสั่ง window.location.reload() หรือล้างฟอร์มที่นี่
+        alert('✅ บันทึกข้อมูลและลงทะเบียนเรียบร้อยแล้ว');
+        window.location.href = 'login.php?timeout=1'; 
       } else {
         console.error('%c❌ API Error:', 'color: red;', result);
-        alert('เกิดข้อผิดพลาด: ' + (result.message || 'Unknown Error'));
+        alert('เกิดข้อผิดพลาดจากระบบ: ' + (result.message || 'Unknown Error'));
       }
 
     } catch (error) {
       console.error('%c❌ Network Error:', 'color: red;', error);
       alert('ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้');
-    } finally {
-      // ปิด loading
-      // showLoading(false);
-      window.location.href = 'login.php?timeout=1';
     }
   });
 

@@ -149,7 +149,7 @@ $_SESSION['person_id'] = $userId;
                 }
             ?>" readonly>
         </div>
-        <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' || $userType == '1000' ? '3000' : '1000') ?>">
+        <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' || $userType == '1000' ? '1000' : '3000') ?>">
 
          <div class="col-md-8 mx-auto mb-3">
             <label>รหัสผู้ใช้งาน:</label>
