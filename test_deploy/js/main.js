@@ -1,7 +1,11 @@
 (async function() {
 
   /* =======================
+<<<<<<< HEAD
      DOM
+=======
+      DOM
+>>>>>>> 5eb1b7f (Check Register Update Format)
   ======================= */
   const video = document.getElementById('video');
   const overlay = document.getElementById('overlay');
@@ -29,7 +33,11 @@
   const pdpaDeclineBtn = document.getElementById('pdpaDeclineBtn');
 
   /* =======================
+<<<<<<< HEAD
      Guard DOM
+=======
+      Guard DOM
+>>>>>>> 5eb1b7f (Check Register Update Format)
   ======================= */
   if (!video || !overlay || !outCanvas || !updateBtn || !form || !panelResult || !captureBtn) {
     console.error('❌ DOM ไม่ครบ');
@@ -37,7 +45,11 @@
   }
 
   /* =======================
+<<<<<<< HEAD
      Loading
+=======
+      Loading
+>>>>>>> 5eb1b7f (Check Register Update Format)
   ======================= */
   function showLoading(text = 'กำลังประมวลผล...') {
     if (!loadingOverlay) return;
@@ -51,7 +63,11 @@
   }
 
   /* =======================
+<<<<<<< HEAD
      STATE
+=======
+      STATE
+>>>>>>> 5eb1b7f (Check Register Update Format)
   ======================= */
   let pdpaAccepted = false; 
   let stream = null;
@@ -67,7 +83,11 @@
   const userFaceArray = [];
 
   /* =======================
+<<<<<<< HEAD
     PDPA
+=======
+     PDPA
+>>>>>>> 5eb1b7f (Check Register Update Format)
   ======================= */
   function showPdpa() { pdpaModal.style.display = 'block'; }
   function hidePdpa() { pdpaModal.style.display = 'none'; }
@@ -86,7 +106,11 @@
   });
 
   /* =======================
+<<<<<<< HEAD
      UI CONTROL
+=======
+      UI CONTROL
+>>>>>>> 5eb1b7f (Check Register Update Format)
   ======================= */
   function updateCameraPanel() {
     if (!allowFaceCheckbox.checked) {
@@ -157,8 +181,13 @@
   });
 
   /* =======================
+<<<<<<< HEAD
      CAMERA
   ======================= */
+=======
+      CAMERA
+  ====================== */
+>>>>>>> 5eb1b7f (Check Register Update Format)
   async function loadFaceModelOnce() {
     if (window._faceModelLoaded) return;
     await faceapi.nets.tinyFaceDetector.loadFromUri('./face-api.js-master/weights');
@@ -205,7 +234,11 @@
   }
 
   /* =======================
+<<<<<<< HEAD
      FACE DETECT & OVERLAY
+=======
+      FACE DETECT & OVERLAY
+>>>>>>> 5eb1b7f (Check Register Update Format)
   ======================= */
   async function detectFace() {
     if (video.readyState < 2) return null;
@@ -250,7 +283,11 @@
   }
 
   /* =======================
+<<<<<<< HEAD
      CAPTURE
+=======
+      CAPTURE
+>>>>>>> 5eb1b7f (Check Register Update Format)
   ======================= */
   function captureFace() {
     captureBtn.disabled = true;
@@ -309,7 +346,11 @@
   });
 
   /* =========================================================
+<<<<<<< HEAD
      📥 UPDATE SERVER (ปุ่มถ่ายรูปอัปเดตใบหน้า - ยุบรวมแก้บั๊กซ้ำซ้อนแล้ว)
+=======
+     📥 UPDATE SERVER (ปุ่มถ่ายรูปอัปเดตใบหน้า)
+>>>>>>> 5eb1b7f (Check Register Update Format)
      ========================================================= */
   updateBtn.addEventListener('click', async (e) => {
     e.preventDefault();
@@ -322,6 +363,10 @@
 
     const fd = new FormData(form);
     let rawId = String(fd.get('ID')).trim();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5eb1b7f (Check Register Update Format)
     let currentUserId = rawId;
     if (rawId.length === 6) {
       currentUserId = "00" + rawId;
@@ -332,8 +377,24 @@
       const singleCard = fd.get('CardNum') || rawId; 
       if (singleCard) cardValues.push(singleCard);
     }
+<<<<<<< HEAD
     const cards = cardValues.map(c => ({ CardNum: String(c).trim(), UserID: currentUserId }));
 
+=======
+
+    const cards = cardValues.map(c => {
+      let cleanCard = String(c).trim();
+      if (cleanCard.length === 8 && cleanCard.startsWith("00")) {
+        cleanCard = cleanCard.substring(2);
+      }
+      return { 
+        CardNum: cleanCard,       
+        UserID: currentUserId     
+      };
+    });
+
+    // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้า
+>>>>>>> 5eb1b7f (Check Register Update Format)
     let hasFace = false;
     let faceInfo = null;
 
@@ -355,13 +416,23 @@
           TemplateData: oldFaceTemplate.TemplateData
         }];
       }
+<<<<<<< HEAD
+=======
+    } else {
+      // ❌ ถ้าไม่ติ๊ก ให้เคลียร์ก้อนนี้เป็น null ตามที่คุณไปตรวจสอบมา
+      faceInfo = null;
+>>>>>>> 5eb1b7f (Check Register Update Format)
     }
 
     const userInfo = {
       ID: currentUserId, 
       UniqueID: fd.get('UniqueID'),
       Name: fd.get('Name'),
+<<<<<<< HEAD
       AuthInfo: [2, (hasFace ? 9 : 0), 30, 0, 0, 0, 0, 0], // บังคับเป็น 9 เปิดระบบใบหน้า
+=======
+      AuthInfo: [2, (hasFace ? 9 : 0), 30, 0, 0, 0, 0, 0], 
+>>>>>>> 5eb1b7f (Check Register Update Format)
       Privilege: Number(fd.get('Privilege')) || 2,
       GroupCode: Number(fd.get('GroupCode')) || 1000,
       AccessGroupCode: Number(fd.get('AccessGroupCode')) || 3000,
@@ -370,6 +441,10 @@
       FaceIdentify: hasFace ? 1 : 0,
       Email: fd.get('Email') || '',
       Department: fd.get('Department') || '',
+<<<<<<< HEAD
+=======
+      LoginAllowed: "0",
+>>>>>>> 5eb1b7f (Check Register Update Format)
       Picture: ""
     };
 
@@ -397,6 +472,7 @@
       );
 
       const result = await res.json();
+<<<<<<< HEAD
       if (res.ok) {
         alert('✅ อัปเดตข้อมูลและใบหน้าสำเร็จเรียบร้อย');
         location.reload();
@@ -411,6 +487,44 @@
     }
   });
 
+=======
+      console.log('🔍 SERVER RESPONSE (RAW):', result);
+
+      const apiResult = result?.apiResult;
+      const innerResult = apiResult?.Result || apiResult?.result;
+      const resultCode = innerResult?.ResultCode !== undefined ? innerResult?.ResultCode : innerResult?.resultCode;
+
+      console.log('🔍 Detected ResultCode:', resultCode);
+      if (resultCode === 33558286 || String(resultCode) === "33558286" || resultCode === 33558281 || String(resultCode) === "33558281") {
+        alert('❌ อัปเดตไม่สำเร็จ: เครื่องสแกนไม่สามารถประมวลผลรูปภาพนี้ได้\n\n💡 สาเหตุ: รูปถ่ายอาจมืดเกินไป, ใบหน้าไม่ชัดเจน หรือไม่ตรงตามมาตรฐานของเครื่อง\nกรุณาลองถ่ายรูปใหม่อีกครั้งให้เห็นใบหน้าตรงและชัดเจนครับ');
+        return; 
+      }
+      if (resultCode === 16777237 || String(resultCode) === "16777237" || resultCode === 16777241 || String(resultCode) === "16777241") {
+        const dupInfo = apiResult?.DuplicateInfo || apiResult?.duplicateInfo;
+        const dupName = dupInfo?.DuplicateName || dupInfo?.duplicateName || 'ไม่ระบุชื่อ';
+        const dupId = dupInfo?.DuplicateUniqueID || dupInfo?.duplicateUniqueID || 'ไม่ระบุ ID';
+
+        alert(`❌ อัปเดตไม่สำเร็จ: ใบหน้าหรือเลขบัตรนี้ "ซ้ำซ้อน" กับพนักงานในเครื่องสแกน\n\nพบข้อมูลซ้ำกับ: ${dupName} (ID: ${dupId})\n\n💡 วิธีแก้: กรุณาลบพนักงานคนเดิมออกจากเครื่องสแกนก่อนอัปโหลดอีกครั้ง`);
+        return; 
+      }
+
+      if (res.ok && (result.status === "success" || result.status === "SUCCESS")) {
+        alert('✅ อัปเดตข้อมูลและใบหน้าสำเร็จเรียบร้อย');
+        console.log('Payload Logged:', JSON.stringify(payload, null, 2));
+      } else {
+        alert('❌ อัปเดตไม่สำเร็จ: ' + (result.message || 'โครงสร้างข้อมูลผิดพลาด'));
+      }
+
+    } catch (e) {
+      console.error('⚠️ Fetch Error:', e);
+      alert('⚠️ ไม่สามารถเชื่อมต่อกับ API Server ได้');
+    } finally {
+      hideLoading();
+      updateBtn.disabled = false;
+    }
+  });
+
+>>>>>>> 5eb1b7f (Check Register Update Format)
   /* =========================================================
         💾 UPDATE DATA SERVER (ปุ่มบันทึกข้อมูลทั่วไปท้ายฟอร์ม)
      ========================================================= */
@@ -427,11 +541,23 @@
 
     let cardValues = fd.getAll('CardNum[]').filter(Boolean);
     if (cardValues.length === 0) {
+<<<<<<< HEAD
       const singleCard = fd.get('CardNum') || rawId;
+=======
+      // 💡 แก้ไขบั๊กจาก trim(currentUserId) เดิม มาใช้ substring จัดการตัดหลักแทน
+      const rawCard = fd.get('CardNum');
+      const singleCard = rawCard 
+        ? String(rawCard).trim() 
+        : (currentUserId.startsWith("00") ? currentUserId.substring(2) : currentUserId);
+>>>>>>> 5eb1b7f (Check Register Update Format)
       if (singleCard) cardValues.push(singleCard);
     }
     const cards = cardValues.map(c => ({ CardNum: String(c).trim(), UserID: currentUserId }));
 
+<<<<<<< HEAD
+=======
+    // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้าของปุ่มเซฟทั่วไป
+>>>>>>> 5eb1b7f (Check Register Update Format)
     let hasFace = false;
     let faceInfo = null;
 
@@ -453,6 +579,12 @@
           TemplateData: oldFaceTemplate.TemplateData
         }];
       }
+<<<<<<< HEAD
+=======
+    } else {
+      // ❌ ถ้าไม่ติ๊ก ให้เคลียร์ก้อนนี้เป็น null เช่นเดียวกัน
+      faceInfo = null;
+>>>>>>> 5eb1b7f (Check Register Update Format)
     }
 
     const userInfo = {
@@ -468,6 +600,10 @@
         FaceIdentify: hasFace ? 1 : 0, 
         Email: fd.get('Email') || '',
         Department: fd.get('Department') || '',
+<<<<<<< HEAD
+=======
+        LoginAllowed: "0",
+>>>>>>> 5eb1b7f (Check Register Update Format)
         Picture: ""
     };
 
@@ -496,7 +632,11 @@
 
       if (res.ok) {
         alert('✅ บันทึกข้อมูลเรียบร้อยแล้ว');
+<<<<<<< HEAD
         location.reload();
+=======
+        console.log(payload);
+>>>>>>> 5eb1b7f (Check Register Update Format)
       } else {
         alert('❌ บันทึกไม่สำเร็จ');
       }
