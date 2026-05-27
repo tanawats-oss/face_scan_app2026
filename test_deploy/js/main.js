@@ -1,7 +1,18 @@
+<<<<<<< HEAD
 (async function () {
 
   /* =======================
       DOM
+=======
+(async function() {
+
+  /* =======================
+<<<<<<< HEAD
+     DOM
+=======
+      DOM
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
   ======================= */
   const video = document.getElementById('video');
   const overlay = document.getElementById('overlay');
@@ -29,7 +40,15 @@
   const pdpaDeclineBtn = document.getElementById('pdpaDeclineBtn');
 
   /* =======================
+<<<<<<< HEAD
       Guard DOM
+=======
+<<<<<<< HEAD
+     Guard DOM
+=======
+      Guard DOM
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
   ======================= */
   if (!video || !overlay || !outCanvas || !updateBtn || !form || !panelResult || !captureBtn) {
     console.error('❌ DOM ไม่ครบ');
@@ -37,7 +56,15 @@
   }
 
   /* =======================
+<<<<<<< HEAD
       Loading
+=======
+<<<<<<< HEAD
+     Loading
+=======
+      Loading
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
   ======================= */
   function showLoading(text = 'กำลังประมวลผล...') {
     if (!loadingOverlay) return;
@@ -51,12 +78,25 @@
   }
 
   /* =======================
+<<<<<<< HEAD
       STATE
   ======================= */
   let pdpaAccepted = false;
   let stream = null;
   let cameraStarted = false;
   let allowCam = false;
+=======
+<<<<<<< HEAD
+     STATE
+=======
+      STATE
+>>>>>>> 5eb1b7f (Check Register Update Format)
+  ======================= */
+  let pdpaAccepted = false; 
+  let stream = null;
+  let cameraStarted = false;
+  let allowCam = false; 
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
   let overlayRunning = false;
   let lastFaceBox = null;
   let overlayRect = null;
@@ -67,7 +107,15 @@
   const userFaceArray = [];
 
   /* =======================
+<<<<<<< HEAD
      PDPA
+=======
+<<<<<<< HEAD
+    PDPA
+=======
+     PDPA
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
   ======================= */
   function showPdpa() { pdpaModal.style.display = 'block'; }
   function hidePdpa() { pdpaModal.style.display = 'none'; }
@@ -86,7 +134,15 @@
   });
 
   /* =======================
+<<<<<<< HEAD
       UI CONTROL
+=======
+<<<<<<< HEAD
+     UI CONTROL
+=======
+      UI CONTROL
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
   ======================= */
   function updateCameraPanel() {
     if (!allowFaceCheckbox.checked) {
@@ -157,8 +213,18 @@
   });
 
   /* =======================
+<<<<<<< HEAD
       CAMERA
   ====================== */
+=======
+<<<<<<< HEAD
+     CAMERA
+  ======================= */
+=======
+      CAMERA
+  ====================== */
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
   async function loadFaceModelOnce() {
     if (window._faceModelLoaded) return;
     await faceapi.nets.tinyFaceDetector.loadFromUri('./face-api.js-master/weights');
@@ -205,7 +271,15 @@
   }
 
   /* =======================
+<<<<<<< HEAD
       FACE DETECT & OVERLAY
+=======
+<<<<<<< HEAD
+     FACE DETECT & OVERLAY
+=======
+      FACE DETECT & OVERLAY
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
   ======================= */
   async function detectFace() {
     if (video.readyState < 2) return null;
@@ -250,7 +324,15 @@
   }
 
   /* =======================
+<<<<<<< HEAD
       CAPTURE
+=======
+<<<<<<< HEAD
+     CAPTURE
+=======
+      CAPTURE
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
   ======================= */
   function captureFace() {
     captureBtn.disabled = true;
@@ -273,7 +355,11 @@
 
     const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
     const base64 = base64DataUrl.split(',')[1];
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
     const padding = (base64.endsWith('=')) ? (base64.endsWith('==') ? 2 : 1) : 0;
     const actualByteSize = (base64.length * 0.75) - padding;
 
@@ -285,8 +371,13 @@
 
     panelResult.style.display = 'block';
     videoContainer.style.display = 'none';
+<<<<<<< HEAD
     captureBtn.style.display = 'none';
     status.style.display = 'none';
+=======
+    captureBtn.style.display = 'none';   
+    status.style.display = 'none';      
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
     stopCamera();
   }
 
@@ -307,6 +398,7 @@
     status.style.display = 'block';
     updateCameraPanel();
   });
+<<<<<<< HEAD
   /*==============================================================
     Function Bulid Userinfo
   ===============================================================*/
@@ -360,6 +452,15 @@
 
   /* =========================================================
      📥 UPDATE SERVER (ปุ่มถ่ายรูปอัปเดตใบหน้า)
+=======
+
+  /* =========================================================
+<<<<<<< HEAD
+     📥 UPDATE SERVER (ปุ่มถ่ายรูปอัปเดตใบหน้า - ยุบรวมแก้บั๊กซ้ำซ้อนแล้ว)
+=======
+     📥 UPDATE SERVER (ปุ่มถ่ายรูปอัปเดตใบหน้า)
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
      ========================================================= */
   updateBtn.addEventListener('click', async (e) => {
     e.preventDefault();
@@ -372,7 +473,14 @@
 
     const fd = new FormData(form);
     let rawId = String(fd.get('ID')).trim();
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
     let currentUserId = rawId;
     if (rawId.length === 6) {
       currentUserId = "00" + rawId;
@@ -380,21 +488,42 @@
 
     let cardValues = fd.getAll('CardNum[]').filter(Boolean);
     if (cardValues.length === 0) {
+<<<<<<< HEAD
       const singleCard = fd.get('CardNum') || rawId;
       if (singleCard) cardValues.push(singleCard);
     }
+=======
+      const singleCard = fd.get('CardNum') || rawId; 
+      if (singleCard) cardValues.push(singleCard);
+    }
+<<<<<<< HEAD
+    const cards = cardValues.map(c => ({ CardNum: String(c).trim(), UserID: currentUserId }));
+
+=======
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
 
     const cards = cardValues.map(c => {
       let cleanCard = String(c).trim();
       if (cleanCard.length === 8 && cleanCard.startsWith("00")) {
         cleanCard = cleanCard.substring(2);
       }
+<<<<<<< HEAD
       return {
         CardNum: cleanCard,
         UserID: currentUserId
       };
     });
 
+=======
+      return { 
+        CardNum: cleanCard,       
+        UserID: currentUserId     
+      };
+    });
+
+    // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้า
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
     let hasFace = false;
     let faceInfo = null;
 
@@ -402,7 +531,11 @@
       if (userFaceArray.length > 0) {
         hasFace = true;
         faceInfo = [{
+<<<<<<< HEAD
           UserID: currentUserId,
+=======
+          UserID: currentUserId, 
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
           TemplateType: 1,
           TemplateSize: userFaceArray[0].TemplateSize,
           TemplateData: userFaceArray[0].TemplateData
@@ -410,17 +543,55 @@
       } else if (oldFaceTemplate) {
         hasFace = true;
         faceInfo = [{
+<<<<<<< HEAD
           UserID: currentUserId,
+=======
+          UserID: currentUserId, 
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
           TemplateType: 1,
           TemplateSize: oldFaceTemplate.TemplateSize,
           TemplateData: oldFaceTemplate.TemplateData
         }];
       }
+<<<<<<< HEAD
     } else {
       faceInfo = null;
     }
 
     const userInfo = buildUserInfo(fd, currentUserId, hasFace); // ✅ เรียกใช้ function
+=======
+<<<<<<< HEAD
+=======
+    } else {
+      // ❌ ถ้าไม่ติ๊ก ให้เคลียร์ก้อนนี้เป็น null ตามที่คุณไปตรวจสอบมา
+      faceInfo = null;
+>>>>>>> 5eb1b7f (Check Register Update Format)
+    }
+
+    const userInfo = {
+      ID: currentUserId, 
+      UniqueID: fd.get('UniqueID'),
+      Name: fd.get('Name'),
+<<<<<<< HEAD
+      AuthInfo: [2, (hasFace ? 9 : 0), 30, 0, 0, 0, 0, 0], // บังคับเป็น 9 เปิดระบบใบหน้า
+=======
+      AuthInfo: [2, (hasFace ? 9 : 0), 30, 0, 0, 0, 0, 0], 
+>>>>>>> 5eb1b7f (Check Register Update Format)
+      Privilege: Number(fd.get('Privilege')) || 2,
+      GroupCode: Number(fd.get('GroupCode')) || 1000,
+      AccessGroupCode: Number(fd.get('AccessGroupCode')) || 3000,
+      UserType: Number(fd.get('UserType')) || 0,
+      VerifyLevel: Number(fd.get('VerifyLevel')) || 0,
+      FaceIdentify: hasFace ? 1 : 0,
+      Email: fd.get('Email') || '',
+      Department: fd.get('Department') || '',
+<<<<<<< HEAD
+=======
+      LoginAllowed: "0",
+>>>>>>> 5eb1b7f (Check Register Update Format)
+      Picture: ""
+    };
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
 
     const payload = {
       UserInfo: userInfo,
@@ -446,13 +617,35 @@
       );
 
       const result = await res.json();
+<<<<<<< HEAD
       console.log('🔍 SERVER RESPONSE (RAW):', result);
 
+=======
+<<<<<<< HEAD
+      if (res.ok) {
+        alert('✅ อัปเดตข้อมูลและใบหน้าสำเร็จเรียบร้อย');
+        location.reload();
+      } else {
+        alert('❌ อัปเดตไม่สำเร็จ: ' + (result.message || 'โครงสร้างข้อมูลผิดพลาด'));
+      }
+    } catch (e) {
+      alert('⚠️ ไม่สามารถเชื่อมต่อกับ API Server ได้');
+    } finally {
+      hideLoading();
+      updateBtn.disabled = false;
+    }
+  });
+
+=======
+      console.log('🔍 SERVER RESPONSE (RAW):', result);
+
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
       const apiResult = result?.apiResult;
       const innerResult = apiResult?.Result || apiResult?.result;
       const resultCode = innerResult?.ResultCode !== undefined ? innerResult?.ResultCode : innerResult?.resultCode;
 
       console.log('🔍 Detected ResultCode:', resultCode);
+<<<<<<< HEAD
 
       if (resultCode === 33558286 || String(resultCode) === "33558286" ||
         resultCode === 33558281 || String(resultCode) === "33558281") {
@@ -467,6 +660,19 @@
         const dupId = dupInfo?.DuplicateUniqueID || dupInfo?.duplicateUniqueID || 'ไม่ระบุ ID';
         alert(`❌ อัปเดตไม่สำเร็จ: ใบหน้าหรือเลขบัตรนี้ "ซ้ำซ้อน" กับพนักงานในเครื่องสแกน\n\nพบข้อมูลซ้ำกับ: ${dupName} (ID: ${dupId})\n\n💡 วิธีแก้: กรุณาลบพนักงานคนเดิมออกจากเครื่องสแกนก่อนอัปโหลดอีกครั้ง`);
         return;
+=======
+      if (resultCode === 33558286 || String(resultCode) === "33558286" || resultCode === 33558281 || String(resultCode) === "33558281") {
+        alert('❌ อัปเดตไม่สำเร็จ: เครื่องสแกนไม่สามารถประมวลผลรูปภาพนี้ได้\n\n💡 สาเหตุ: รูปถ่ายอาจมืดเกินไป, ใบหน้าไม่ชัดเจน หรือไม่ตรงตามมาตรฐานของเครื่อง\nกรุณาลองถ่ายรูปใหม่อีกครั้งให้เห็นใบหน้าตรงและชัดเจนครับ');
+        return; 
+      }
+      if (resultCode === 16777237 || String(resultCode) === "16777237" || resultCode === 16777241 || String(resultCode) === "16777241") {
+        const dupInfo = apiResult?.DuplicateInfo || apiResult?.duplicateInfo;
+        const dupName = dupInfo?.DuplicateName || dupInfo?.duplicateName || 'ไม่ระบุชื่อ';
+        const dupId = dupInfo?.DuplicateUniqueID || dupInfo?.duplicateUniqueID || 'ไม่ระบุ ID';
+
+        alert(`❌ อัปเดตไม่สำเร็จ: ใบหน้าหรือเลขบัตรนี้ "ซ้ำซ้อน" กับพนักงานในเครื่องสแกน\n\nพบข้อมูลซ้ำกับ: ${dupName} (ID: ${dupId})\n\n💡 วิธีแก้: กรุณาลบพนักงานคนเดิมออกจากเครื่องสแกนก่อนอัปโหลดอีกครั้ง`);
+        return; 
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
       }
 
       if (res.ok && (result.status === "success" || result.status === "SUCCESS")) {
@@ -485,6 +691,10 @@
     }
   });
 
+<<<<<<< HEAD
+=======
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
   /* =========================================================
         💾 UPDATE DATA SERVER (ปุ่มบันทึกข้อมูลทั่วไปท้ายฟอร์ม)
      ========================================================= */
@@ -501,16 +711,35 @@
 
     let cardValues = fd.getAll('CardNum[]').filter(Boolean);
     if (cardValues.length === 0) {
+<<<<<<< HEAD
       // 💡 แก้ไขบั๊กจาก trim(currentUserId) เดิม มาใช้ substring จัดการตัดหลักแทน
       const rawCard = fd.get('CardNum');
       const singleCard = rawCard
         ? String(rawCard).trim()
         : (currentUserId.startsWith("00") ? currentUserId.substring(2) : currentUserId);
+=======
+<<<<<<< HEAD
+      const singleCard = fd.get('CardNum') || rawId;
+=======
+      // 💡 แก้ไขบั๊กจาก trim(currentUserId) เดิม มาใช้ substring จัดการตัดหลักแทน
+      const rawCard = fd.get('CardNum');
+      const singleCard = rawCard 
+        ? String(rawCard).trim() 
+        : (currentUserId.startsWith("00") ? currentUserId.substring(2) : currentUserId);
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
       if (singleCard) cardValues.push(singleCard);
     }
     const cards = cardValues.map(c => ({ CardNum: String(c).trim(), UserID: currentUserId }));
 
+<<<<<<< HEAD
     // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้าของปุ่มเซฟทั่วไป
+=======
+<<<<<<< HEAD
+=======
+    // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้าของปุ่มเซฟทั่วไป
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
     let hasFace = false;
     let faceInfo = null;
 
@@ -532,12 +761,42 @@
           TemplateData: oldFaceTemplate.TemplateData
         }];
       }
+<<<<<<< HEAD
     } else {
       // ❌ ถ้าไม่ติ๊ก ให้เคลียร์ก้อนนี้เป็น null เช่นเดียวกัน
       faceInfo = null;
     }
 
     const userInfo = buildUserInfo(fd, currentUserId, hasFace);
+=======
+<<<<<<< HEAD
+=======
+    } else {
+      // ❌ ถ้าไม่ติ๊ก ให้เคลียร์ก้อนนี้เป็น null เช่นเดียวกัน
+      faceInfo = null;
+>>>>>>> 5eb1b7f (Check Register Update Format)
+    }
+
+    const userInfo = {
+        ID: currentUserId,
+        UniqueID: fd.get('UniqueID'),
+        Name: fd.get('Name'),
+        AuthInfo: [2, (hasFace ? 9 : 0), 30, 0, 0, 0, 0, 0],
+        Privilege: Number(fd.get('Privilege')) || 2,
+        GroupCode: Number(fd.get('GroupCode')) || 1000,
+        AccessGroupCode: Number(fd.get('AccessGroupCode')) || 3000,
+        UserType: Number(fd.get('UserType')) || 0,
+        VerifyLevel: Number(fd.get('VerifyLevel')) || 0,
+        FaceIdentify: hasFace ? 1 : 0, 
+        Email: fd.get('Email') || '',
+        Department: fd.get('Department') || '',
+<<<<<<< HEAD
+=======
+        LoginAllowed: "0",
+>>>>>>> 5eb1b7f (Check Register Update Format)
+        Picture: ""
+    };
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
 
     const payload = {
       UserInfo: userInfo,
@@ -554,13 +813,18 @@
 
     try {
       const res = await fetch(
+<<<<<<< HEAD
         `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`,
+=======
+        `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`, 
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         }
       );
+<<<<<<< HEAD
       // พิ่ม ResultCode check 
       const result = await res.json();
       const apiResult = result?.apiResult;
@@ -579,4 +843,25 @@
     }
   });
 
+=======
+
+      if (res.ok) {
+        alert('✅ บันทึกข้อมูลเรียบร้อยแล้ว');
+<<<<<<< HEAD
+        location.reload();
+=======
+        console.log(payload);
+>>>>>>> 5eb1b7f (Check Register Update Format)
+      } else {
+        alert('❌ บันทึกไม่สำเร็จ');
+      }
+    } catch (e) {
+      alert('⚠️ API error');
+    } finally {
+      hideLoading();
+      btnUpdateData.disabled = false;
+    }
+  });
+
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
 })();
