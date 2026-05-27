@@ -55,11 +55,13 @@ $base_dn = "dc=swu,dc=ac,dc=th";
 $ldaprdn = "uid={$user_login}," . $base_dn;
 
 /* ===== helper functions ===== */
-function try_bind($conn, $rdn, $password) {
+function try_bind($conn, $rdn, $password)
+{
     return @ldap_bind($conn, $rdn, $password);
 }
 
-function fetchPesonId($user_login) {
+function fetchPesonId($user_login)
+{
     $apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apiapp/checkUserId/" . urlencode($user_login);
     $response = @file_get_contents($apiUrl);
     if ($response === false) {
@@ -73,7 +75,8 @@ function fetchPesonId($user_login) {
 }
 
 /* ===== success handler ===== */
-function login_success($user_login) {
+function login_success($user_login)
+{
     log_login_status($user_login, 'success');
     // 🔐 ป้องกัน session fixation
     session_regenerate_id(true);
@@ -98,6 +101,8 @@ $ldapconn = @ldap_connect("ldaps://ldap.swu.ac.th", 636);
 if ($ldapconn) {
     ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
     ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
+    ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 3);
+    ldap_set_option($ldapconn, LDAP_OPT_TIMELIMIT, 3);
 
     if (try_bind($ldapconn, $ldaprdn, $user_password)) {
         ldap_unbind($ldapconn);
@@ -111,6 +116,8 @@ $ldapconn = @ldap_connect("ldap://ldap.swu.ac.th", 389);
 if ($ldapconn) {
     ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
     ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
+    ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 3);
+    ldap_set_option($ldapconn, LDAP_OPT_TIMELIMIT, 3);
 
     if (@ldap_start_tls($ldapconn)) {
         if (try_bind($ldapconn, $ldaprdn, $user_password)) {
@@ -126,7 +133,9 @@ $ldapconn = @ldap_connect("ldap://ldap.swu.ac.th", 389);
 if ($ldapconn) {
     ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
     ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
-
+    ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 3);
+    ldap_set_option($ldapconn, LDAP_OPT_TIMELIMIT, 3);
+    
     if (try_bind($ldapconn, $ldaprdn, $user_password)) {
         ldap_unbind($ldapconn);
         login_success($user_login);
@@ -139,7 +148,9 @@ $login_failed = true;
 // ❌ log login ไม่ผ่าน
 log_login_status($user_login, 'fail');
 LOGIN_ERROR:
-if (!isset($login_failed)) exit;
+if (!isset($login_failed)) {
+    exit;
+}
 
 ?>
 

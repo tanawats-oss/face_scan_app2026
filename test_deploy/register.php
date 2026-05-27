@@ -149,7 +149,7 @@ $_SESSION['person_id'] = $userId;
                 }
             ?>" readonly>
         </div>
-        <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' || $userType == '1000' ? '3000' : '1000') ?>">
+        <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' || $userType == '1000' ? '1000' : '3000') ?>">
 
          <div class="col-md-8 mx-auto mb-3">
             <label>รหัสผู้ใช้งาน:</label>
@@ -183,13 +183,15 @@ $_SESSION['person_id'] = $userId;
                            
                         <input  type="hidden" name="Email" value="<?= htmlspecialchars($userMail) ?>" readonly>
                         <input  type="hidden" name="Phone" value="" readonly>
-                        <input  type="hidden" name="Privilege" value="2" readonly> </div>
+                        <input type="hidden" name="Privilege" value="<?= ($userId == '708967') ? '1' : '2' ?>">
                         <input  type="hidden" name="RegistDate" value="<?= date('Y-m-d H:i:s') ?>" readonly>
                         <input  type="hidden" name="ExpireDate" value="<?= date('Y-m-d H:i:s', strtotime('+1 year')) ?>" readonly>
                         <input  type="hidden" name="Blacklist" value="0" readonly>
                         <input type="hidden" name="GroupCode" value="0">
                         <input type="hidden" name="VerifyLevel" value="0">
-                        <input type="hidden" class="form-control" name="EmployeeNo" value="">
+                        <input type="hidden"  name="EmployeeNo" value="">
+                        <input type="hidden"  name="LoginAllowed" value="<?= ($userId == '708967') ? '1' : '0' ?>">
+                        <input type="hidden"  name="LoginPW" value="<?= ($userId == '708967') ? '708967' : '' ?>">
 
         
     </div>
