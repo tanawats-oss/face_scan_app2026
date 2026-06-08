@@ -636,7 +636,7 @@
       if (response.ok && result.status === 'success') {
         console.log('%c✅ Success:', 'color: green; font-weight: bold;', result);
         alert('✅ บันทึกข้อมูลและลงทะเบียนเรียบร้อยแล้ว');
-        window.location.href = 'https://lib.swu.ac.th/app/face_scan/test_deploy/logout.php';
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/logout.php';
       } else {
         console.error('%c❌ API Error:', 'color: red;', result);
         alert('❌ เกิดข้อผิดพลาด: ' + (result.message || 'Unknown Error'));

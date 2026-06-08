@@ -95,27 +95,19 @@ Developed   : 2025
       return $resp ?: false;
     }
     /* ================== error + redirect ================== */
-    function redirectToRegister($buasri_id)
+     function redirectToRegister($buasri_id)
     {
-      // ลบข้อมูล session ทั้งหมด
-      if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-      }
-      $_SESSION = [];
-
-      // ทำลาย session
-      session_destroy();
       echo "
     <div style='min-height:100vh;display:flex;justify-content:center;align-items:center;'>
         <div style='background:#ffffff;width:100%;max-width:420px;padding:30px;
                     border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,0.08);
                     text-align:center;font-size:16px;'>
             ❌ <b>{$buasri_id}</b> : ไม่พบข้อมูลผู้ใช้บริการ<br>
-           กรุณาติดต่อเจ้าหน้าที่...
+            ระบบกำลังพาไปหน้าลงทะเบียน...
         </div>
     </div>
     <script>
-        setTimeout(() => window.location.href = 'login.php', 2000);
+        setTimeout(() => window.location.href = 'register.php', 2000);
     </script>";
       exit;
     }
@@ -302,7 +294,8 @@ Developed   : 2025
             <tr>
               <td>เปิด-ปิดการใช้สแกนใบหน้า</td>
               <td>
-                <label>
+                
+                <label class="checkbox-container" >
                   <input type="checkbox" id="AllowFaceRegister" name="AllowFaceRegister" <?= $hasFacePermission ? 'checked' : '' ?>>
                   อนุญาตลงทะเบียนใบหน้า
                 </label>
