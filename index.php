@@ -102,6 +102,10 @@ Developed   : 2025
 $buasri_id = $_SESSION['user_login'] ?? '';
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
 /* ================== helper ================== */
 function callApi($url)
 {
@@ -118,6 +122,27 @@ function callApi($url)
 function redirectToRegister($buasri_id)
 {
     echo "
+<<<<<<< HEAD
+=======
+=======
+    /* ================== helper ================== */
+    function callApi($url)
+    {
+      $ch = curl_init($url);
+      curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_SSL_VERIFYPEER => false
+      ]);
+      $resp = curl_exec($ch);
+      curl_close($ch);
+      return $resp ?: false;
+    }
+    /* ================== error + redirect ================== */
+     function redirectToRegister($buasri_id)
+    {
+      echo "
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
     <div style='min-height:100vh;display:flex;justify-content:center;align-items:center;'>
         <div style='background:#ffffff;width:100%;max-width:420px;padding:30px;
                     border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,0.08);
