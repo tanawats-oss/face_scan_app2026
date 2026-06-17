@@ -63,17 +63,26 @@ if ($user_login === '' || $user_password === '') {
 $base_dn = "dc=swu,dc=ac,dc=th";
 $ldaprdn = "uid={$user_login}," . $base_dn;
 
+<<<<<<< HEAD
 /* ===== helper ===== */
+=======
+/* ===== helper functions ===== */
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
 function try_bind($conn, $rdn, $password)
 {
     return @ldap_bind($conn, $rdn, $password);
 }
 
+<<<<<<< HEAD
 function fetchPersonId($user_login)
 {
     $user_login = trim($user_login);
     if ($user_login === '') return null;
 
+=======
+function fetchPesonId($user_login)
+{
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
     $apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apiapp/checkUserId/" . urlencode($user_login);
 
     // ✅ เปลี่ยนจาก file_get_contents → curl เหมือนที่ debug ผ่าน
@@ -97,6 +106,11 @@ function fetchPersonId($user_login)
 
     return null;
 }
+<<<<<<< HEAD
+=======
+
+/* ===== success handler ===== */
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
 function login_success($user_login)
 {
     log_login_status($user_login, 'success');
@@ -156,6 +170,12 @@ $ldapconn = @ldap_connect("ldaps://ldap.swu.ac.th", 636);
 if ($ldapconn) {
     ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
     ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
+<<<<<<< HEAD
+=======
+    ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 3);
+    ldap_set_option($ldapconn, LDAP_OPT_TIMELIMIT, 3);
+
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
     if (try_bind($ldapconn, $ldaprdn, $user_password)) {
         ldap_unbind($ldapconn);
         login_success($user_login);
@@ -168,6 +188,12 @@ $ldapconn = @ldap_connect("ldap://ldap.swu.ac.th", 389);
 if ($ldapconn) {
     ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
     ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
+<<<<<<< HEAD
+=======
+    ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 3);
+    ldap_set_option($ldapconn, LDAP_OPT_TIMELIMIT, 3);
+
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
     if (@ldap_start_tls($ldapconn)) {
         if (try_bind($ldapconn, $ldaprdn, $user_password)) {
             ldap_unbind($ldapconn);
@@ -182,6 +208,12 @@ $ldapconn = @ldap_connect("ldap://ldap.swu.ac.th", 389);
 if ($ldapconn) {
     ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
     ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
+<<<<<<< HEAD
+=======
+    ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 3);
+    ldap_set_option($ldapconn, LDAP_OPT_TIMELIMIT, 3);
+    
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
     if (try_bind($ldapconn, $ldaprdn, $user_password)) {
         ldap_unbind($ldapconn);
         login_success($user_login);
@@ -193,6 +225,12 @@ if ($ldapconn) {
 $login_failed = true;
 
 LOGIN_ERROR:
+<<<<<<< HEAD
+=======
+if (!isset($login_failed)) {
+    exit;
+}
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
 
 if (isset($login_failed)) {
     log_login_status($user_login, 'fail'); 

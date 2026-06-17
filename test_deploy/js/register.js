@@ -144,6 +144,7 @@
   // กันการแสดงกล้องตอนโหลด
   updateCameraPanel();
 
+<<<<<<< HEAD
   /* ====== อนุญาตใบหน้า ====== */
   allowFaceCheckbox.addEventListener('change', () => {
     if (!allowFaceCheckbox.checked) {
@@ -156,9 +157,23 @@
       allowCamBtn.disabled = false;
       allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
     }
+=======
+/* ====== อนุญาตใบหน้า ====== */
+allowFaceCheckbox.addEventListener('change', () => {
+  if (!allowFaceCheckbox.checked) {
+    allowCam = false;
+    allowCamBtn.disabled = true;
+    allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
+  } else {
+    // 💡 เพิ่มเติมแก้ไขจุดนี้: เคลียร์สถานะกล้องให้พร้อมเปิดใหม่เมื่อมีการติ๊กเลือก
+    allowCam = false; 
+    allowCamBtn.disabled = false;
+    allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
+  }
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
 
-    updateCameraPanel();
-  });
+  updateCameraPanel();
+});
 
 
 
@@ -392,18 +407,43 @@
     if (!box) return;
 
     const ctx = outCanvas.getContext('2d');
+<<<<<<< HEAD
+
+    // 🌟 [ปรับปรุงจุดที่ 1] ลดขนาด Canvas ลงเหลือ 200x200 หรือ 240x240 พิกเซล
+    // เครื่องสแกนใบหน้าส่วนใหญ่ไม่ต้องการรูปใหญ่ครับ ยิ่งเล็กยิ่งเซฟลงเครื่องง่าย
     outCanvas.width = 300;
     outCanvas.height = 300;
+=======
+    
+    // 🌟 [ปรับปรุงจุดที่ 1] ลดขนาด Canvas ลงเหลือ 200x200 หรือ 240x240 พิกเซล
+    // เครื่องสแกนใบหน้าส่วนใหญ่ไม่ต้องการรูปใหญ่ครับ ยิ่งเล็กยิ่งเซฟลงเครื่องง่าย
+    outCanvas.width = 240;
+    outCanvas.height = 240;
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
 
     const mirroredX = video.videoWidth - box.x - box.width;
     const cx = mirroredX + box.width / 2;
     const cy = box.y + box.height / 2;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
 
     const size = Math.max(box.width, box.height) * 2;
 
     ctx.save();
     ctx.scale(-1, 1); 
     ctx.drawImage(video, cx - size / 2, cy - size / 2, size, size, -300, 0, 300, 300);
+<<<<<<< HEAD
     ctx.restore();
 
    
@@ -412,21 +452,203 @@
     const base64 = base64DataUrl.split(',')[1];
 
     // คำนวณขนาดไบต์จริงของไฟล์ JPEG ที่ถูกบีบอัดแล้ว
+=======
+<<<<<<< HEAD
+    ctx.restore();
+
+   
+    const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
+    console.log('Preview:', base64DataUrl);
+    const base64 = base64DataUrl.split(',')[1];
+
+    // คำนวณขนาดไบต์จริงของไฟล์ JPEG ที่ถูกบีบอัดแล้ว
+=======
+<<<<<<< HEAD
+    ctx.restore();
+
+   
+    const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
+    console.log('Preview:', base64DataUrl);
+    const base64 = base64DataUrl.split(',')[1];
+
+    // คำนวณขนาดไบต์จริงของไฟล์ JPEG ที่ถูกบีบอัดแล้ว
+=======
+<<<<<<< HEAD
+    ctx.restore();
+
+   
+    const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
+    console.log('Preview:', base64DataUrl);
+    const base64 = base64DataUrl.split(',')[1];
+
+    // คำนวณขนาดไบต์จริงของไฟล์ JPEG ที่ถูกบีบอัดแล้ว
+=======
+    ctx.restore();
+
+   
+    const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
+    console.log('Preview:', base64DataUrl);
+    const base64 = base64DataUrl.split(',')[1];
+
+    // คำนวณขนาดไบต์จริงของไฟล์ JPEG ที่ถูกบีบอัดแล้ว
+=======
+<<<<<<< HEAD
+
+=======
+    
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+    // 🌟 [ปรับปรุงจุดที่ 2] ลดขนาดการขยายขอบสี่เหลี่ยมลงมาเล็กน้อย (เดิมคูณ 2 กว้างเกินไป)
+    const size = Math.max(box.width, box.height) * 1.6;
+
+    ctx.save();
+<<<<<<< HEAD
+    ctx.scale(-1, 1); // กลับซ้ายขวาให้เหมือนกระจก
+=======
+<<<<<<< HEAD
+    ctx.scale(-1, 1); // กลับซ้ายขวา
+=======
+    ctx.scale(-1, 1); // กลับซ้ายขวาให้เหมือนกระจก
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+
+    ctx.drawImage(
+      video,
+      cx - size / 2,
+      cy - size / 2,
+      size,
+      size,
+<<<<<<< HEAD
+      -300, 0, 300, 300   // ให้วาดลงตามขนาด Canvas ใหม่
+=======
+<<<<<<< HEAD
+      -300, 0, 300, 300   
+=======
+      -240, 0, 240, 240   // ให้วาดลงตามขนาด Canvas ใหม่
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+    );
+
+    ctx.restore();
+
+<<<<<<< HEAD
+    // 🌟 [ปรับปรุงจุดที่ 3] ลด Quality จาก 0.9 เหลือ 0.5 - 0.6 
+    // ขั้นตอนนี้จะทำให้ขนาดไฟล์ไบต์จริง (Byte Size) ลดลงไปมากกว่า 60% แต่หน้ายังชัดอยู่
+    const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.4);
+    console.log('🖼 Preview:', base64DataUrl);
+    const base64 = base64DataUrl.split(',')[1];
+
+    // คำนวณขนาดไบต์จริงของไฟล์ JPEG ที่ถูกบีบอัดแล้ว
+=======
+<<<<<<< HEAD
+    const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
+    const base64 = base64DataUrl.split(',')[1];
+
+    // ✅ [แก้ไขแล้ว] คำนวณขนาดไบต์จริงของไฟล์ JPEG ไม่ให้เครื่องสแกนมองว่าเป็นไฟล์เสีย
+=======
+    // 🌟 [ปรับปรุงจุดที่ 3] ลด Quality จาก 0.9 เหลือ 0.5 - 0.6 
+    // ขั้นตอนนี้จะทำให้ขนาดไฟล์ไบต์จริง (Byte Size) ลดลงไปมากกว่า 60% แต่หน้ายังชัดอยู่
+    const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.55);
+    const base64 = base64DataUrl.split(',')[1];
+
+    // คำนวณขนาดไบต์จริงของไฟล์ JPEG ที่ถูกบีบอัดแล้ว
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
     const padding = (base64.endsWith('=')) ? (base64.endsWith('==') ? 2 : 1) : 0;
     const actualByteSize = Math.floor((base64.length * 0.75) - padding);
 
     userFaceArray.length = 0;
     userFaceArray.push({
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
       TemplateData: base64,       
       TemplateSize: Math.floor(actualByteSize)
     });
 
     console.log(`📸 Captured & Compressed! New Size: ${actualByteSize} Bytes`);
 
+<<<<<<< HEAD
     panelResult.style.display = 'block';
     videoContainer.style.display = 'none';
     captureBtn.style.display = 'none';
     status.style.display = 'none';
+=======
+<<<<<<< HEAD
+    panelResult.style.display = 'block';
+    videoContainer.style.display = 'none';
+    captureBtn.style.display = 'none';
+    status.style.display = 'none';
+=======
+<<<<<<< HEAD
+    panelResult.style.display = 'block';
+    videoContainer.style.display = 'none';
+    captureBtn.style.display = 'none';
+    status.style.display = 'none';
+=======
+<<<<<<< HEAD
+    panelResult.style.display = 'block';
+    videoContainer.style.display = 'none';
+    captureBtn.style.display = 'none';
+    status.style.display = 'none';
+=======
+    panelResult.style.display = 'block';
+    videoContainer.style.display = 'none';
+    captureBtn.style.display = 'none';
+    status.style.display = 'none';
+=======
+<<<<<<< HEAD
+      TemplateData: base64,       // ส่งภาพที่บีบอัดจนเล็กแล้ว
+      TemplateSize: actualByteSize
+    });
+
+    console.log(`📸 Captured & Compressed! New Size: ${actualByteSize} Bytes`);
+=======
+<<<<<<< HEAD
+      TemplateData: base64,
+      TemplateSize: actualByteSize 
+    });
+
+    console.log(`📸 Captured! Size: ${actualByteSize} Bytes`);
+=======
+      TemplateData: base64,       // ส่งภาพที่บีบอัดจนเล็กแล้ว
+      TemplateSize: actualByteSize 
+    });
+
+    console.log(`📸 Captured & Compressed! New Size: ${actualByteSize} Bytes`);
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+
+    panelResult.style.display = 'block';
+    videoContainer.style.display = 'none';
+
+<<<<<<< HEAD
+    captureBtn.style.display = 'none';
+    status.style.display = 'none';
+=======
+    captureBtn.style.display = 'none';   
+    status.style.display = 'none';      
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
     status.textContent = '✅ จับใบหน้าแล้ว';
     stopCamera();
   }
@@ -463,21 +685,104 @@
 
     status.textContent = 'พร้อมตรวจจับใบหน้า';
     status.style.color = '#333';
+<<<<<<< HEAD
     status.style.display = 'block';
+=======
+<<<<<<< HEAD
+    status.style.display = 'block';
+=======
+<<<<<<< HEAD
+    status.style.display = 'block';
+=======
+<<<<<<< HEAD
+    status.style.display = 'block';
+=======
+<<<<<<< HEAD
+    status.style.display = 'block';
+=======
+<<<<<<< HEAD
+    status.style.display = 'block';
+=======
+    status.style.display = 'block';            
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
 
     cameraStarted = false;
     updateCameraPanel();
   });
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
 
   /* =======================
      UPDATE SERVER (ปุ่มลงทะเบียน)
   ======================= */
   updateBtn.addEventListener('click', async (e) => {
+<<<<<<< HEAD
     e.preventDefault();
+=======
+<<<<<<< HEAD
+    e.preventDefault();
+=======
+<<<<<<< HEAD
+    e.preventDefault();
+=======
+<<<<<<< HEAD
+    e.preventDefault();
+=======
+<<<<<<< HEAD
+    e.preventDefault();
+=======
+<<<<<<< HEAD
+    e.preventDefault();
+=======
+    e.preventDefault(); 
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
 
     console.log('%c--- [เริ่มการตรวจสอบข้อมูลลงทะเบียน] ---', 'font-weight: bold;');
     const fd = new FormData(form);
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
     let rawId = String(fd.get('ID') || "").trim();
     let userId = rawId;
     if (rawId.length === 6) {
@@ -486,25 +791,154 @@
 
     // 1️⃣ ตรวจสอบเงื่อนไขการกรอก: ติ๊กเปิดกล้องไว้แต่ยังไม่ได้กดถ่ายรูปใบหน้า
     if (allowFaceCheckbox.checked && allowCam && !userFaceArray.length) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+    // ✅ [แก้ไขแล้ว] แปลง ID เติม 00 นำหน้ากรณีมี 6 หลักให้เป็น 8 หลักตั้งแต่สมัคร
+=======
+
+  /* =======================
+     UPDATE SERVER (ปุ่มลงทะเบียน)
+  ======================= */
+ updateBtn.addEventListener('click', async (e) => {
+    e.preventDefault(); 
+
+    console.log('%c--- [เริ่มการตรวจสอบข้อมูลลงทะเบียน] ---', 'font-weight: bold;');
+    const fd = new FormData(form);
+
+>>>>>>> 5eb1b7f (Check Register Update Format)
+    let rawId = String(fd.get('ID') || "").trim();
+    let userId = rawId;
+    if (rawId.length === 6) {
+      userId = "00" + rawId; 
+<<<<<<< HEAD
+      console.log(`%c[ID Padding]: เปลี่ยนจาก ${rawId} -> ${userId}`, 'color: orange;');
+    }
+
+    if (allowFaceCheckbox.checked && allowCam && !userFaceArray.length) {
+      console.warn('⚠️ Warning: ติ๊กเปิดกล้องไว้แต่ยังไม่ได้ถ่ายรูป');
+=======
+    }
+
+    // 1️⃣ ตรวจสอบเงื่อนไขการกรอก: ติ๊กเปิดกล้องไว้แต่ยังไม่ได้กดถ่ายรูปใบหน้า
+    if (allowFaceCheckbox.checked && allowCam && !userFaceArray.length) {
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
       alert('⚠️ กรุณากดถ่ายรูปใบหน้า หรือปิดกล้องก่อนบันทึกข้อมูล');
       return;
     }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    const hasFace = !!(allowFaceCheckbox.checked && userFaceArray.length > 0);
+=======
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
     // ตรวจสอบสถานะการติ๊กและภาพที่ถ่ายจริง
     const isFaceEnabled = allowFaceCheckbox.checked;
     const hasFacePhoto = userFaceArray.length > 0;
 
     // ดึงค่า Base64 รูปภาพที่ถ่ายไว้ (ถ้าติ๊กและถ่ายรูปแล้ว ให้ส่งไป / ถ้าไม่ติ๊ก ให้ส่งค่าว่าง)
     const capturedBase64 = (isFaceEnabled && hasFacePhoto) ? userFaceArray[0].TemplateData : "";
+<<<<<<< HEAD
     // เปลี่ยนเงื่อนไขให้รัดกุมขึ้น (ต้องติ๊กด้วย และต้องมีรูปด้วย ถึงจะเป็น 9 และ 1)
     const isFaceActive = isFaceEnabled && hasFacePhoto;
+=======
+<<<<<<< HEAD
+    // เปลี่ยนเงื่อนไขให้รัดกุมขึ้น (ต้องติ๊กด้วย และต้องมีรูปด้วย ถึงจะเป็น 9 และ 1)
+    const isFaceActive = isFaceEnabled && hasFacePhoto;
+=======
+<<<<<<< HEAD
+    // เปลี่ยนเงื่อนไขให้รัดกุมขึ้น (ต้องติ๊กด้วย และต้องมีรูปด้วย ถึงจะเป็น 9 และ 1)
+    const isFaceActive = isFaceEnabled && hasFacePhoto;
+=======
+<<<<<<< HEAD
+    // เปลี่ยนเงื่อนไขให้รัดกุมขึ้น (ต้องติ๊กด้วย และต้องมีรูปด้วย ถึงจะเป็น 9 และ 1)
+    const isFaceActive = isFaceEnabled && hasFacePhoto;
+=======
+<<<<<<< HEAD
+    // เปลี่ยนเงื่อนไขให้รัดกุมขึ้น (ต้องติ๊กด้วย และต้องมีรูปด้วย ถึงจะเป็น 9 และ 1)
+    const isFaceActive = isFaceEnabled && hasFacePhoto;
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
 
     const userInfo = {
       ID: userId,
       UniqueID: String(fd.get('UniqueID')),
       Name: String(fd.get('Name')),
+<<<<<<< HEAD
       AuthInfo: [2, (isFaceActive ? 9 : 0), 30, 0, 0, 0, 0, 0],
       Privilege: Number(fd.get('Privilege')) || 2,
+=======
+<<<<<<< HEAD
+      AuthInfo: [2, (isFaceActive ? 9 : 0), 30, 0, 0, 0, 0, 0],
+      Privilege: Number(fd.get('Privilege')) || 2,
+=======
+<<<<<<< HEAD
+      AuthInfo: [2, (isFaceActive ? 9 : 0), 30, 0, 0, 0, 0, 0],
+      Privilege: Number(fd.get('Privilege')) || 2,
+=======
+<<<<<<< HEAD
+      AuthInfo: [2, (isFaceActive ? 9 : 0), 30, 0, 0, 0, 0, 0],
+      Privilege: Number(fd.get('Privilege')) || 2,
+=======
+<<<<<<< HEAD
+      AuthInfo: [2, (isFaceActive ? 9 : 0), 30, 0, 0, 0, 0, 0],
+      Privilege: Number(fd.get('Privilege')) || 2,
+=======
+<<<<<<< HEAD
+      AuthInfo: [2, (hasFacePhoto ? 9 : 0), 30, 0, 0, 0, 0, 0],
+      Privilege: Number(fd.get('Privilege')) || 2,
+=======
+<<<<<<< HEAD
+      // Index 1 เป็น 9 ถ้าใช้หน้า, เป็น 0 ถ้าปิด
+      AuthInfo: [2, (allowFaceCheckbox.checked ? 9 : 0), 30, 0, 0, 0, 0, 0],
+=======
+      AuthInfo: [2, (isFaceEnabled ? 9 : 0), 30, 0, 0, 0, 0, 0],
+>>>>>>> 5eb1b7f (Check Register Update Format)
+      Privilege: 2, 
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
       CreateDate: new Date().toISOString().replace('T', ' ').split('.')[0],
       UsePeriodFlag: 0,
       RegistDate: String(fd.get('RegistDate') || ''),
@@ -516,7 +950,35 @@
       TimezoneCode: 0,
       BlackList: 0,
       FPIdentify: 0,
+<<<<<<< HEAD
       FaceIdentify: isFaceActive ? 1 : 0,
+=======
+<<<<<<< HEAD
+      FaceIdentify: isFaceActive ? 1 : 0,
+=======
+<<<<<<< HEAD
+      FaceIdentify: isFaceActive ? 1 : 0,
+=======
+<<<<<<< HEAD
+      FaceIdentify: isFaceActive ? 1 : 0,
+=======
+<<<<<<< HEAD
+      FaceIdentify: isFaceActive ? 1 : 0,
+=======
+<<<<<<< HEAD
+      FaceIdentify: hasFacePhoto ? 1 : 0,
+=======
+<<<<<<< HEAD
+      FaceIdentify: hasFace ? 1 : 0, 
+=======
+      FaceIdentify: (isFaceEnabled && hasFacePhoto) ? 1 : 0, 
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
       DuressFinger: null,
       Partition: 0,
       APBExcept: 0,
@@ -530,10 +992,51 @@
       EmployeeNum: "0",
       Email: String(fd.get('Email') || ''),
       Phone: "",
+<<<<<<< HEAD
       Department: String(fd.get('Department') || ''),
       LoginPW: String(fd.get('LoginPW') || ''),
       LoginAllowed: Number(fd.get('LoginAllowed')) || 0,
+=======
+<<<<<<< HEAD
+      Department: String(fd.get('Department') || ''),
+      LoginPW: String(fd.get('LoginPW') || ''),
+      LoginAllowed: Number(fd.get('LoginAllowed')) || 0,
+=======
+<<<<<<< HEAD
+      Department: String(fd.get('Department') || ''),
+      LoginPW: String(fd.get('LoginPW') || ''),
+      LoginAllowed: Number(fd.get('LoginAllowed')) || 0,
+=======
+<<<<<<< HEAD
+      Department: String(fd.get('Department') || ''),
+      LoginPW: String(fd.get('LoginPW') || ''),
+      LoginAllowed: Number(fd.get('LoginAllowed')) || 0,
+=======
+<<<<<<< HEAD
+      Department: String(fd.get('Department') || ''),
+      LoginPW: String(fd.get('LoginPW') || ''),
+      LoginAllowed: Number(fd.get('LoginAllowed')) || 0,
+=======
+<<<<<<< HEAD
+      Department: String(fd.get('Department') || ''),
+      LoginPW: String(fd.get('LoginPW') || ''),
+      LoginAllowed: Number(fd.get('LoginAllowed')) || 0,
+=======
+      Department: String(fd.get('Department')),
+      LoginPW: "****",
+<<<<<<< HEAD
+      LoginAllowed: 0,
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
       Picture: "",
+=======
+      LoginAllowed: "0",
+      Picture: capturedBase64, // ส่ง Base64 หรือค่าว่าง "" ตามเงื่อนไขด้านบน
+>>>>>>> 5eb1b7f (Check Register Update Format)
       IrisIdentify: 0,
       VoipUse: 0,
       VoipDoorOpen: 0,
@@ -554,6 +1057,22 @@
       return;
     }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
     // 2️⃣ [จุดประสงค์หลัก] ตรวจสอบเงื่อนไข Checkbox เพื่อแยกก้อนข้อมูลส่ง
     let faceInfo = null;
     if (isFaceEnabled && hasFacePhoto) {
@@ -563,6 +1082,41 @@
         TemplateSize: userFaceArray[0].TemplateSize,
         TemplateData: capturedBase64,
         TemplateType: 1
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+    let faceInfo = null;
+    if (hasFace) {
+      faceInfo = [{
+        UserID: userId,                      
+        TemplateSize: userFaceArray[0].TemplateSize, 
+        TemplateData: userFaceArray[0].TemplateData, 
+=======
+    // 2️⃣ [จุดประสงค์หลัก] ตรวจสอบเงื่อนไข Checkbox เพื่อแยกก้อนข้อมูลส่ง
+    let faceInfo = null;
+    if (isFaceEnabled && hasFacePhoto) {
+      // ติ๊กเลือก -> ส่งอาร์เรย์ข้อมูลใบหน้าตามโครงสร้าง API ของเครื่องสแกน
+      faceInfo = [{
+        UserID: userId,                      
+        TemplateSize: 0,    
+        TemplateData: "",   
+>>>>>>> 5eb1b7f (Check Register Update Format)
+        TemplateType: 1                      
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
       }];
     } else {
       // ไม่ติ๊กเลือก -> ส่งเป็น null ชัดเจน ข้อมูลใบหน้าจะไม่ถูกลงทะเบียนเข้าไปกวนฐานข้อมูล
@@ -579,11 +1133,47 @@
       UserFaceWTInfo: faceInfo // ผูกตัวแปรที่ผ่านการตรวจสอบเงื่อนไขแล้ว
     };
 
+<<<<<<< HEAD
     console.group(' REGISTER PAYLOAD');
+=======
+<<<<<<< HEAD
+    console.group(' REGISTER PAYLOAD');
+=======
+<<<<<<< HEAD
+    console.group(' REGISTER PAYLOAD');
+=======
+<<<<<<< HEAD
+    console.group(' REGISTER PAYLOAD');
+=======
+<<<<<<< HEAD
+    console.group(' REGISTER PAYLOAD');
+=======
+    console.group('📝 REGISTER PAYLOAD');
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
     console.log('Object View:', payload);
     console.groupEnd();
 
     try {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
       showLoading('กำลังอัปโหลดข้อมูลและใบหน้าไปยังเครื่องสแกน...');
       updateBtn.disabled = true;
 
@@ -591,12 +1181,56 @@
       const controller = new AbortController();
       const timeout = setTimeout(() => {
         controller.abort();
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
         console.warn('Timeout! ตัด session แล้ว');
       }, 12000);
 
       console.log(' Sending payload...');
       console.log(' Payload size:', JSON.stringify(payload).length, 'bytes');
       console.log(' TemplateSize:', userFaceArray[0]?.TemplateSize, 'bytes');
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+        console.warn('⏱ Timeout! ตัด session แล้ว');
+      }, 12000);
+
+      console.log('🚀 Sending payload...');
+      console.log('📦 Payload size:', JSON.stringify(payload).length, 'bytes');
+      console.log('🖼 TemplateSize:', userFaceArray[0]?.TemplateSize, 'bytes');
+=======
+      console.log('🚀 Sending payload to PHP Controller...');
+      const response = await fetch('https://lib.swu.ac.th/app/ci4_new/public/apidoor/addusers', { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify(payload)
+      });
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
 
       let response;
       try {
@@ -635,11 +1269,28 @@
       }
       if (response.ok && result.status === 'success') {
         console.log('%c✅ Success:', 'color: green; font-weight: bold;', result);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
         alert('✅ บันทึกข้อมูลและลงทะเบียนเรียบร้อยแล้ว');
         window.location.href = 'https://lib.swu.ac.th/app/face_scan/test_deploy/logout.php';
       } else {
         console.error('%c❌ API Error:', 'color: red;', result);
         alert('❌ เกิดข้อผิดพลาด: ' + (result.message || 'Unknown Error'));
+<<<<<<< HEAD
       }
 
     } catch (error) {
@@ -659,6 +1310,132 @@
     } finally {
       hideLoading();
       updateBtn.disabled = false;
+=======
+<<<<<<< HEAD
+      }
+
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        console.warn(' ตัด request แล้ว (5 วินาที)');
+        // ⭐ ไม่ alert ที่ทำให้ user งง แค่แสดง status
+        alert(' ระบบใช้เวลานาน\nข้อมูลอาจถูกบันทึกแล้ว กรุณาตรวจสอบในระบบอีกครั้ง');
+      } else if (error.message?.includes('Connection reset') ||
+        error.message?.includes('NetworkError')) {
+        // ⭐ จับ error "Connection reset by peer" โดยเฉพาะ
+        console.warn('🔌 Connection reset - เครื่องสแกนตัดการเชื่อมต่อ');
+        alert('⚠️ เครื่องสแกนไม่ตอบสนอง\nกรุณารอสักครู่แล้วลองใหม่');
+      } else {
+        console.error('%c❌ Network Error:', 'color: red;', error);
+        alert('ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้');
+      }
+    } finally {
+      hideLoading();
+      updateBtn.disabled = false;
+=======
+<<<<<<< HEAD
+      }
+
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        console.warn(' ตัด request แล้ว (5 วินาที)');
+        // ⭐ ไม่ alert ที่ทำให้ user งง แค่แสดง status
+        alert(' ระบบใช้เวลานาน\nข้อมูลอาจถูกบันทึกแล้ว กรุณาตรวจสอบในระบบอีกครั้ง');
+      } else if (error.message?.includes('Connection reset') ||
+        error.message?.includes('NetworkError')) {
+        // ⭐ จับ error "Connection reset by peer" โดยเฉพาะ
+        console.warn('🔌 Connection reset - เครื่องสแกนตัดการเชื่อมต่อ');
+        alert('⚠️ เครื่องสแกนไม่ตอบสนอง\nกรุณารอสักครู่แล้วลองใหม่');
+      } else {
+        console.error('%c❌ Network Error:', 'color: red;', error);
+        alert('ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้');
+      }
+    } finally {
+      hideLoading();
+      updateBtn.disabled = false;
+=======
+<<<<<<< HEAD
+      }
+
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        console.warn(' ตัด request แล้ว (5 วินาที)');
+        // ⭐ ไม่ alert ที่ทำให้ user งง แค่แสดง status
+        alert(' ระบบใช้เวลานาน\nข้อมูลอาจถูกบันทึกแล้ว กรุณาตรวจสอบในระบบอีกครั้ง');
+      } else if (error.message?.includes('Connection reset') ||
+        error.message?.includes('NetworkError')) {
+        // ⭐ จับ error "Connection reset by peer" โดยเฉพาะ
+        console.warn('🔌 Connection reset - เครื่องสแกนตัดการเชื่อมต่อ');
+        alert('⚠️ เครื่องสแกนไม่ตอบสนอง\nกรุณารอสักครู่แล้วลองใหม่');
+      } else {
+        console.error('%c❌ Network Error:', 'color: red;', error);
+        alert('ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้');
+      }
+    } finally {
+      hideLoading();
+      updateBtn.disabled = false;
+=======
+<<<<<<< HEAD
+      }
+
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        console.warn(' ตัด request แล้ว (5 วินาที)');
+        // ⭐ ไม่ alert ที่ทำให้ user งง แค่แสดง status
+        alert(' ระบบใช้เวลานาน\nข้อมูลอาจถูกบันทึกแล้ว กรุณาตรวจสอบในระบบอีกครั้ง');
+      } else if (error.message?.includes('Connection reset') ||
+        error.message?.includes('NetworkError')) {
+        // ⭐ จับ error "Connection reset by peer" โดยเฉพาะ
+        console.warn('🔌 Connection reset - เครื่องสแกนตัดการเชื่อมต่อ');
+        alert('⚠️ เครื่องสแกนไม่ตอบสนอง\nกรุณารอสักครู่แล้วลองใหม่');
+      } else {
+        console.error('%c❌ Network Error:', 'color: red;', error);
+        alert('ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้');
+      }
+    } finally {
+      hideLoading();
+      updateBtn.disabled = false;
+=======
+      }
+
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        console.warn('⏱ ตัด request แล้ว (5 วินาที)');
+        // ⭐ ไม่ alert ที่ทำให้ user งง แค่แสดง status
+        alert('⏱ ระบบใช้เวลานาน\nข้อมูลอาจถูกบันทึกแล้ว กรุณาตรวจสอบในระบบอีกครั้ง');
+      } else if (error.message?.includes('Connection reset') ||
+        error.message?.includes('NetworkError')) {
+        // ⭐ จับ error "Connection reset by peer" โดยเฉพาะ
+        console.warn('🔌 Connection reset - เครื่องสแกนตัดการเชื่อมต่อ');
+        alert('⚠️ เครื่องสแกนไม่ตอบสนอง\nกรุณารอสักครู่แล้วลองใหม่');
+      } else {
+        console.error('%c❌ Network Error:', 'color: red;', error);
+        alert('ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้');
+      }
+    } finally {
+      hideLoading();
+      updateBtn.disabled = false;
+=======
+<<<<<<< HEAD
+        alert('✅ บันทึกข้อมูลและลงทะเบียนใบหน้าเรียบร้อยแล้ว');
+        // ✅ [แก้ไขแล้ว] ย้ายมาใส่ตรงนี้ สำเร็จจริงค่อยเปลี่ยนหน้า ไม่ปล่อยเบลอเด้งหนีเหมือนเดิม
+=======
+        alert('✅ บันทึกข้อมูลและลงทะเบียนเรียบร้อยแล้ว');
+>>>>>>> 5eb1b7f (Check Register Update Format)
+        window.location.href = 'login.php?timeout=1'; 
+      } else {
+        console.error('%c❌ API Error:', 'color: red;', result);
+        alert('เกิดข้อผิดพลาดจากระบบ: ' + (result.message || 'Unknown Error'));
+      }
+
+    } catch (error) {
+      console.error('%c❌ Network Error:', 'color: red;', error);
+      alert('ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้');
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
     }
   });
 })();

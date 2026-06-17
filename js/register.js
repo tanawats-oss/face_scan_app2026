@@ -480,6 +480,10 @@
 
     let rawId = String(fd.get('ID') || "").trim();
     let userId = rawId;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
     let cleanNumber = rawId.replace(/[^0-9]/g, '');
     
     if (cleanNumber.length === 11) {
@@ -497,6 +501,13 @@
     }else {
         // กรณีอื่น ๆ ที่ไม่เข้าพวก ให้ใช้ตัวเลขล้วนที่สกัดได้ไปก่อน
         userId = cleanNumber;
+<<<<<<< HEAD
+=======
+=======
+    if (rawId.length === 6) {
+      userId = "00" + rawId;
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
     }
 
     // 1️⃣ ตรวจสอบเงื่อนไขการกรอก: ติ๊กเปิดกล้องไว้แต่ยังไม่ได้กดถ่ายรูปใบหน้า
