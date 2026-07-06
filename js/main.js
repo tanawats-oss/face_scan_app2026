@@ -383,6 +383,13 @@
 
     const fd = new FormData(form);
     let rawId = String(fd.get('ID')).trim();
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
     let cleanNumber = rawId.replace(/[^0-9]/g, '');
     let currentUserId = rawId;
 
@@ -399,6 +406,18 @@
     }else {
         // กรณีอื่น ๆ ที่ไม่เข้าพวก ให้ใช้ตัวเลขล้วนที่สกัดได้ไปก่อน
         currentUserId = cleanNumber;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+
+    let currentUserId = rawId;
+    if (rawId.length === 6) {
+      currentUserId = "00" + rawId;
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
     }
 
     let cardValues = fd.getAll('CardNum[]').filter(Boolean);
@@ -494,7 +513,19 @@
 
       if (res.ok && (result.status === "success" || result.status === "SUCCESS")) {
         alert('✅ อัปเดตข้อมูลและใบหน้าสำเร็จเรียบร้อย');
+<<<<<<< HEAD
         window.location.href = 'https://lib.swu.ac.th/app/face_scan/index.php';
+=======
+<<<<<<< HEAD
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/index.php';
+=======
+<<<<<<< HEAD
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/index.php';
+=======
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/test_deploy/index.php';
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
         console.log('Payload Logged:', JSON.stringify(payload, null, 2));
       } else {
         alert('❌ อัปเดตไม่สำเร็จ: ' + (result.message || 'โครงสร้างข้อมูลผิดพลาด'));
@@ -517,6 +548,13 @@
     console.log('💾 CLICK UPDATE DATA (GENERAL)');
 
     const fd = new FormData(form);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
   let rawId = String(fd.get('ID')).trim();
     let cleanNumber = rawId.replace(/[^0-9]/g, '');
     let currentUserId = rawId;
@@ -534,6 +572,18 @@
     }else {
         // กรณีอื่น ๆ ที่ไม่เข้าพวก ให้ใช้ตัวเลขล้วนที่สกัดได้ไปก่อน
         currentUserId = cleanNumber;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+    let rawId = String(fd.get('ID')).trim();
+    let currentUserId = rawId;
+    if (rawId.length === 6) {
+      currentUserId = "00" + rawId;
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
     }
 
     let cardValues = fd.getAll('CardNum[]').filter(Boolean);

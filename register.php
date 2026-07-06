@@ -2,7 +2,23 @@
 session_start();
 
 /* ================== CONFIG ================== */
+<<<<<<< HEAD
 define('SESSION_TIMEOUT', 600); // วินาที
+=======
+<<<<<<< HEAD
+define('SESSION_TIMEOUT', 600); // วินาที
+=======
+<<<<<<< HEAD
+define('SESSION_TIMEOUT', 600); // วินาที
+=======
+<<<<<<< HEAD
+define('SESSION_TIMEOUT', 600); // วินาที
+=======
+define('SESSION_TIMEOUT', 5000); // วินาที
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 
 /* ================== AUTH CHECK ================== */
 if (empty($_SESSION['auth_ldap'])) {
@@ -80,6 +96,16 @@ $_SESSION['person_id'] = $userId;
 <html lang="th">
 
 <head>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-C48T4MMF9L"></script>
     <script>
@@ -100,18 +126,55 @@ $_SESSION['person_id'] = $userId;
     <title>Register Face</title>
     <link rel="stylesheet" href="./css/face_scan.css">
    
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+    <meta charset="UTF-8">
+    <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Face Capture & Update Template</title>
+    <link rel="stylesheet" href="./css/face_scan.css">
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
     <script>
         const SESSION_TIMEOUT = <?= SESSION_TIMEOUT ?>;
     </script>
 </head>
 
 <body>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
         <!-- Google Tag Manager (noscript) -->
         <noscript>
             <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8ZD4T59"height="0" width="0" style="display:none;visibility:hidden">
             </iframe>
         </noscript>
         <!-- End Google Tag Manager (noscript) -->
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
     <div style="padding: 10px; background: #eee; font-size: 12px; text-align: center;">ID ผู้ใช้งานระบบ: <?php echo htmlspecialchars($userId); ?></div>
 
     <div class="container">
@@ -346,8 +409,26 @@ $_SESSION['person_id'] = $userId;
         setInterval(checkSession, CHECK_INTERVAL);
     })();
     </script>
+<<<<<<< HEAD
 
 
+=======
+<<<<<<< HEAD
+
+
+=======
+<<<<<<< HEAD
+
+
+=======
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 </body>
 
 </html>

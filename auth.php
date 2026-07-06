@@ -196,7 +196,11 @@ LOGIN_ERROR:
 
 if (isset($login_failed)) {
     log_login_status($user_login, 'fail'); 
+<<<<<<< HEAD
     // exit;
+=======
+    exit;
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 }
 ?>
 <!DOCTYPE html>
