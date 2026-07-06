@@ -480,8 +480,23 @@
 
     let rawId = String(fd.get('ID') || "").trim();
     let userId = rawId;
-    if (rawId.length === 6) {
-      userId = "00" + rawId;
+    let cleanNumber = rawId.replace(/[^0-9]/g, '');
+    
+    if (cleanNumber.length === 11) {
+        // === เงื่อนไขใหม่: ถ้ารหัสมาเป็น 11 หลัก (เช่น 57110010277) ===
+        let year         = cleanNumber.substring(0, 2);  // ได้ "57"
+        let facultyGroup = cleanNumber.substring(2, 3) + cleanNumber.substring(5, 6); // ตำแหน่งที่ 3 กับ 6 -> "1" + "0" = "10"
+        let sequence     = cleanNumber.substring(7, 11); // 4 หลักสุดท้าย -> "0277"
+        
+        userId = year + facultyGroup + sequence; // ผลลัพธ์: "57100277" (8 หลักพอดี ไม่ซ้ำคนอื่น)
+
+    }else if (cleanNumber.length === 6) {
+        // === เงื่อนไขเดิม: ถ้าเป็นเลข 6 หลัก ให้เติม 00 ข้างหน้า ===
+        userId = "00" + cleanNumber; // ผลลัพธ์: "00xxxx" (กลายเป็น 8 หลักเช่นกัน)
+
+    }else {
+        // กรณีอื่น ๆ ที่ไม่เข้าพวก ให้ใช้ตัวเลขล้วนที่สกัดได้ไปก่อน
+        userId = cleanNumber;
     }
 
     // 1️⃣ ตรวจสอบเงื่อนไขการกรอก: ติ๊กเปิดกล้องไว้แต่ยังไม่ได้กดถ่ายรูปใบหน้า
@@ -636,7 +651,7 @@
       if (response.ok && result.status === 'success') {
         console.log('%c✅ Success:', 'color: green; font-weight: bold;', result);
         alert('✅ บันทึกข้อมูลและลงทะเบียนเรียบร้อยแล้ว');
-        window.location.href = 'https://lib.swu.ac.th/app/face_scan/test_deploy/logout.php';
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/logout.php';
       } else {
         console.error('%c❌ API Error:', 'color: red;', result);
         alert('❌ เกิดข้อผิดพลาด: ' + (result.message || 'Unknown Error'));
