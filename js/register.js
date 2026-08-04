@@ -480,14 +480,32 @@
 
     let rawId = String(fd.get('ID') || "").trim();
     let userId = rawId;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
     let cleanNumber = rawId.replace(/[^0-9]/g, '');
     
     if (cleanNumber.length === 11) {
         // === เงื่อนไขใหม่: ถ้ารหัสมาเป็น 11 หลัก (เช่น 57110010277) ===
+<<<<<<< HEAD
 		let first5 = cleanNumber.substring(0, 5); // "69102" (5 หลักแรก)
 		let last3  = cleanNumber.substring(8, 11); // "277"   (3 หลักสุดท้าย)
     
     userId = first5 + last3; // ผลลัพธ์: "69102277" (8 หลัก ไม่ชนกัน)
+=======
+        let year         = cleanNumber.substring(0, 2);  // ได้ "57"
+        let facultyGroup = cleanNumber.substring(2, 3) + cleanNumber.substring(5, 6); // ตำแหน่งที่ 3 กับ 6 -> "1" + "0" = "10"
+        let sequence     = cleanNumber.substring(7, 11); // 4 หลักสุดท้าย -> "0277"
+        
+        userId = year + facultyGroup + sequence; // ผลลัพธ์: "57100277" (8 หลักพอดี ไม่ซ้ำคนอื่น)
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 
     }else if (cleanNumber.length === 6) {
         // === เงื่อนไขเดิม: ถ้าเป็นเลข 6 หลัก ให้เติม 00 ข้างหน้า ===
@@ -496,6 +514,19 @@
     }else {
         // กรณีอื่น ๆ ที่ไม่เข้าพวก ให้ใช้ตัวเลขล้วนที่สกัดได้ไปก่อน
         userId = cleanNumber;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+    if (rawId.length === 6) {
+      userId = "00" + rawId;
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
     }
 
     // 1️⃣ ตรวจสอบเงื่อนไขการกรอก: ติ๊กเปิดกล้องไว้แต่ยังไม่ได้กดถ่ายรูปใบหน้า
@@ -535,11 +566,19 @@
       Partition: 0,
       APBExcept: 0,
       APBZone: 0,
+<<<<<<< HEAD
       WorkCode: "0",
       MealCode: "0",
       MoneyCode: "0",
       MessageCode: 0,
       VerifyLevel: Number(fd.get('VerifyLevel')) || 0,
+=======
+      WorkCode: "0000",
+      MealCode: "0000",
+      MoneyCode: "0000",
+      MessageCode: 0,
+      VerifyLevel: Number(fd.get('VerifyLevel')) || 5,
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
       PositionCode: Number(fd.get('Position')) || 9997,
       EmployeeNum: "0",
       Email: String(fd.get('Email') || ''),

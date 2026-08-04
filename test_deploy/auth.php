@@ -63,17 +63,46 @@ if ($user_login === '' || $user_password === '') {
 $base_dn = "dc=swu,dc=ac,dc=th";
 $ldaprdn = "uid={$user_login}," . $base_dn;
 
+<<<<<<< HEAD
 /* ===== helper ===== */
+=======
+<<<<<<< HEAD
+/* ===== helper ===== */
+=======
+<<<<<<< HEAD
+/* ===== helper ===== */
+=======
+/* ===== helper functions ===== */
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 function try_bind($conn, $rdn, $password)
 {
     return @ldap_bind($conn, $rdn, $password);
 }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 function fetchPersonId($user_login)
 {
     $user_login = trim($user_login);
     if ($user_login === '') return null;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+function fetchPesonId($user_login)
+{
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
     $apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apiapp/checkUserId/" . urlencode($user_login);
 
     // ✅ เปลี่ยนจาก file_get_contents → curl เหมือนที่ debug ผ่าน
@@ -97,6 +126,17 @@ function fetchPersonId($user_login)
 
     return null;
 }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+/* ===== success handler ===== */
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 function login_success($user_login)
 {
     log_login_status($user_login, 'success');
@@ -156,6 +196,18 @@ $ldapconn = @ldap_connect("ldaps://ldap.swu.ac.th", 636);
 if ($ldapconn) {
     ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
     ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 3);
+    ldap_set_option($ldapconn, LDAP_OPT_TIMELIMIT, 3);
+
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
     if (try_bind($ldapconn, $ldaprdn, $user_password)) {
         ldap_unbind($ldapconn);
         login_success($user_login);
@@ -168,6 +220,18 @@ $ldapconn = @ldap_connect("ldap://ldap.swu.ac.th", 389);
 if ($ldapconn) {
     ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
     ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 3);
+    ldap_set_option($ldapconn, LDAP_OPT_TIMELIMIT, 3);
+
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
     if (@ldap_start_tls($ldapconn)) {
         if (try_bind($ldapconn, $ldaprdn, $user_password)) {
             ldap_unbind($ldapconn);
@@ -182,6 +246,18 @@ $ldapconn = @ldap_connect("ldap://ldap.swu.ac.th", 389);
 if ($ldapconn) {
     ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
     ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 3);
+    ldap_set_option($ldapconn, LDAP_OPT_TIMELIMIT, 3);
+    
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
     if (try_bind($ldapconn, $ldaprdn, $user_password)) {
         ldap_unbind($ldapconn);
         login_success($user_login);
@@ -193,6 +269,18 @@ if ($ldapconn) {
 $login_failed = true;
 
 LOGIN_ERROR:
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+if (!isset($login_failed)) {
+    exit;
+}
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 
 if (isset($login_failed)) {
     log_login_status($user_login, 'fail'); 
