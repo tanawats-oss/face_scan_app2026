@@ -15,6 +15,15 @@ Developed   : 2025
 <html lang="th">
 
 <head>
+    <!-- Google Tag Manager -->
+    <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-W8ZD4T59');
+    </script>
+<!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
     <meta name="developer-email" content="tanawats@g.swu.ac.th">
@@ -107,7 +116,12 @@ Developed   : 2025
 </head>
 
 <body>
-
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8ZD4T59"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
     <script>
         (function() {
             const ua = navigator.userAgent;
@@ -221,25 +235,7 @@ Developed   : 2025
             document.getElementById('loadingOverlay').style.display = 'flex';
         }
 
-        function handleLoginSubmit() {
-            showLoading();
-
-            const buasriId = document.getElementById('user_login').value;
-
-            // ✅ log แค่ว่า "พยายาม login"
-            fetch('/app/ci4_new/public/api/login-log', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    buasri_id: buasriId,
-                    status: 'attempt'
-                })
-            }).catch(() => {});
-
-            return true; // ให้ auth.php ทำงานต่อ
-        }
+        
     </script>
 
 </body>
