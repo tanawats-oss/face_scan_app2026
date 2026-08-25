@@ -501,8 +501,15 @@ button.muted {
   color: var(--text);
 }
 
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
+}
+.checkbox-container {
+  display: inline-flex;  
+  align-items: center;   
+  gap: 8px;              
+  cursor: pointer;      
 }

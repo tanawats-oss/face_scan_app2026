@@ -1,7 +1,55 @@
+<<<<<<< HEAD
 (async function() {
 
   /* =======================
       DOM
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+(async function () {
+
+  /* =======================
+      DOM
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
   ======================= */
   const video = document.getElementById('video');
   const overlay = document.getElementById('overlay');
@@ -53,10 +101,17 @@
   /* =======================
       STATE
   ======================= */
+<<<<<<< HEAD
   let pdpaAccepted = false; 
   let stream = null;
   let cameraStarted = false;
   let allowCam = false; 
+=======
+  let pdpaAccepted = false;
+  let stream = null;
+  let cameraStarted = false;
+  let allowCam = false;
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
   let overlayRunning = false;
   let lastFaceBox = null;
   let overlayRect = null;
@@ -87,6 +142,169 @@
 
   /* =======================
       UI CONTROL
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+=======
+(async function() {
+
+  /* =======================
+<<<<<<< HEAD
+     DOM
+=======
+      DOM
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+  ======================= */
+  const video = document.getElementById('video');
+  const overlay = document.getElementById('overlay');
+  const outCanvas = document.getElementById('out');
+  const status = document.getElementById('status');
+  const videoContainer = document.getElementById('videoContainer');
+  const panelResult = document.querySelector('.panel-result');
+  const retakeBtn = document.getElementById('retakeBtn');
+
+  const allowFaceCheckbox = document.querySelector("input[name='AllowFaceRegister']");
+  const allowCamBtn = document.getElementById('AllowCamBtn');
+
+  const panelNewphoto = document.getElementById('Newtakephoto');
+  const panelFaceDB = document.getElementById('facePanel');
+  const panelUpdateData = document.getElementById('updatedata');
+
+  const updateBtn = document.getElementById('updateServerBtn');
+  const form = document.getElementById('editUserForm');
+  const btnUpdateData = document.getElementById('btn-updatedata');
+  const loadingOverlay = document.getElementById('loadingOverlay');
+  const captureBtn = document.getElementById('captureBtn');
+
+  const pdpaModal = document.getElementById('pdpaModal');
+  const pdpaAcceptBtn = document.getElementById('pdpaAcceptBtn');
+  const pdpaDeclineBtn = document.getElementById('pdpaDeclineBtn');
+
+  /* =======================
+<<<<<<< HEAD
+      Guard DOM
+=======
+<<<<<<< HEAD
+     Guard DOM
+=======
+      Guard DOM
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+  ======================= */
+  if (!video || !overlay || !outCanvas || !updateBtn || !form || !panelResult || !captureBtn) {
+    console.error('❌ DOM ไม่ครบ');
+    return;
+  }
+
+  /* =======================
+<<<<<<< HEAD
+      Loading
+=======
+<<<<<<< HEAD
+     Loading
+=======
+      Loading
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+  ======================= */
+  function showLoading(text = 'กำลังประมวลผล...') {
+    if (!loadingOverlay) return;
+    loadingOverlay.querySelector('.loading-text').textContent = text;
+    loadingOverlay.style.display = 'flex';
+  }
+
+  function hideLoading() {
+    if (!loadingOverlay) return;
+    loadingOverlay.style.display = 'none';
+  }
+
+  /* =======================
+<<<<<<< HEAD
+      STATE
+  ======================= */
+  let pdpaAccepted = false;
+  let stream = null;
+  let cameraStarted = false;
+  let allowCam = false;
+=======
+<<<<<<< HEAD
+     STATE
+=======
+      STATE
+>>>>>>> 5eb1b7f (Check Register Update Format)
+  ======================= */
+  let pdpaAccepted = false; 
+  let stream = null;
+  let cameraStarted = false;
+  let allowCam = false; 
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+  let overlayRunning = false;
+  let lastFaceBox = null;
+  let overlayRect = null;
+  let detecting = false;
+  let lastDetectTime = 0;
+  let oldFaceTemplate = window.oldFaceTemplate || null;
+
+  const userFaceArray = [];
+
+  /* =======================
+<<<<<<< HEAD
+     PDPA
+=======
+<<<<<<< HEAD
+    PDPA
+=======
+     PDPA
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+  ======================= */
+  function showPdpa() { pdpaModal.style.display = 'block'; }
+  function hidePdpa() { pdpaModal.style.display = 'none'; }
+
+  pdpaAcceptBtn.addEventListener('click', () => {
+    pdpaAccepted = true;
+    hidePdpa();
+    allowCam = true;
+    allowCamBtn.textContent = 'ปิดกล้อง';
+    updateCameraPanel();
+  });
+
+  pdpaDeclineBtn.addEventListener('click', () => {
+    pdpaAccepted = false;
+    hidePdpa();
+  });
+
+  /* =======================
+<<<<<<< HEAD
+      UI CONTROL
+=======
+<<<<<<< HEAD
+     UI CONTROL
+=======
+      UI CONTROL
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
   ======================= */
   function updateCameraPanel() {
     if (!allowFaceCheckbox.checked) {
@@ -157,8 +375,58 @@
   });
 
   /* =======================
+<<<<<<< HEAD
       CAMERA
   ====================== */
+=======
+<<<<<<< HEAD
+      CAMERA
+  ====================== */
+=======
+<<<<<<< HEAD
+      CAMERA
+  ====================== */
+=======
+<<<<<<< HEAD
+      CAMERA
+  ====================== */
+=======
+<<<<<<< HEAD
+      CAMERA
+  ====================== */
+=======
+<<<<<<< HEAD
+      CAMERA
+  ====================== */
+=======
+<<<<<<< HEAD
+      CAMERA
+  ====================== */
+=======
+<<<<<<< HEAD
+      CAMERA
+  ====================== */
+=======
+<<<<<<< HEAD
+      CAMERA
+  ====================== */
+=======
+<<<<<<< HEAD
+     CAMERA
+  ======================= */
+=======
+      CAMERA
+  ====================== */
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
   async function loadFaceModelOnce() {
     if (window._faceModelLoaded) return;
     await faceapi.nets.tinyFaceDetector.loadFromUri('./face-api.js-master/weights');
@@ -171,7 +439,39 @@
     try {
       status.textContent = '📷 กำลังเปิดกล้อง...';
       stream = await navigator.mediaDevices.getUserMedia({
+<<<<<<< HEAD
         video: { facingMode: "user", width: { ideal: 240 }, height: { ideal: 240 }, frameRate: { ideal: 15 } },
+=======
+<<<<<<< HEAD
+        video: { facingMode: "user", width: { ideal: 300 }, height: { ideal: 300 }, frameRate: { ideal: 15 } },
+=======
+<<<<<<< HEAD
+        video: { facingMode: "user", width: { ideal: 300 }, height: { ideal: 300 }, frameRate: { ideal: 15 } },
+=======
+<<<<<<< HEAD
+        video: { facingMode: "user", width: { ideal: 300 }, height: { ideal: 300 }, frameRate: { ideal: 15 } },
+=======
+<<<<<<< HEAD
+        video: { facingMode: "user", width: { ideal: 300 }, height: { ideal: 300 }, frameRate: { ideal: 15 } },
+=======
+<<<<<<< HEAD
+        video: { facingMode: "user", width: { ideal: 300 }, height: { ideal: 300 }, frameRate: { ideal: 15 } },
+=======
+<<<<<<< HEAD
+        video: { facingMode: "user", width: { ideal: 300 }, height: { ideal: 300 }, frameRate: { ideal: 15 } },
+=======
+<<<<<<< HEAD
+        video: { facingMode: "user", width: { ideal: 300 }, height: { ideal: 300 }, frameRate: { ideal: 15 } },
+=======
+        video: { facingMode: "user", width: { ideal: 240 }, height: { ideal: 240 }, frameRate: { ideal: 15 } },
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
         audio: false
       });
       video.srcObject = stream;
@@ -179,8 +479,48 @@
       await new Promise(r => video.addEventListener('loadedmetadata', r, { once: true }));
       await video.play();
 
+<<<<<<< HEAD
       overlay.width = video.videoWidth || 240;
       overlay.height = video.videoHeight || 240;
+=======
+<<<<<<< HEAD
+      overlay.width = video.videoWidth || 300;
+      overlay.height = video.videoHeight || 300;
+=======
+<<<<<<< HEAD
+      overlay.width = video.videoWidth || 300;
+      overlay.height = video.videoHeight || 300;
+=======
+<<<<<<< HEAD
+      overlay.width = video.videoWidth || 300;
+      overlay.height = video.videoHeight || 300;
+=======
+<<<<<<< HEAD
+      overlay.width = video.videoWidth || 300;
+      overlay.height = video.videoHeight || 300;
+=======
+<<<<<<< HEAD
+      overlay.width = video.videoWidth || 300;
+      overlay.height = video.videoHeight || 300;
+=======
+<<<<<<< HEAD
+      overlay.width = video.videoWidth || 300;
+      overlay.height = video.videoHeight || 300;
+=======
+<<<<<<< HEAD
+      overlay.width = video.videoWidth || 300;
+      overlay.height = video.videoHeight || 300;
+=======
+      overlay.width = video.videoWidth || 240;
+      overlay.height = video.videoHeight || 240;
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
       status.textContent = 'กำลังโหลด...';
       await loadFaceModelOnce();
       status.textContent = '✅ พร้อมตรวจจับใบหน้า';
@@ -205,7 +545,47 @@
   }
 
   /* =======================
+<<<<<<< HEAD
       FACE DETECT & OVERLAY
+=======
+<<<<<<< HEAD
+      FACE DETECT & OVERLAY
+=======
+<<<<<<< HEAD
+      FACE DETECT & OVERLAY
+=======
+<<<<<<< HEAD
+      FACE DETECT & OVERLAY
+=======
+<<<<<<< HEAD
+      FACE DETECT & OVERLAY
+=======
+<<<<<<< HEAD
+      FACE DETECT & OVERLAY
+=======
+<<<<<<< HEAD
+      FACE DETECT & OVERLAY
+=======
+<<<<<<< HEAD
+      FACE DETECT & OVERLAY
+=======
+<<<<<<< HEAD
+      FACE DETECT & OVERLAY
+=======
+<<<<<<< HEAD
+     FACE DETECT & OVERLAY
+=======
+      FACE DETECT & OVERLAY
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
   ======================= */
   async function detectFace() {
     if (video.readyState < 2) return null;
@@ -250,7 +630,47 @@
   }
 
   /* =======================
+<<<<<<< HEAD
       CAPTURE
+=======
+<<<<<<< HEAD
+      CAPTURE
+=======
+<<<<<<< HEAD
+      CAPTURE
+=======
+<<<<<<< HEAD
+      CAPTURE
+=======
+<<<<<<< HEAD
+      CAPTURE
+=======
+<<<<<<< HEAD
+      CAPTURE
+=======
+<<<<<<< HEAD
+      CAPTURE
+=======
+<<<<<<< HEAD
+      CAPTURE
+=======
+<<<<<<< HEAD
+      CAPTURE
+=======
+<<<<<<< HEAD
+     CAPTURE
+=======
+      CAPTURE
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
   ======================= */
   function captureFace() {
     captureBtn.disabled = true;
@@ -273,7 +693,43 @@
 
     const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
     const base64 = base64DataUrl.split(',')[1];
+<<<<<<< HEAD
     
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+    
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
     const padding = (base64.endsWith('=')) ? (base64.endsWith('==') ? 2 : 1) : 0;
     const actualByteSize = (base64.length * 0.75) - padding;
 
@@ -285,8 +741,53 @@
 
     panelResult.style.display = 'block';
     videoContainer.style.display = 'none';
+<<<<<<< HEAD
     captureBtn.style.display = 'none';   
     status.style.display = 'none';      
+=======
+<<<<<<< HEAD
+    captureBtn.style.display = 'none';
+    status.style.display = 'none';
+=======
+<<<<<<< HEAD
+    captureBtn.style.display = 'none';
+    status.style.display = 'none';
+=======
+<<<<<<< HEAD
+    captureBtn.style.display = 'none';
+    status.style.display = 'none';
+=======
+<<<<<<< HEAD
+    captureBtn.style.display = 'none';
+    status.style.display = 'none';
+=======
+<<<<<<< HEAD
+    captureBtn.style.display = 'none';
+    status.style.display = 'none';
+=======
+<<<<<<< HEAD
+    captureBtn.style.display = 'none';
+    status.style.display = 'none';
+=======
+<<<<<<< HEAD
+    captureBtn.style.display = 'none';
+    status.style.display = 'none';
+=======
+<<<<<<< HEAD
+    captureBtn.style.display = 'none';
+    status.style.display = 'none';
+=======
+    captureBtn.style.display = 'none';   
+    status.style.display = 'none';      
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
     stopCamera();
   }
 
@@ -295,6 +796,64 @@
     captureFace();
   });
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+  retakeBtn?.addEventListener('click', (e) => {
+    if (e) e.preventDefault();
+    userFaceArray.length = 0;
+
+    allowCam = true;
+    if (allowFaceCheckbox) {
+      allowFaceCheckbox.checked = true;
+    }
+
+    panelResult.style.display = 'none';
+    videoContainer.style.display = 'block';
+
+    captureBtn.disabled = true;
+    captureBtn.style.opacity = '0.5';
+    captureBtn.style.display = 'inline-block';
+
+    status.textContent = 'พร้อมตรวจจับใบหน้า';
+    status.style.color = '#333';
+    status.style.display = 'block';
+
+    cameraStarted = false;
+    updateCameraPanel();
+  });
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
   retakeBtn?.addEventListener('click', () => {
     userFaceArray.length = 0;
     panelResult.style.display = 'none';
@@ -307,9 +866,127 @@
     status.style.display = 'block';
     updateCameraPanel();
   });
+<<<<<<< HEAD
 
   /* =========================================================
      📥 UPDATE SERVER (ปุ่มถ่ายรูปอัปเดตใบหน้า)
+=======
+<<<<<<< HEAD
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+  /*==============================================================
+    Function Bulid Userinfo
+  ===============================================================*/
+  function buildUserInfo(fd, currentUserId, hasFace) {
+    return {
+      ID: currentUserId,
+      UniqueID: String(fd.get('UniqueID')),
+      Name: String(fd.get('Name')),
+      AuthInfo: [2, (hasFace ? 9 : 0), 30, 0, 0, 0, 0, 0],
+      Privilege: Number(fd.get('Privilege')) || 2,
+      CreateDate: new Date().toISOString().replace('T', ' ').split('.')[0],
+      UsePeriodFlag: 0,
+      RegistDate: String(fd.get('RegistDate') || ''),
+      ExpireDate: String(fd.get('ExpireDate') || ''),
+      Password: "",
+      GroupCode: Number(fd.get('GroupCode')) || 1000,
+      AccessGroupCode: Number(fd.get('AccessGroupCode')) || 3000,
+      UserType: Number(fd.get('UserType')) || 0,
+      TimezoneCode: 0,
+      BlackList: 0,
+      FPIdentify: 0,
+      FaceIdentify: hasFace ? 1 : 0,
+      DuressFinger: null,
+      Partition: 0,
+      APBExcept: 0,
+      APBZone: 0,
+      WorkCode: "0000",
+      MealCode: "0000",
+      MoneyCode: "0000",
+      MessageCode: 0,
+      VerifyLevel: Number(fd.get('VerifyLevel')) || 5,
+<<<<<<< HEAD
+      PositionCode: Number(fd.get('PositionCode')) || 9997,
+=======
+<<<<<<< HEAD
+      PositionCode: Number(fd.get('PositionCode')) || 9997,
+=======
+<<<<<<< HEAD
+      PositionCode: Number(fd.get('PositionCode')) || 9997,
+=======
+<<<<<<< HEAD
+      PositionCode: Number(fd.get('PositionCode')) || 9997,
+=======
+<<<<<<< HEAD
+      PositionCode: Number(fd.get('PositionCode')) || 9997,
+=======
+<<<<<<< HEAD
+      PositionCode: Number(fd.get('PositionCode')) || 9997,
+=======
+      PositionCode: Number(fd.get('Position')) || 9997,
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+      EmployeeNum: "0",
+      Email: String(fd.get('Email') || ''),
+      Phone: "",
+      Department: String(fd.get('Department') || ''),
+      LoginPW: String(fd.get('LoginPW') || ''),
+      LoginAllowed: Number(fd.get('LoginAllowed')) || 0,
+      Picture: "",
+      IrisIdentify: 0,
+      VoipUse: 0,
+      VoipDoorOpen: 0,
+      VoipAutoAnswer: 0,
+      Gender: 0,
+      Mobile: "",
+      UnavailableTime: "",
+      Birthday: ""
+    };
+  }
+
+
+  /* =========================================================
+     📥 UPDATE SERVER (ปุ่มถ่ายรูปอัปเดตใบหน้า)
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+
+  /* =========================================================
+<<<<<<< HEAD
+     📥 UPDATE SERVER (ปุ่มถ่ายรูปอัปเดตใบหน้า - ยุบรวมแก้บั๊กซ้ำซ้อนแล้ว)
+=======
+     📥 UPDATE SERVER (ปุ่มถ่ายรูปอัปเดตใบหน้า)
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
      ========================================================= */
   updateBtn.addEventListener('click', async (e) => {
     e.preventDefault();
@@ -322,7 +999,46 @@
 
     const fd = new FormData(form);
     let rawId = String(fd.get('ID')).trim();
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
     let currentUserId = rawId;
     if (rawId.length === 6) {
       currentUserId = "00" + rawId;
@@ -330,15 +1046,119 @@
 
     let cardValues = fd.getAll('CardNum[]').filter(Boolean);
     if (cardValues.length === 0) {
+<<<<<<< HEAD
       const singleCard = fd.get('CardNum') || rawId; 
       if (singleCard) cardValues.push(singleCard);
     }
+=======
+<<<<<<< HEAD
+      const singleCard = fd.get('CardNum') || rawId;
+      if (singleCard) cardValues.push(singleCard);
+    }
+=======
+<<<<<<< HEAD
+      const singleCard = fd.get('CardNum') || rawId;
+      if (singleCard) cardValues.push(singleCard);
+    }
+=======
+<<<<<<< HEAD
+      const singleCard = fd.get('CardNum') || rawId;
+      if (singleCard) cardValues.push(singleCard);
+    }
+=======
+<<<<<<< HEAD
+      const singleCard = fd.get('CardNum') || rawId;
+      if (singleCard) cardValues.push(singleCard);
+    }
+=======
+<<<<<<< HEAD
+      const singleCard = fd.get('CardNum') || rawId;
+      if (singleCard) cardValues.push(singleCard);
+    }
+=======
+<<<<<<< HEAD
+      const singleCard = fd.get('CardNum') || rawId;
+      if (singleCard) cardValues.push(singleCard);
+    }
+=======
+<<<<<<< HEAD
+      const singleCard = fd.get('CardNum') || rawId;
+      if (singleCard) cardValues.push(singleCard);
+    }
+=======
+<<<<<<< HEAD
+      const singleCard = fd.get('CardNum') || rawId;
+      if (singleCard) cardValues.push(singleCard);
+    }
+=======
+      const singleCard = fd.get('CardNum') || rawId; 
+      if (singleCard) cardValues.push(singleCard);
+    }
+<<<<<<< HEAD
+    const cards = cardValues.map(c => ({ CardNum: String(c).trim(), UserID: currentUserId }));
+
+=======
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 
     const cards = cardValues.map(c => {
       let cleanCard = String(c).trim();
       if (cleanCard.length === 8 && cleanCard.startsWith("00")) {
         cleanCard = cleanCard.substring(2);
       }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+      return {
+        CardNum: cleanCard,
+        UserID: currentUserId
+      };
+    });
+
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
       return { 
         CardNum: cleanCard,       
         UserID: currentUserId     
@@ -346,6 +1166,18 @@
     });
 
     // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้า
+<<<<<<< HEAD
+=======
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
     let hasFace = false;
     let faceInfo = null;
 
@@ -353,7 +1185,43 @@
       if (userFaceArray.length > 0) {
         hasFace = true;
         faceInfo = [{
+<<<<<<< HEAD
           UserID: currentUserId, 
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+          UserID: currentUserId, 
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
           TemplateType: 1,
           TemplateSize: userFaceArray[0].TemplateSize,
           TemplateData: userFaceArray[0].TemplateData
@@ -361,22 +1229,117 @@
       } else if (oldFaceTemplate) {
         hasFace = true;
         faceInfo = [{
+<<<<<<< HEAD
           UserID: currentUserId, 
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+<<<<<<< HEAD
+          UserID: currentUserId,
+=======
+          UserID: currentUserId, 
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
           TemplateType: 1,
           TemplateSize: oldFaceTemplate.TemplateSize,
           TemplateData: oldFaceTemplate.TemplateData
         }];
       }
+<<<<<<< HEAD
     } else {
       // ❌ ถ้าไม่ติ๊ก ให้เคลียร์ก้อนนี้เป็น null ตามที่คุณไปตรวจสอบมา
       faceInfo = null;
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+    } else {
+      faceInfo = null;
+    }
+
+    const userInfo = buildUserInfo(fd, currentUserId, hasFace); // ✅ เรียกใช้ function
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+=======
+    } else {
+      // ❌ ถ้าไม่ติ๊ก ให้เคลียร์ก้อนนี้เป็น null ตามที่คุณไปตรวจสอบมา
+      faceInfo = null;
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
     }
 
     const userInfo = {
       ID: currentUserId, 
       UniqueID: fd.get('UniqueID'),
       Name: fd.get('Name'),
+<<<<<<< HEAD
       AuthInfo: [2, (hasFace ? 9 : 0), 30, 0, 0, 0, 0, 0], 
+=======
+<<<<<<< HEAD
+      AuthInfo: [2, (hasFace ? 9 : 0), 30, 0, 0, 0, 0, 0], // บังคับเป็น 9 เปิดระบบใบหน้า
+=======
+      AuthInfo: [2, (hasFace ? 9 : 0), 30, 0, 0, 0, 0, 0], 
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
       Privilege: Number(fd.get('Privilege')) || 2,
       GroupCode: Number(fd.get('GroupCode')) || 1000,
       AccessGroupCode: Number(fd.get('AccessGroupCode')) || 3000,
@@ -385,9 +1348,26 @@
       FaceIdentify: hasFace ? 1 : 0,
       Email: fd.get('Email') || '',
       Department: fd.get('Department') || '',
+<<<<<<< HEAD
       LoginAllowed: "0",
       Picture: ""
     };
+=======
+<<<<<<< HEAD
+=======
+      LoginAllowed: "0",
+>>>>>>> 5eb1b7f (Check Register Update Format)
+      Picture: ""
+    };
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 
     const payload = {
       UserInfo: userInfo,
@@ -413,13 +1393,128 @@
       );
 
       const result = await res.json();
+<<<<<<< HEAD
       console.log('🔍 SERVER RESPONSE (RAW):', result);
 
+=======
+<<<<<<< HEAD
+      console.log('🔍 SERVER RESPONSE (RAW):', result);
+
+=======
+<<<<<<< HEAD
+      console.log('🔍 SERVER RESPONSE (RAW):', result);
+
+=======
+<<<<<<< HEAD
+      console.log('🔍 SERVER RESPONSE (RAW):', result);
+
+=======
+<<<<<<< HEAD
+      console.log('🔍 SERVER RESPONSE (RAW):', result);
+
+=======
+<<<<<<< HEAD
+      console.log('🔍 SERVER RESPONSE (RAW):', result);
+
+=======
+<<<<<<< HEAD
+      console.log('🔍 SERVER RESPONSE (RAW):', result);
+
+=======
+<<<<<<< HEAD
+      console.log('🔍 SERVER RESPONSE (RAW):', result);
+
+=======
+<<<<<<< HEAD
+      console.log('🔍 SERVER RESPONSE (RAW):', result);
+
+=======
+<<<<<<< HEAD
+      if (res.ok) {
+        alert('✅ อัปเดตข้อมูลและใบหน้าสำเร็จเรียบร้อย');
+        location.reload();
+      } else {
+        alert('❌ อัปเดตไม่สำเร็จ: ' + (result.message || 'โครงสร้างข้อมูลผิดพลาด'));
+      }
+    } catch (e) {
+      alert('⚠️ ไม่สามารถเชื่อมต่อกับ API Server ได้');
+    } finally {
+      hideLoading();
+      updateBtn.disabled = false;
+    }
+  });
+
+=======
+      console.log('🔍 SERVER RESPONSE (RAW):', result);
+
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
       const apiResult = result?.apiResult;
       const innerResult = apiResult?.Result || apiResult?.result;
       const resultCode = innerResult?.ResultCode !== undefined ? innerResult?.ResultCode : innerResult?.resultCode;
 
       console.log('🔍 Detected ResultCode:', resultCode);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+
+      if (resultCode === 33558286 || String(resultCode) === "33558286" ||
+        resultCode === 33558281 || String(resultCode) === "33558281") {
+        alert('❌ อัปเดตไม่สำเร็จ: เครื่องสแกนไม่สามารถประมวลผลรูปภาพนี้ได้\n\n💡 สาเหตุ: รูปถ่ายอาจมืดเกินไป, ใบหน้าไม่ชัดเจน หรือไม่ตรงตามมาตรฐานของเครื่อง\nกรุณาลองถ่ายรูปใหม่อีกครั้งให้เห็นใบหน้าตรงและชัดเจนครับ');
+        return;
+      }
+
+      if (resultCode === 16777237 || String(resultCode) === "16777237" ||
+        resultCode === 16777241 || String(resultCode) === "16777241") {
+        const dupInfo = apiResult?.DuplicateInfo || apiResult?.duplicateInfo;
+        const dupName = dupInfo?.DuplicateName || dupInfo?.duplicateName || 'ไม่ระบุชื่อ';
+        const dupId = dupInfo?.DuplicateUniqueID || dupInfo?.duplicateUniqueID || 'ไม่ระบุ ID';
+        alert(`❌ อัปเดตไม่สำเร็จ: ใบหน้าหรือเลขบัตรนี้ "ซ้ำซ้อน" กับพนักงานในเครื่องสแกน\n\nพบข้อมูลซ้ำกับ: ${dupName} (ID: ${dupId})\n\n💡 วิธีแก้: กรุณาลบพนักงานคนเดิมออกจากเครื่องสแกนก่อนอัปโหลดอีกครั้ง`);
+        return;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
       if (resultCode === 33558286 || String(resultCode) === "33558286" || resultCode === 33558281 || String(resultCode) === "33558281") {
         alert('❌ อัปเดตไม่สำเร็จ: เครื่องสแกนไม่สามารถประมวลผลรูปภาพนี้ได้\n\n💡 สาเหตุ: รูปถ่ายอาจมืดเกินไป, ใบหน้าไม่ชัดเจน หรือไม่ตรงตามมาตรฐานของเครื่อง\nกรุณาลองถ่ายรูปใหม่อีกครั้งให้เห็นใบหน้าตรงและชัดเจนครับ');
         return; 
@@ -431,10 +1526,48 @@
 
         alert(`❌ อัปเดตไม่สำเร็จ: ใบหน้าหรือเลขบัตรนี้ "ซ้ำซ้อน" กับพนักงานในเครื่องสแกน\n\nพบข้อมูลซ้ำกับ: ${dupName} (ID: ${dupId})\n\n💡 วิธีแก้: กรุณาลบพนักงานคนเดิมออกจากเครื่องสแกนก่อนอัปโหลดอีกครั้ง`);
         return; 
+<<<<<<< HEAD
+=======
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
       }
 
       if (res.ok && (result.status === "success" || result.status === "SUCCESS")) {
         alert('✅ อัปเดตข้อมูลและใบหน้าสำเร็จเรียบร้อย');
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/test_deploy/index.php';
+=======
+<<<<<<< HEAD
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/test_deploy/index.php';
+=======
+<<<<<<< HEAD
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/test_deploy/index.php';
+=======
+<<<<<<< HEAD
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/test_deploy/index.php';
+=======
+<<<<<<< HEAD
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/test_deploy/index.php';
+=======
+<<<<<<< HEAD
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/test_deploy/index.php';
+=======
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
         console.log('Payload Logged:', JSON.stringify(payload, null, 2));
       } else {
         alert('❌ อัปเดตไม่สำเร็จ: ' + (result.message || 'โครงสร้างข้อมูลผิดพลาด'));
@@ -449,6 +1582,34 @@
     }
   });
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
   /* =========================================================
         💾 UPDATE DATA SERVER (ปุ่มบันทึกข้อมูลทั่วไปท้ายฟอร์ม)
      ========================================================= */
@@ -465,16 +1626,115 @@
 
     let cardValues = fd.getAll('CardNum[]').filter(Boolean);
     if (cardValues.length === 0) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+      // 💡 แก้ไขบั๊กจาก trim(currentUserId) เดิม มาใช้ substring จัดการตัดหลักแทน
+      const rawCard = fd.get('CardNum');
+      const singleCard = rawCard
+        ? String(rawCard).trim()
+        : (currentUserId.startsWith("00") ? currentUserId.substring(2) : currentUserId);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+      const singleCard = fd.get('CardNum') || rawId;
+=======
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
       // 💡 แก้ไขบั๊กจาก trim(currentUserId) เดิม มาใช้ substring จัดการตัดหลักแทน
       const rawCard = fd.get('CardNum');
       const singleCard = rawCard 
         ? String(rawCard).trim() 
         : (currentUserId.startsWith("00") ? currentUserId.substring(2) : currentUserId);
+<<<<<<< HEAD
+=======
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
       if (singleCard) cardValues.push(singleCard);
     }
     const cards = cardValues.map(c => ({ CardNum: String(c).trim(), UserID: currentUserId }));
 
+<<<<<<< HEAD
     // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้าของปุ่มเซฟทั่วไป
+=======
+<<<<<<< HEAD
+    // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้าของปุ่มเซฟทั่วไป
+=======
+<<<<<<< HEAD
+    // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้าของปุ่มเซฟทั่วไป
+=======
+<<<<<<< HEAD
+    // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้าของปุ่มเซฟทั่วไป
+=======
+<<<<<<< HEAD
+    // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้าของปุ่มเซฟทั่วไป
+=======
+<<<<<<< HEAD
+    // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้าของปุ่มเซฟทั่วไป
+=======
+<<<<<<< HEAD
+    // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้าของปุ่มเซฟทั่วไป
+=======
+<<<<<<< HEAD
+    // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้าของปุ่มเซฟทั่วไป
+=======
+<<<<<<< HEAD
+    // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้าของปุ่มเซฟทั่วไป
+=======
+<<<<<<< HEAD
+=======
+    // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้าของปุ่มเซฟทั่วไป
+>>>>>>> 5eb1b7f (Check Register Update Format)
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
     let hasFace = false;
     let faceInfo = null;
 
@@ -496,11 +1756,63 @@
           TemplateData: oldFaceTemplate.TemplateData
         }];
       }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
     } else {
       // ❌ ถ้าไม่ติ๊ก ให้เคลียร์ก้อนนี้เป็น null เช่นเดียวกัน
       faceInfo = null;
     }
 
+<<<<<<< HEAD
+=======
+    const userInfo = buildUserInfo(fd, currentUserId, hasFace);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+=======
+    } else {
+      // ❌ ถ้าไม่ติ๊ก ให้เคลียร์ก้อนนี้เป็น null เช่นเดียวกัน
+      faceInfo = null;
+>>>>>>> 5eb1b7f (Check Register Update Format)
+    }
+
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
     const userInfo = {
         ID: currentUserId,
         UniqueID: fd.get('UniqueID'),
@@ -514,9 +1826,26 @@
         FaceIdentify: hasFace ? 1 : 0, 
         Email: fd.get('Email') || '',
         Department: fd.get('Department') || '',
+<<<<<<< HEAD
         LoginAllowed: "0",
         Picture: ""
     };
+=======
+<<<<<<< HEAD
+=======
+        LoginAllowed: "0",
+>>>>>>> 5eb1b7f (Check Register Update Format)
+        Picture: ""
+    };
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 
     const payload = {
       UserInfo: userInfo,
@@ -533,13 +1862,50 @@
 
     try {
       const res = await fetch(
+<<<<<<< HEAD
         `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`, 
+=======
+<<<<<<< HEAD
+        `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`,
+=======
+<<<<<<< HEAD
+        `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`,
+=======
+<<<<<<< HEAD
+        `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`,
+=======
+<<<<<<< HEAD
+        `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`,
+=======
+<<<<<<< HEAD
+        `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`,
+=======
+<<<<<<< HEAD
+        `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`,
+=======
+<<<<<<< HEAD
+        `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`,
+=======
+<<<<<<< HEAD
+        `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`,
+=======
+        `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`, 
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         }
       );
+<<<<<<< HEAD
 
       if (res.ok) {
         alert('✅ บันทึกข้อมูลเรียบร้อยแล้ว');
@@ -555,4 +1921,88 @@
     }
   });
 
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+      // พิ่ม ResultCode check 
+      const result = await res.json();
+      const apiResult = result?.apiResult;
+      const innerResult = apiResult?.Result || apiResult?.result;
+      const resultCode = innerResult?.ResultCode ?? innerResult?.resultCode;
+      if (res.ok && (result.status === "success" || result.status === "SUCCESS")) {
+        alert('✅ บันทึกข้อมูลเรียบร้อยแล้ว');
+      } else {
+        alert('❌ บันทึกไม่สำเร็จ: ' + (result.message || `ResultCode: ${resultCode}`));
+      }
+    } catch (e) {
+      alert('⚠️ API error');
+    } finally {
+      hideLoading();
+      btnUpdateData.disabled = false;
+    }
+  });
+
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+
+      if (res.ok) {
+        alert('✅ บันทึกข้อมูลเรียบร้อยแล้ว');
+<<<<<<< HEAD
+        location.reload();
+=======
+        console.log(payload);
+>>>>>>> 5eb1b7f (Check Register Update Format)
+      } else {
+        alert('❌ บันทึกไม่สำเร็จ');
+      }
+    } catch (e) {
+      alert('⚠️ API error');
+    } finally {
+      hideLoading();
+      btnUpdateData.disabled = false;
+    }
+  });
+
+>>>>>>> 515c0969da196d8b3d62942b6cd2f17169851a77
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 })();
