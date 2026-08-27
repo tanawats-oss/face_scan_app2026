@@ -27,7 +27,10 @@
   const pdpaModal = document.getElementById('pdpaModal');
   const pdpaAcceptBtn = document.getElementById('pdpaAcceptBtn');
   const pdpaDeclineBtn = document.getElementById('pdpaDeclineBtn');
+<<<<<<< HEAD
   let animFrameId = null;
+=======
+>>>>>>> b526410014d7415a9844022493031e415f988d72
 
   /* =======================
       Guard DOM
@@ -195,7 +198,10 @@
   }
 
   function stopCamera() {
+<<<<<<< HEAD
     if (animFrameId) cancelAnimationFrame(animFrameId);
+=======
+>>>>>>> b526410014d7415a9844022493031e415f988d72
     if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
     if (video.srcObject) { video.srcObject = null; }
     cameraStarted = false;
@@ -248,7 +254,11 @@
       }
       detecting = false;
     }
+<<<<<<< HEAD
     animFrameId = requestAnimationFrame(drawOverlay);
+=======
+    requestAnimationFrame(drawOverlay);
+>>>>>>> b526410014d7415a9844022493031e415f988d72
   }
 
   /* =======================
@@ -276,11 +286,16 @@
     const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
     const base64 = base64DataUrl.split(',')[1];
 
+<<<<<<< HEAD
   let len = base64.length;
     let padding = 0;
     if (base64[len - 1] === '=') padding++;
     if (base64[len - 2] === '=') padding++;
     const actualByteSize = Math.floor((len * 0.75) - padding);
+=======
+    const padding = (base64.endsWith('=')) ? (base64.endsWith('==') ? 2 : 1) : 0;
+    const actualByteSize = (base64.length * 0.75) - padding;
+>>>>>>> b526410014d7415a9844022493031e415f988d72
 
     userFaceArray.length = 0;
     userFaceArray.push({
@@ -349,12 +364,21 @@
       Partition: 0,
       APBExcept: 0,
       APBZone: 0,
+<<<<<<< HEAD
       WorkCode: "0",
       MealCode: "0",
       MoneyCode: "0",
       MessageCode: 0,
       VerifyLevel: Number(fd.get('VerifyLevel')) || 0,
       PositionCode: Number(fd.get('PositionCode')) || 0,
+=======
+      WorkCode: "0000",
+      MealCode: "0000",
+      MoneyCode: "0000",
+      MessageCode: 0,
+      VerifyLevel: Number(fd.get('VerifyLevel')) || 5,
+      PositionCode: Number(fd.get('PositionCode')) || 9997,
+>>>>>>> b526410014d7415a9844022493031e415f988d72
       EmployeeNum: "0",
       Email: String(fd.get('Email') || ''),
       Phone: "",
@@ -388,6 +412,7 @@
 
     const fd = new FormData(form);
     let rawId = String(fd.get('ID')).trim();
+<<<<<<< HEAD
     let cleanNumber = rawId.replace(/[^0-9]/g, '');
     let currentUserId = rawId;
 
@@ -401,15 +426,57 @@
 		    let last3  = cleanNumber.substring(8, 11); // "277"   (3 หลักสุดท้าย)
 
         currentUserId = first5 + last3; // ผลลัพธ์: "57100277" (8 หลักพอดี ไม่ซ้ำคนอื่น)
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+    let cleanNumber = rawId.replace(/[^0-9]/g, '');
+    let currentUserId = rawId;
+
+    if (cleanNumber.length === 11) {
+        // === เงื่อนไขใหม่: ถ้ารหัสมาเป็น 11 หลัก (เช่น 57110010277) ===
+        let year         = cleanNumber.substring(0, 2);  // ได้ "57"
+        let facultyGroup = cleanNumber.substring(2, 3) + cleanNumber.substring(5, 6); // ตำแหน่งที่ 3 กับ 6 -> "1" + "0" = "10"
+        let sequence     = cleanNumber.substring(7, 11); // 4 หลักสุดท้าย -> "0277"
+
+        currentUserId = year + facultyGroup + sequence; // ผลลัพธ์: "57100277" (8 หลักพอดี ไม่ซ้ำคนอื่น)
+>>>>>>> b526410014d7415a9844022493031e415f988d72
     } else if (cleanNumber.length === 6) {
         // === เงื่อนไขเดิม: ถ้าเป็นเลข 6 หลัก ให้เติม 00 ข้างหน้า ===
         currentUserId = "00" + cleanNumber; // ผลลัพธ์: "00xxxx" (กลายเป็น 8 หลักเช่นกัน)
     }else {
         // กรณีอื่น ๆ ที่ไม่เข้าพวก ให้ใช้ตัวเลขล้วนที่สกัดได้ไปก่อน
         currentUserId = cleanNumber;
+<<<<<<< HEAD
     }
 
     
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+
+    let currentUserId = rawId;
+    if (rawId.length === 6) {
+      currentUserId = "00" + rawId;
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+    }
+
+>>>>>>> b526410014d7415a9844022493031e415f988d72
     let cardValues = fd.getAll('CardNum[]').filter(Boolean);
     if (cardValues.length === 0) {
       const singleCard = fd.get('CardNum') || rawId;
@@ -503,7 +570,27 @@
 
       if (res.ok && (result.status === "success" || result.status === "SUCCESS")) {
         alert('✅ อัปเดตข้อมูลและใบหน้าสำเร็จเรียบร้อย');
+<<<<<<< HEAD
         window.location.href = 'https://lib.swu.ac.th/app/face_scan/index.php';
+=======
+<<<<<<< HEAD
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/index.php';
+=======
+<<<<<<< HEAD
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/index.php';
+=======
+<<<<<<< HEAD
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/index.php';
+=======
+<<<<<<< HEAD
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/index.php';
+=======
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/test_deploy/index.php';
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
         console.log('Payload Logged:', JSON.stringify(payload, null, 2));
       } else {
         alert('❌ อัปเดตไม่สำเร็จ: ' + (result.message || 'โครงสร้างข้อมูลผิดพลาด'));
@@ -526,6 +613,19 @@
     console.log('💾 CLICK UPDATE DATA (GENERAL)');
 
     const fd = new FormData(form);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
   let rawId = String(fd.get('ID')).trim();
     let cleanNumber = rawId.replace(/[^0-9]/g, '');
     let currentUserId = rawId;
@@ -543,6 +643,24 @@
     }else {
         // กรณีอื่น ๆ ที่ไม่เข้าพวก ให้ใช้ตัวเลขล้วนที่สกัดได้ไปก่อน
         currentUserId = cleanNumber;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+    let rawId = String(fd.get('ID')).trim();
+    let currentUserId = rawId;
+    if (rawId.length === 6) {
+      currentUserId = "00" + rawId;
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
     }
 
     let cardValues = fd.getAll('CardNum[]').filter(Boolean);

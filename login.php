@@ -15,6 +15,7 @@ Developed   : 2025
 <html lang="th">
 
 <head>
+<<<<<<< HEAD
     <!-- Google Tag Manager -->
     <script>
             function loadGTM() {
@@ -36,6 +37,25 @@ Developed   : 2025
         setTimeout(loadGTM, 3500);
     </script>
 <!-- End Google Tag Manager -->
+=======
+<<<<<<< HEAD
+    <!-- Google Tag Manager -->
+    <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-W8ZD4T59');
+    </script>
+<!-- End Google Tag Manager -->
+=======
+     <!-- Google Tag Manager -->
+    <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-W8ZD4T59');
+    </script>
+    <!-- End Google Tag Manager -->
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
     <meta charset="UTF-8">
     <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
     <meta name="developer-email" content="tanawats@g.swu.ac.th">
@@ -136,12 +156,36 @@ Developed   : 2025
 </head>
 
 <body>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> b526410014d7415a9844022493031e415f988d72
 <!-- Google Tag Manager (noscript) -->
 <noscript>
     <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8ZD4T59"
     height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
 <!-- End Google Tag Manager (noscript) -->
+<<<<<<< HEAD
+=======
+=======
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C48T4MMF9L"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-C48T4MMF9L');
+    </script>
+<!-- Google Tag Manager (noscript) -->
+        <noscript>
+            <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8ZD4T59"height="0" width="0" style="display:none;visibility:hidden">
+            </iframe>
+        </noscript>
+        <!-- End Google Tag Manager (noscript) -->
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
     <script>
         (function() {
             const ua = navigator.userAgent;

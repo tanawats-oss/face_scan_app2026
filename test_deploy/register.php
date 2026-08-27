@@ -80,7 +80,26 @@ $_SESSION['person_id'] = $userId;
 <html lang="th">
 
 <head>
+<<<<<<< HEAD
 
+    <meta charset="UTF-8">
+    <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
+=======
+<<<<<<< HEAD
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C48T4MMF9L"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-C48T4MMF9L');
+    </script>
+     <!-- Google Tag Manager -->
+    <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-W8ZD4T59');
+    </script>
+    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -88,12 +107,97 @@ $_SESSION['person_id'] = $userId;
     <link rel="stylesheet" href="./css/face_scan.css">
    
     <script>
+=======
+<<<<<<< HEAD
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C48T4MMF9L"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-C48T4MMF9L');
+    </script>
+     <!-- Google Tag Manager -->
+    <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-W8ZD4T59');
+    </script>
+    <!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register Face</title>
+    <link rel="stylesheet" href="./css/face_scan.css">
+   
+    <script>
+=======
+<<<<<<< HEAD
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C48T4MMF9L"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-C48T4MMF9L');
+    </script>
+     <!-- Google Tag Manager -->
+    <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-W8ZD4T59');
+    </script>
+    <!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register Face</title>
+    <link rel="stylesheet" href="./css/face_scan.css">
+   
+    <script>
+=======
+    <meta charset="UTF-8">
+    <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
+>>>>>>> b526410014d7415a9844022493031e415f988d72
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register Face</title>
+    <link rel="stylesheet" href="./css/face_scan.css">
+   
+    <script>
+<<<<<<< HEAD
+=======
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
         const SESSION_TIMEOUT = <?= SESSION_TIMEOUT ?>;
     </script>
 </head>
 
 <body>
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+        <!-- Google Tag Manager (noscript) -->
+        <noscript>
+            <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8ZD4T59"height="0" width="0" style="display:none;visibility:hidden">
+            </iframe>
+        </noscript>
+        <!-- End Google Tag Manager (noscript) -->
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
     <div style="padding: 10px; background: #eee; font-size: 12px; text-align: center;">ID ผู้ใช้งานระบบ: <?php echo htmlspecialchars($userId); ?></div>
 
     <div class="container">
@@ -127,6 +231,28 @@ $_SESSION['person_id'] = $userId;
                             <input class="form-control" name="Department" value="<?= htmlspecialchars($departMent) ?>" readonly>
                         </div>
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
                         <div class="col-md-8 mx-auto mb-3">
                             <label>ตำแหน่ง:</label>
                             <input class="form-control" value="<?php
@@ -146,6 +272,52 @@ $_SESSION['person_id'] = $userId;
 ?>" readonly>
                         </div>
                         <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' || $userType == '1000' ? '1000' : '3000') ?>">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+        <div class="col-md-8 mx-auto mb-3" >
+            <label>ตำแหน่ง:</label>
+            <input class="form-control" value="<?php 
+                if ($userType == 'student' || $userType == '1000') {
+                    echo 'นิสิต';
+                } elseif ($userType == 'staff' || $userType == '3000') {
+                   
+                    if ($userType == '3000' && ($fullName == 'testap008 api008' || $fullName == 'testap007 api007')) {
+                        echo 'ทดสอบระบบ';
+                    } else {
+                        echo 'บุคลากร';
+                    }
+                } elseif ($userType == 'testlib007' || $userType == 'testlib008') {
+                    echo 'ทดสอบระบบ';
+                } else {
+                    echo htmlspecialchars($userType);
+                }
+            ?>" readonly>
+        </div>
+        <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' || $userType == '1000' ? '1000' : '3000') ?>">
+<<<<<<< HEAD
+=======
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
+>>>>>>> b526410014d7415a9844022493031e415f988d72
 
                         <div class="col-md-8 mx-auto mb-3">
                             <label>รหัสผู้ใช้งาน:</label>
@@ -153,15 +325,62 @@ $_SESSION['person_id'] = $userId;
                         </div>
                     </div>
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
                     <h4 class="mt-5">สิทธิ์การใช้งานสแกนใบหน้า</h4>
                     <div class="col-md-8 mx-auto mb-3">
                         <table class="table table-sm" id="tableAuth">
                             <tr>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
                                 <td>เปิด-ปิดการใช้สแกนใบหน้า</td>
                                 <td>
                                     <label class="checkbox-container" >
                                         <input type="checkbox" id="AllowFaceRegister" name="AllowFaceRegister" <?= $hasFacePermission ? 'checked' : '' ?>>
                                         อนุญาตลงทะเบียนใบหน้า
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+                                <td>อนุญาตลงทะเบียนใบหน้า</td>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" id="AllowFaceRegister" name="AllowFaceRegister" <?= $hasFacePermission ? 'checked' : '' ?>>
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
                                     </label>
                                 </td>
                             </tr>
@@ -187,6 +406,81 @@ $_SESSION['person_id'] = $userId;
                     <input type="hidden" name="EmployeeNo" value="">
                     <input type="hidden" name="LoginAllowed" value="<?= ($userId == '708967') ? '1' : '0' ?>">
                     <input type="hidden" name="LoginPW" value="<?= ($userId == '708967') ? '708967' : '' ?>">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+
+     <h4 class="mt-5 ">สิทธิ์การใช้งานสแกนใบหน้า</h4>
+        <div class="col-md-8 mx-auto mb-3">
+            <table class="table table-sm" id="tableAuth">
+                <tr>
+                    <td>อนุญาตลงทะเบียนใบหน้า</td>
+                    <td>
+                        <label>
+                            <input type="checkbox" id="AllowFaceRegister" name="AllowFaceRegister" <?= $hasFacePermission ? 'checked' : '' ?>>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>อนุญาตเปิดกล้อง</td>
+                    <td>
+                        <button type="button" id="AllowCamBtn" class="btn btn-primary" disabled>
+                            เปิดกล้องถ่ายรูป
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+                           
+                        <input  type="hidden" name="Email" value="<?= htmlspecialchars($userMail) ?>" readonly>
+                        <input  type="hidden" name="Phone" value="" readonly>
+                        <input type="hidden" name="Privilege" value="<?= ($userId == '708967') ? '1' : '2' ?>">
+                        <input  type="hidden" name="RegistDate" value="<?= date('Y-m-d H:i:s') ?>" readonly>
+                        <input  type="hidden" name="ExpireDate" value="<?= date('Y-m-d H:i:s', strtotime('+1 year')) ?>" readonly>
+                        <input  type="hidden" name="Blacklist" value="0" readonly>
+                        <input type="hidden" name="GroupCode" value="0">
+                        <input type="hidden" name="VerifyLevel" value="0">
+                        <input type="hidden"  name="EmployeeNo" value="">
+                        <input type="hidden"  name="LoginAllowed" value="<?= ($userId == '708967') ? '1' : '0' ?>">
+                        <input type="hidden"  name="LoginPW" value="<?= ($userId == '708967') ? '708967' : '' ?>">
+
+        
+    </div>
+</div>
+        <!-- ================== Camera & Capture ================== -->
+        <div class="panel" id="Newtakephoto" name="Newtakephoto" style="display:none">
+
+            <h2>ถ่ายรูป อัพเดทรูปใหม่</h2>
+
+            <div class="stage row center">
+                <div class="video-container" id="videoContainer">
+                    <h3>Live Camera</h3>
+                    <video id="video" autoplay playsinline muted></video>
+                    <canvas id="overlay"></canvas>
+
+                    <p style="margin-top:8px; font-size:0.9rem; color:#555;">
+                        กรุณาจัดใบหน้าให้อยู่ในกรอบ
+                    </p>
+>>>>>>> fec99f40f4e2c9bd187f0b30f9081246d98f6f24
+>>>>>>> 814cd42bbe7bf6f465a8ea491f31d7fa6d035538
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
                 </div>
             </div>
 
@@ -328,8 +622,20 @@ $_SESSION['person_id'] = $userId;
         setInterval(checkSession, CHECK_INTERVAL);
     })();
     </script>
+<<<<<<< HEAD
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
 </body>
 
 </html>

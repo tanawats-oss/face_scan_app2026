@@ -127,7 +127,33 @@ function login_success($user_login)
     header("Location: index.php");
     exit;
 }
+// function login_success($user_login)
+// {
+//     $apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apiapp/checkUserId/" . urlencode($user_login);
+    
+//     $ch = curl_init($apiUrl);
+//     curl_setopt_array($ch, [
+//         CURLOPT_RETURNTRANSFER => true,
+//         CURLOPT_SSL_VERIFYPEER => false,
+//         CURLOPT_TIMEOUT        => 10,
+//         CURLOPT_VERBOSE        => false,
+//     ]);
+//     $response = curl_exec($ch);
+//     $error    = curl_error($ch);
+//     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+//     curl_close($ch);
 
+<<<<<<< HEAD
+=======
+//     echo "<pre>";
+//     echo "user_login: " . htmlspecialchars($user_login) . "\n";
+//     echo "HTTP Code: {$httpCode}\n";
+//     echo "CURL Error: {$error}\n";
+//     echo "Response: " . htmlspecialchars($response) . "\n";
+//     echo "</pre>";
+//     die();
+// }
+>>>>>>> b526410014d7415a9844022493031e415f988d72
 /* ===== Step 1: LDAPS 636 ===== */
 $ldapconn = @ldap_connect("ldaps://ldap.swu.ac.th", 636);
 if ($ldapconn) {
@@ -173,7 +199,19 @@ LOGIN_ERROR:
 
 if (isset($login_failed)) {
     log_login_status($user_login, 'fail'); 
+<<<<<<< HEAD
     // exit;
+=======
+<<<<<<< HEAD
+    // exit;
+=======
+<<<<<<< HEAD
+    // exit;
+=======
+    exit;
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
 }
 ?>
 <!DOCTYPE html>

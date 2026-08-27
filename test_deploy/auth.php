@@ -32,10 +32,20 @@ function log_login_status($user_login, $status)
         CURLOPT_HTTPHEADER     => [
             'Content-Type: application/json'
         ],
+<<<<<<< HEAD
         CURLOPT_TIMEOUT        => 1
     ]);
     
     $response = curl_exec($ch);    
+=======
+        CURLOPT_TIMEOUT        => 3
+    ]);
+    
+    $response = curl_exec($ch);
+    
+    // ❌ ลบโค้ด echo และ die(); สองบรรทัดเดิมตรงนี้ออกแล้ว
+    
+>>>>>>> b526410014d7415a9844022493031e415f988d72
     curl_close($ch); // 👈 ปล่อยให้มันปิดการเชื่อมต่อ cURL ตามปกติ
 }
 
@@ -60,17 +70,56 @@ if ($user_login === '' || $user_password === '') {
 $base_dn = "dc=swu,dc=ac,dc=th";
 $ldaprdn = "uid={$user_login}," . $base_dn;
 
+<<<<<<< HEAD
 /* ===== helper ===== */
+=======
+<<<<<<< HEAD
+/* ===== helper ===== */
+=======
+<<<<<<< HEAD
+/* ===== helper ===== */
+=======
+<<<<<<< HEAD
+/* ===== helper ===== */
+=======
+/* ===== helper functions ===== */
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
 function try_bind($conn, $rdn, $password)
 {
     return @ldap_bind($conn, $rdn, $password);
 }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
 function fetchPersonId($user_login)
 {
     $user_login = trim($user_login);
     if ($user_login === '') return null;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+function fetchPesonId($user_login)
+{
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
     $apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apiapp/checkUserId/" . urlencode($user_login);
 
     // ✅ เปลี่ยนจาก file_get_contents → curl เหมือนที่ debug ผ่าน
@@ -78,7 +127,11 @@ function fetchPersonId($user_login)
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_SSL_VERIFYPEER => false,
+<<<<<<< HEAD
         CURLOPT_TIMEOUT        => 3,
+=======
+        CURLOPT_TIMEOUT        => 10,
+>>>>>>> b526410014d7415a9844022493031e415f988d72
     ]);
     $response = curl_exec($ch);
     curl_close($ch);
@@ -94,6 +147,20 @@ function fetchPersonId($user_login)
 
     return null;
 }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+/* ===== success handler ===== */
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
 function login_success($user_login)
 {
     log_login_status($user_login, 'success');
@@ -124,7 +191,23 @@ function login_success($user_login)
     header("Location: index.php");
     exit;
 }
+// function login_success($user_login)
+// {
+//     $apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apiapp/checkUserId/" . urlencode($user_login);
+    
+//     $ch = curl_init($apiUrl);
+//     curl_setopt_array($ch, [
+//         CURLOPT_RETURNTRANSFER => true,
+//         CURLOPT_SSL_VERIFYPEER => false,
+//         CURLOPT_TIMEOUT        => 10,
+//         CURLOPT_VERBOSE        => false,
+//     ]);
+//     $response = curl_exec($ch);
+//     $error    = curl_error($ch);
+//     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+//     curl_close($ch);
 
+<<<<<<< HEAD
 /* ===== ปรับแต่งการต่อ LDAP ให้ไวขึ้น ===== */
 // กำหนด Server เรียงตามลำดับความสำคัญ (ถ้า 636 ผ่าน จะไม่ไป 389)
 /* ===== ปรับปรุงการตรวจสอบ LDAP ทั้ง 3 Step ให้ทำงานเร็วขึ้นด้วย Timeout ===== */
@@ -153,11 +236,84 @@ foreach ($ldap_configs as $config) {
         }
 
         // ตรวจสอบรหัสผ่าน
+=======
+//     echo "<pre>";
+//     echo "user_login: " . htmlspecialchars($user_login) . "\n";
+//     echo "HTTP Code: {$httpCode}\n";
+//     echo "CURL Error: {$error}\n";
+//     echo "Response: " . htmlspecialchars($response) . "\n";
+//     echo "</pre>";
+//     die();
+// }
+/* ===== Step 1: LDAPS 636 ===== */
+$ldapconn = @ldap_connect("ldaps://ldap.swu.ac.th", 636);
+if ($ldapconn) {
+    ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
+    ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 3);
+    ldap_set_option($ldapconn, LDAP_OPT_TIMELIMIT, 3);
+
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+    if (try_bind($ldapconn, $ldaprdn, $user_password)) {
+        ldap_unbind($ldapconn);
+        login_success($user_login);
+    }
+    ldap_unbind($ldapconn);
+}
+
+/* ===== Step 2: STARTTLS 389 ===== */
+$ldapconn = @ldap_connect("ldap://ldap.swu.ac.th", 389);
+if ($ldapconn) {
+    ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
+    ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 3);
+    ldap_set_option($ldapconn, LDAP_OPT_TIMELIMIT, 3);
+
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+    if (@ldap_start_tls($ldapconn)) {
+>>>>>>> b526410014d7415a9844022493031e415f988d72
         if (try_bind($ldapconn, $ldaprdn, $user_password)) {
             ldap_unbind($ldapconn);
             login_success($user_login); // เข้าสู่ระบบสำเร็จ
         }
 
+<<<<<<< HEAD
+=======
+/* ===== Step 3: Plain LDAP 389 ===== */
+$ldapconn = @ldap_connect("ldap://ldap.swu.ac.th", 389);
+if ($ldapconn) {
+    ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
+    ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 3);
+    ldap_set_option($ldapconn, LDAP_OPT_TIMELIMIT, 3);
+    
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+    if (try_bind($ldapconn, $ldaprdn, $user_password)) {
+>>>>>>> b526410014d7415a9844022493031e415f988d72
         ldap_unbind($ldapconn);
     }
 }
@@ -203,10 +359,29 @@ foreach ($ldap_configs as $config) {
 $login_failed = true;
 
 LOGIN_ERROR:
+<<<<<<< HEAD
 
 if (isset($login_failed)) {
     log_login_status($user_login, 'fail'); 
     // exit;
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+if (!isset($login_failed)) {
+    exit;
+}
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+
+if (isset($login_failed)) {
+    log_login_status($user_login, 'fail'); 
+    exit;
+>>>>>>> b526410014d7415a9844022493031e415f988d72
 }
 ?>
 <!DOCTYPE html>

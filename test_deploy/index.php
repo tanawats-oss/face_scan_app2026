@@ -77,6 +77,7 @@ function redirectToRegister($buasri_id)
     </script>";
     exit;
 }
+<<<<<<< HEAD
 
 // ✅ ตรวจ person_id ที่ดึงมาแล้วข้างบน ไม่ดึงซ้ำจาก session อีก
 if (empty($person_id)) {
@@ -101,7 +102,76 @@ if (empty($person_id)) {
 </head>
 
 <body>
+=======
+>>>>>>> b526410014d7415a9844022493031e415f988d72
 
+// ✅ ตรวจ person_id ที่ดึงมาแล้วข้างบน ไม่ดึงซ้ำจาก session อีก
+if (empty($person_id)) {
+    redirectToRegister($buasri_id);
+}
+?>
+<!DOCTYPE html>
+<html lang="th">
+
+<<<<<<< HEAD
+    <div class="container">
+        <!-- countdown -->
+        <div id="session-timer"
+            style="position:fixed;top:10px;right:10px;background:#222;color:#fff;padding:8px 12px;border-radius:6px;font-size:14px;z-index:9999">
+            Session เหลือเวลา: <span id="time-left">--:--</span>
+        </div>
+
+        <?php
+        // ✅ ใช้ $person_id ที่ดึงไว้แล้วด้านบน ไม่ต้องดึงจาก session อีก
+        echo "<p><b>รหัสผู้ใช้บริการ:</b> {$person_id}</p>";
+
+        /* ================== userList ================== */
+        $apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apidoor/userList"
+            . "?person_id={$person_id}"
+            . "&searchCategory=UniqueID"
+            . "&groupID=0&subInclude=true&offset=0&limit=10";
+
+        $data = json_decode(callApi($apiUrl), true);
+
+=======
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C48T4MMF9L"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-C48T4MMF9L');
+    </script>
+    <!-- Google Tag Manager -->
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+            var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true; j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-W8ZD4T59');
+    </script>
+    <!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
+    <meta name="developer-email" content="tanawats@g.swu.ac.th">
+    <meta name="system" content="Face Recognition Registration System">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Face Capture & Update</title>
+    <link rel="stylesheet" href="./css/face_scan.css">
+    <script>
+        const SESSION_TIMEOUT = <?= SESSION_TIMEOUT ?>;
+    </script>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8ZD4T59" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     <div class="container">
         <!-- countdown -->
@@ -122,6 +192,7 @@ if (empty($person_id)) {
 
         $data = json_decode(callApi($apiUrl), true);
 
+>>>>>>> b526410014d7415a9844022493031e415f988d72
         // filter หา "คนจริง"
         $userInfo = null;
         if (!empty($data['users'])) {
