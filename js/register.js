@@ -484,8 +484,8 @@
     
     if (cleanNumber.length === 11) {
         // === เงื่อนไขใหม่: ถ้ารหัสมาเป็น 11 หลัก (เช่น 57110010277) ===
-        let first5 = cleanNumber.substring(0, 5); // "69102" (5 หลักแรก)
-    let last3  = cleanNumber.substring(8, 11); // "277"   (3 หลักสุดท้าย)
+		let first5 = cleanNumber.substring(0, 5); // "69102" (5 หลักแรก)
+		let last3  = cleanNumber.substring(8, 11); // "277"   (3 หลักสุดท้าย)
     
     userId = first5 + last3; // ผลลัพธ์: "69102277" (8 หลัก ไม่ชนกัน)
 
@@ -540,7 +540,7 @@
       MoneyCode: "0",
       MessageCode: 0,
       VerifyLevel: Number(fd.get('VerifyLevel')) || 0,
-      PositionCode: Number(fd.get('Position')) || 9997,
+      PositionCode: Number(fd.get('Position')) || 0,
       EmployeeNum: "0",
       Email: String(fd.get('Email') || ''),
       Phone: "",
@@ -628,64 +628,33 @@
       }
       const result = await response.json();
       console.log('🔍 SERVER RESPONSE (RAW):', result);
-
-      // ✅ เพิ่มใหม่: เช็ค HTTP status ก่อน เพื่อแยก error "เซิร์ฟเวอร์ล่ม" ออกจาก "เครื่องสแกนปฏิเสธ"
-      if (!response.ok) {
-        console.error('%c❌ HTTP Error:', 'color: red;', response.status, result);
-        alert(`❌ เซิร์ฟเวอร์ตอบกลับผิดปกติ (HTTP ${response.status})\n${result?.message || 'กรุณาลองใหม่อีกครั้ง'}`);
-        return;
-      }
-
       const apiResult = result?.apiResult;
       const innerResult = apiResult?.Result || apiResult?.result;
-      const rawResultCode = innerResult?.ResultCode !== undefined ? innerResult?.ResultCode : innerResult?.resultCode;
-      const resultCode = Number(rawResultCode);
+      const resultCode = innerResult?.ResultCode !== undefined ? innerResult?.ResultCode : innerResult?.resultCode;
       console.log('🔍 Detected ResultCode:', resultCode);
 
-      // whitelist: 0 (ErrorNone) เท่านั้นที่ถือว่าสำเร็จจริง
-      if (result.status === 'success' && resultCode === 0) {
-        console.log('%c✅ Success:', 'color: green; font-weight: bold;', result);
-        alert('✅ บันทึกข้อมูลและลงทะเบียนเรียบร้อยแล้ว');
-        window.location.href = 'https://lib.swu.ac.th/app/face_scan/logout.php';
+      if (resultCode === 33558286 || String(resultCode) === "33558286" ||
+        resultCode === 33558281 || String(resultCode) === "33558281") {
+        alert('❌ อัปเดตไม่สำเร็จ: เครื่องสแกนไม่สามารถประมวลผลรูปภาพนี้ได้\n\n💡 สาเหตุ: รูปถ่ายอาจมืดเกินไป, ใบหน้าไม่ชัดเจน หรือไม่ตรงตามมาตรฐานของเครื่อง\nกรุณาลองถ่ายรูปใหม่อีกครั้งให้เห็นใบหน้าตรงและชัดเจนครับ');
         return;
       }
 
-      // ------ Error mapping (ตาม ErrorCode ของเครื่องสแกน) ------
-      const ERROR_MAP = {
-        // 0x02 Face capture errors
-        33558281: '❌ ไม่พบใบหน้าในภาพ กรุณาถ่ายรูปใหม่',                      // ErrorFacewtNoFace
-        33558282: '❌ พบใบหน้ามากกว่า 1 หน้าในภาพ',                           // ErrorFacewtMultiFace
-        33558283: '❌ ใบหน้าในภาพเล็กเกินไป กรุณาเข้าใกล้กล้อง',              // ErrorFacewtSmall
-        33558284: '❌ คุณภาพใบหน้าต่ำเกินไป กรุณาถ่ายในที่แสงสว่างพอ',       // ErrorFacewtLowScore
-        33558285: '❌ กรุณาหันหน้าตรงเข้ากล้อง',                              // ErrorFacewtSideFace
-        33558286: '❌ ภาพไม่ชัด กรุณาถ่ายรูปใหม่',                            // ErrorFacewtVague
-        33558287: '❌ กรุณาเข้าใกล้กล้องมากขึ้น',                             // ErrorFacewtTooFar
-        33558288: '❌ ระบบจดจำใบหน้าล้มเหลว กรุณาลองใหม่',                   // ErrorFacewtRecogFail
-        33558295: '❌ กรุณาถอดหน้ากากอนามัยก่อนถ่ายรูป',                     // ErrorWearingMask
-        33558296: '❌ ไฟล์ภาพเสียหาย กรุณาถ่ายรูปใหม่',                      // ErrorImageBroken
-
-        // 0x01 Duplicate / ID errors
-        16777217: '❌ รหัสผู้ใช้นี้มีอยู่ในระบบแล้ว (Duplicate ID) กรุณาตรวจสอบรหัสผู้ใช้',
-        16777222: '❌ UniqueID ซ้ำกับผู้ใช้ในระบบ',
-        16777223: '❌ UniqueID ซ้ำ (Not Unique)',
-        16777224: '❌ ผู้ใช้นี้มีอยู่แล้วในระบบ (User Exist)',
-        16777235: '❌ บัตร RF ซ้ำกับผู้ใช้อื่น',
-        16777236: '❌ ใบหน้านี้คล้าย/ซ้ำกับผู้ใช้อื่นในระบบ',
-        16777237: '❌ บัตรนี้คล้าย/ซ้ำกับผู้ใช้อื่นในระบบ',
-      };
-
-      if (resultCode === 16777236 || resultCode === 16777237) {
+      if (resultCode === 16777237 || String(resultCode) === "16777237" ||
+        resultCode === 16777241 || String(resultCode) === "16777241") {
         const dupInfo = apiResult?.DuplicateInfo || apiResult?.duplicateInfo;
         const dupName = dupInfo?.DuplicateName || dupInfo?.duplicateName || 'ไม่ระบุชื่อ';
         const dupId = dupInfo?.DuplicateUniqueID || dupInfo?.duplicateUniqueID || 'ไม่ระบุ ID';
-        alert(`${ERROR_MAP[resultCode]}\n\nพบข้อมูลซ้ำกับ: ${dupName} (ID: ${dupId})\n\n💡 วิธีแก้: กรุณาลบพนักงานคนเดิมออกจากเครื่องสแกนก่อนอัปโหลดอีกครั้ง`);
+        alert(`❌ อัปเดตไม่สำเร็จ: ใบหน้าหรือเลขบัตรนี้ "ซ้ำซ้อน" กับพนักงานในเครื่องสแกน\n\nพบข้อมูลซ้ำกับ: ${dupName} (ID: ${dupId})\n\n💡 วิธีแก้: กรุณาลบพนักงานคนเดิมออกจากเครื่องสแกนก่อนอัปโหลดอีกครั้ง`);
         return;
       }
-
-      // ✅ แก้ NaN: เช็คด้วย Number.isNaN แทน ?? เพราะ Number(undefined) = NaN ไม่ใช่ undefined
-      const codeDisplay = Number.isNaN(resultCode) ? 'ไม่ทราบ' : resultCode;
-      console.error('%c❌ API Error / Unhandled ResultCode:', 'color: red;', { resultCode, result });
-      alert(ERROR_MAP[resultCode] || `❌ เกิดข้อผิดพลาด (Code: ${codeDisplay})\n${result.message || 'กรุณาลองใหม่ หรือแจ้งผู้ดูแลระบบพร้อมรหัสนี้'}`);
+      if (response.ok && result.status === 'success') {
+        console.log('%c✅ Success:', 'color: green; font-weight: bold;', result);
+        alert('✅ บันทึกข้อมูลและลงทะเบียนเรียบร้อยแล้ว');
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/logout.php';
+      } else {
+        console.error('%c❌ API Error:', 'color: red;', result);
+        alert('❌ เกิดข้อผิดพลาด: ' + (result.message || 'Unknown Error'));
+      }
 
     } catch (error) {
       if (error.name === 'AbortError') {

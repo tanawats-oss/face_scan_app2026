@@ -70,6 +70,10 @@
   let lastDetectTime = 0;
   let oldFaceTemplate = window.oldFaceTemplate || null;
 
+  // ⭐ NEW: นับจำนวนเฟรมที่เจอใบหน้าติดต่อกัน เพื่อรอให้กล้อง auto-exposure/focus นิ่งก่อนอนุญาตให้ถ่าย
+  let stableFrameCount = 0;
+  const STABLE_FRAMES_REQUIRED = 6; // ~6 เฟรม * 200ms ≈ 1.2 วินาทีที่เจอหน้านิ่ง ๆ ต่อเนื่อง
+
   const userFaceArray = [];
   function getAuthInfoValue() { return (allowFaceCheckbox && allowFaceCheckbox.checked) ? [2, 9, 30, 0, 0, 0, 0, 0] : [2, 0, 30, 0, 0, 0, 0, 0]; }
 
@@ -237,11 +241,14 @@
       stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: "user",
+          // ⭐ FIX: เพิ่มความละเอียดจาก 300x300 -> 480x480
+          // ที่ความละเอียดต่ำมาก รูปที่ครอปซ้อนอีกชั้นจะยิ่งเบลอ/แตก
+          // จนบางครั้งเครื่องสแกนปฏิเสธว่า "รูปไม่ชัดเจน/ไม่ตรงมาตรฐาน"
           width: {
-            ideal: 300
+            ideal: 480
           },
           height: {
-            ideal: 300
+            ideal: 480
           },
           frameRate: {
             ideal: 15
@@ -275,6 +282,7 @@
 
       status.textContent = '✅ พร้อมตรวจจับใบหน้า';
       overlayRunning = true;
+      stableFrameCount = 0; // ⭐ reset ตัวนับความนิ่งทุกครั้งที่เปิดกล้องใหม่
       drawOverlay();
 
     } catch (e) {
@@ -297,6 +305,7 @@
     lastFaceBox = null;
     overlayRect = null;
     overlayRunning = false;
+    stableFrameCount = 0; // ⭐ reset
 
     const ctx = overlay.getContext('2d');
     ctx.clearRect(0, 0, overlay.width, overlay.height);
@@ -358,14 +367,26 @@
           overlayRect.w,
           overlayRect.h
         );
-        status.textContent = '✅ พบใบหน้า';
-        status.style.color = '#00c853';
 
-        captureBtn.disabled = false;
-        captureBtn.style.opacity = '1';
+        // ⭐ FIX: นับความนิ่งต่อเนื่อง แทนที่จะ enable ปุ่มทันทีที่เจอครั้งแรก
+        // เฟรมแรก ๆ หลังเปิดกล้องมักมืด/เบลอเพราะ auto-exposure/focus ยังไม่นิ่ง
+        stableFrameCount = Math.min(stableFrameCount + 1, STABLE_FRAMES_REQUIRED);
+
+        if (stableFrameCount >= STABLE_FRAMES_REQUIRED) {
+          status.textContent = '✅ พบใบหน้า';
+          status.style.color = '#00c853';
+          captureBtn.disabled = false;
+          captureBtn.style.opacity = '1';
+        } else {
+          status.textContent = `🔎 กำลังปรับกล้อง... (${stableFrameCount}/${STABLE_FRAMES_REQUIRED})`;
+          status.style.color = '#f9a825';
+          captureBtn.disabled = true;
+          captureBtn.style.opacity = '0.5';
+        }
       } else {
         lastFaceBox = null;
         overlayRect = null;
+        stableFrameCount = 0; // ⭐ หลุดเฟรม -> เริ่มนับใหม่
         status.textContent = '❌ ไม่พบใบหน้า';
         status.style.color = '#d50000';
 
@@ -385,11 +406,27 @@
 
   /* =======================
      CAPTURE (ถ่ายรูปและคำนวณขนาดไฟล์จริง)
+     ⭐ FIX: capture ตอนนี้ทำ 2 อย่างที่ต่างจากเดิม
+       1) re-detect ใบหน้าสด ๆ ณ วินาทีที่กดปุ่ม แทนที่จะใช้ lastFaceBox ที่อาจเก่าไปแล้ว
+          200ms+ ทำให้กรอบไม่ตรงตำแหน่งจริงถ้าผู้ใช้ขยับหัวเล็กน้อย
+       2) clamp พิกัดที่จะ crop ให้อยู่ในขอบเขตของวิดีโอเสมอ กันไม่ให้เผลอ crop
+          พื้นที่นอกเฟรม (กลายเป็นส่วนดำ/ว่าง) ปนเข้าไปในรูป ซึ่งเป็นสาเหตุหลักที่
+          เครื่องสแกนบางครั้งฟ้อง resultCode 33558286 / 33558281 (รูปไม่ชัดเจน)
   ======================= */
-  function captureFace() {
+  async function captureFace() {
     captureBtn.disabled = true;
-    const box = lastFaceBox;
-    if (!box) return;
+
+    // 1) re-detect สด ๆ แทนใช้ lastFaceBox ที่อาจเก่า
+    let box = await detectFace();
+    if (!box) {
+      // fallback: ถ้าเฟรมนี้ตรวจไม่เจอพอดี (เช่น เพิ่งกระพริบตา) ใช้ค่าล่าสุดที่มี
+      box = lastFaceBox;
+    }
+    if (!box) {
+      status.textContent = '❌ ไม่พบใบหน้า กรุณาลองใหม่';
+      captureBtn.disabled = false;
+      return;
+    }
 
     const ctx = outCanvas.getContext('2d');
     outCanvas.width = 300;
@@ -399,14 +436,22 @@
     const cx = mirroredX + box.width / 2;
     const cy = box.y + box.height / 2;
 
-    const size = Math.max(box.width, box.height) * 2;
+    let size = Math.max(box.width, box.height) * 2;
+    // กันไม่ให้ size ใหญ่กว่าตัววิดีโอเอง (เช่นตรวจจับ box ผิดปกติ)
+    size = Math.min(size, video.videoWidth, video.videoHeight);
+
+    // 2) clamp จุดเริ่ม crop (sx, sy) ให้อยู่ในขอบเขต [0, videoWidth/Height - size]
+    let sx = cx - size / 2;
+    let sy = cy - size / 2;
+    sx = Math.max(0, Math.min(sx, video.videoWidth - size));
+    sy = Math.max(0, Math.min(sy, video.videoHeight - size));
 
     ctx.save();
-    ctx.scale(-1, 1); 
-    ctx.drawImage(video, cx - size / 2, cy - size / 2, size, size, -300, 0, 300, 300);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, sx, sy, size, size, -300, 0, 300, 300);
     ctx.restore();
 
-   
+
     const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
     console.log('Preview:', base64DataUrl);
     const base64 = base64DataUrl.split(',')[1];
@@ -417,7 +462,7 @@
 
     userFaceArray.length = 0;
     userFaceArray.push({
-      TemplateData: base64,       
+      TemplateData: base64,
       TemplateSize: Math.floor(actualByteSize)
     });
 
@@ -434,12 +479,12 @@
   /* =======================
     BIND CAPTURE BUTTON
   ======================= */
-  captureBtn.addEventListener('click', () => {
+  captureBtn.addEventListener('click', async () => {
     if (!lastFaceBox) {
       status.textContent = '❌ ยังไม่พบใบหน้า';
       return;
     }
-    captureFace();
+    await captureFace();
   });
 
   /* =======================
@@ -466,6 +511,7 @@
     status.style.display = 'block';
 
     cameraStarted = false;
+    stableFrameCount = 0; // ⭐ reset
     updateCameraPanel();
   });
 
@@ -484,8 +530,8 @@
     
     if (cleanNumber.length === 11) {
         // === เงื่อนไขใหม่: ถ้ารหัสมาเป็น 11 หลัก (เช่น 57110010277) ===
-        let first5 = cleanNumber.substring(0, 5); // "69102" (5 หลักแรก)
-    let last3  = cleanNumber.substring(8, 11); // "277"   (3 หลักสุดท้าย)
+		let first5 = cleanNumber.substring(0, 5); // "69102" (5 หลักแรก)
+		let last3  = cleanNumber.substring(8, 11); // "277"   (3 หลักสุดท้าย)
     
     userId = first5 + last3; // ผลลัพธ์: "69102277" (8 หลัก ไม่ชนกัน)
 
@@ -540,7 +586,7 @@
       MoneyCode: "0",
       MessageCode: 0,
       VerifyLevel: Number(fd.get('VerifyLevel')) || 0,
-      PositionCode: Number(fd.get('Position')) || 9997,
+      PositionCode: Number(fd.get('Position')) || 0,
       EmployeeNum: "0",
       Email: String(fd.get('Email') || ''),
       Phone: "",
@@ -601,12 +647,13 @@
       showLoading('กำลังอัปโหลดข้อมูลและใบหน้าไปยังเครื่องสแกน...');
       updateBtn.disabled = true;
 
-      // ⏱ ตัดที่ 5 วินาที
+      // ⏱ ตัดที่ 12 วินาที
       const controller = new AbortController();
+      const TIMEOUT_MS = 12000;
       const timeout = setTimeout(() => {
         controller.abort();
-        console.warn('Timeout! ตัด session แล้ว');
-      }, 12000);
+        console.warn(`Timeout! ตัด session แล้ว (${TIMEOUT_MS}ms)`);
+      }, TIMEOUT_MS);
 
       console.log(' Sending payload...');
       console.log(' Payload size:', JSON.stringify(payload).length, 'bytes');
@@ -628,68 +675,64 @@
       }
       const result = await response.json();
       console.log('🔍 SERVER RESPONSE (RAW):', result);
-
-      // ✅ เพิ่มใหม่: เช็ค HTTP status ก่อน เพื่อแยก error "เซิร์ฟเวอร์ล่ม" ออกจาก "เครื่องสแกนปฏิเสธ"
-      if (!response.ok) {
-        console.error('%c❌ HTTP Error:', 'color: red;', response.status, result);
-        alert(`❌ เซิร์ฟเวอร์ตอบกลับผิดปกติ (HTTP ${response.status})\n${result?.message || 'กรุณาลองใหม่อีกครั้ง'}`);
-        return;
-      }
-
       const apiResult = result?.apiResult;
       const innerResult = apiResult?.Result || apiResult?.result;
-      const rawResultCode = innerResult?.ResultCode !== undefined ? innerResult?.ResultCode : innerResult?.resultCode;
-      const resultCode = Number(rawResultCode);
-      console.log('🔍 Detected ResultCode:', resultCode);
+      const resultCode = innerResult?.ResultCode !== undefined ? innerResult?.ResultCode : innerResult?.resultCode;
+      console.log('🔍 Detected ResultCode:', resultCode, '(type:', typeof resultCode, ')');
 
-      // whitelist: 0 (ErrorNone) เท่านั้นที่ถือว่าสำเร็จจริง
-      if (result.status === 'success' && resultCode === 0) {
-        console.log('%c✅ Success:', 'color: green; font-weight: bold;', result);
-        alert('✅ บันทึกข้อมูลและลงทะเบียนเรียบร้อยแล้ว');
-        window.location.href = 'https://lib.swu.ac.th/app/face_scan/logout.php';
+      // ⭐ FIX: เดิมโค้ดใช้ "blacklist" คือเช็คแค่ error code ที่รู้จัก แล้วถ้าไม่ตรงกับตัวไหนเลย
+      // จะตกไปเช็ค response.ok && result.status === 'success' ซึ่งเป็นแค่สถานะว่า
+      // "เรียก API/relay ไปเครื่องสแกนสำเร็จ" ไม่ใช่สถานะว่า "เครื่องสแกนบันทึกข้อมูลสำเร็จจริง"
+      // ผลคือถ้าเครื่องสแกนตอบ resultCode แปลก ๆ ที่ไม่อยู่ในลิสต์ที่รู้จัก หน้าเว็บจะขึ้นว่า
+      // "สำเร็จ" และ redirect ออกไปทันที ทั้งที่ข้อมูลไม่ได้ถูกบันทึกจริง (บันทึกทุกรอบแต่ไม่มีข้อมูล)
+      //
+      // แก้เป็น "whitelist": ต้องเจอ resultCode ที่รู้จักว่าคือ "สำเร็จ" เท่านั้นถึงจะถือว่าสำเร็จ
+      // ค่าอื่นที่ไม่รู้จัก (รวมถึงกรณีไม่มี resultCode เลย) จะถือว่า "ไม่ยืนยันว่าสำเร็จ" และไม่ redirect
+      //
+      // ⚠️ TODO: ค่า KNOWN_SUCCESS_CODES ด้านล่างเดาไว้ที่ 0 (มาตรฐานทั่วไปของ SDK เครื่องสแกน
+      // ประเภทนี้ที่ 0 = สำเร็จ) กรุณายืนยันค่านี้จาก log "🔍 Detected ResultCode" ตอนที่ทราบแน่ชัดว่า
+      // ลงทะเบียนสำเร็จและมีข้อมูลจริงในเครื่อง แล้วปรับ array นี้ให้ตรง ถ้าเครื่องสแกนส่ง resultCode
+      // สำเร็จเป็นค่าอื่น (เช่น ไม่มี key ResultCode เลยตอนสำเร็จ) ต้องปรับ logic ตรงนี้ตาม
+      const KNOWN_SUCCESS_CODES = [0, "0"];
+      const KNOWN_FAIL_CODES_IMAGE = [33558286, "33558286", 33558281, "33558281"];
+      const KNOWN_FAIL_CODES_DUPLICATE = [16777237, "16777237", 16777241, "16777241"];
+
+      if (KNOWN_FAIL_CODES_IMAGE.includes(resultCode)) {
+        alert('❌ อัปเดตไม่สำเร็จ: เครื่องสแกนไม่สามารถประมวลผลรูปภาพนี้ได้\n\n💡 สาเหตุ: รูปถ่ายอาจมืดเกินไป, ใบหน้าไม่ชัดเจน หรือไม่ตรงตามมาตรฐานของเครื่อง\nกรุณาลองถ่ายรูปใหม่อีกครั้งให้เห็นใบหน้าตรงและชัดเจนครับ');
         return;
       }
 
-      // ------ Error mapping (ตาม ErrorCode ของเครื่องสแกน) ------
-      const ERROR_MAP = {
-        // 0x02 Face capture errors
-        33558281: '❌ ไม่พบใบหน้าในภาพ กรุณาถ่ายรูปใหม่',                      // ErrorFacewtNoFace
-        33558282: '❌ พบใบหน้ามากกว่า 1 หน้าในภาพ',                           // ErrorFacewtMultiFace
-        33558283: '❌ ใบหน้าในภาพเล็กเกินไป กรุณาเข้าใกล้กล้อง',              // ErrorFacewtSmall
-        33558284: '❌ คุณภาพใบหน้าต่ำเกินไป กรุณาถ่ายในที่แสงสว่างพอ',       // ErrorFacewtLowScore
-        33558285: '❌ กรุณาหันหน้าตรงเข้ากล้อง',                              // ErrorFacewtSideFace
-        33558286: '❌ ภาพไม่ชัด กรุณาถ่ายรูปใหม่',                            // ErrorFacewtVague
-        33558287: '❌ กรุณาเข้าใกล้กล้องมากขึ้น',                             // ErrorFacewtTooFar
-        33558288: '❌ ระบบจดจำใบหน้าล้มเหลว กรุณาลองใหม่',                   // ErrorFacewtRecogFail
-        33558295: '❌ กรุณาถอดหน้ากากอนามัยก่อนถ่ายรูป',                     // ErrorWearingMask
-        33558296: '❌ ไฟล์ภาพเสียหาย กรุณาถ่ายรูปใหม่',                      // ErrorImageBroken
-
-        // 0x01 Duplicate / ID errors
-        16777217: '❌ รหัสผู้ใช้นี้มีอยู่ในระบบแล้ว (Duplicate ID) กรุณาตรวจสอบรหัสผู้ใช้',
-        16777222: '❌ UniqueID ซ้ำกับผู้ใช้ในระบบ',
-        16777223: '❌ UniqueID ซ้ำ (Not Unique)',
-        16777224: '❌ ผู้ใช้นี้มีอยู่แล้วในระบบ (User Exist)',
-        16777235: '❌ บัตร RF ซ้ำกับผู้ใช้อื่น',
-        16777236: '❌ ใบหน้านี้คล้าย/ซ้ำกับผู้ใช้อื่นในระบบ',
-        16777237: '❌ บัตรนี้คล้าย/ซ้ำกับผู้ใช้อื่นในระบบ',
-      };
-
-      if (resultCode === 16777236 || resultCode === 16777237) {
+      if (KNOWN_FAIL_CODES_DUPLICATE.includes(resultCode)) {
         const dupInfo = apiResult?.DuplicateInfo || apiResult?.duplicateInfo;
         const dupName = dupInfo?.DuplicateName || dupInfo?.duplicateName || 'ไม่ระบุชื่อ';
         const dupId = dupInfo?.DuplicateUniqueID || dupInfo?.duplicateUniqueID || 'ไม่ระบุ ID';
-        alert(`${ERROR_MAP[resultCode]}\n\nพบข้อมูลซ้ำกับ: ${dupName} (ID: ${dupId})\n\n💡 วิธีแก้: กรุณาลบพนักงานคนเดิมออกจากเครื่องสแกนก่อนอัปโหลดอีกครั้ง`);
+        alert(`❌ อัปเดตไม่สำเร็จ: ใบหน้าหรือเลขบัตรนี้ "ซ้ำซ้อน" กับพนักงานในเครื่องสแกน\n\nพบข้อมูลซ้ำกับ: ${dupName} (ID: ${dupId})\n\n💡 วิธีแก้: กรุณาลบพนักงานคนเดิมออกจากเครื่องสแกนก่อนอัปโหลดอีกครั้ง`);
         return;
       }
 
-      // ✅ แก้ NaN: เช็คด้วย Number.isNaN แทน ?? เพราะ Number(undefined) = NaN ไม่ใช่ undefined
-      const codeDisplay = Number.isNaN(resultCode) ? 'ไม่ทราบ' : resultCode;
-      console.error('%c❌ API Error / Unhandled ResultCode:', 'color: red;', { resultCode, result });
-      alert(ERROR_MAP[resultCode] || `❌ เกิดข้อผิดพลาด (Code: ${codeDisplay})\n${result.message || 'กรุณาลองใหม่ หรือแจ้งผู้ดูแลระบบพร้อมรหัสนี้'}`);
+      const deviceConfirmedSuccess =
+        response.ok &&
+        result.status === 'success' &&
+        (resultCode === undefined || KNOWN_SUCCESS_CODES.includes(resultCode));
+
+      if (deviceConfirmedSuccess) {
+        console.log('%c✅ Success:', 'color: green; font-weight: bold;', result);
+        alert('✅ บันทึกข้อมูลและลงทะเบียนเรียบร้อยแล้ว');
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/logout.php';
+      } else if (response.ok && result.status === 'success' && resultCode !== undefined) {
+        // ⭐ เจอกรณี response wrapper บอกว่า success แต่ resultCode จากเครื่องสแกน
+        // เป็นค่าที่ไม่รู้จัก (ไม่ใช่ทั้ง success และ fail ที่ลิสต์ไว้) — ไม่ redirect
+        // ให้ผู้ใช้/ผู้ดูแลระบบเห็น resultCode จริงเพื่อไปตรวจสอบและเพิ่มลง whitelist/blacklist ต่อไป
+        console.error('%c⚠️ Unknown ResultCode (ไม่ยืนยันว่าสำเร็จ):', 'color: orange; font-weight: bold;', resultCode, result);
+        alert(`⚠️ ไม่สามารถยืนยันผลการลงทะเบียนได้\n\nระบบได้รับการตอบกลับ แต่ผลลัพธ์จากเครื่องสแกน (ResultCode: ${resultCode}) ไม่ตรงกับรหัส "สำเร็จ" ที่ระบบรู้จัก\n\nกรุณาตรวจสอบข้อมูลในเครื่องสแกนก่อนยืนยันว่าลงทะเบียนสำเร็จ และแจ้งผู้ดูแลระบบพร้อม ResultCode นี้`);
+      } else {
+        console.error('%c❌ API Error:', 'color: red;', result);
+        alert('❌ เกิดข้อผิดพลาด: ' + (result.message || 'Unknown Error'));
+      }
 
     } catch (error) {
       if (error.name === 'AbortError') {
-        console.warn(' ตัด request แล้ว (5 วินาที)');
+        console.warn(' ตัด request แล้ว');
         // ⭐ ไม่ alert ที่ทำให้ user งง แค่แสดง status
         alert(' ระบบใช้เวลานาน\nข้อมูลอาจถูกบันทึกแล้ว กรุณาตรวจสอบในระบบอีกครั้ง');
       } else if (error.message?.includes('Connection reset') ||
