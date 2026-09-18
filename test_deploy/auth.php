@@ -33,10 +33,14 @@ function log_login_status($user_login, $status)
             'Content-Type: application/json'
         ],
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
         CURLOPT_TIMEOUT        => 1
     ]);
     
     $response = curl_exec($ch);    
+<<<<<<< HEAD
 =======
         CURLOPT_TIMEOUT        => 3
     ]);
@@ -46,6 +50,8 @@ function log_login_status($user_login, $status)
     // ❌ ลบโค้ด echo และ die(); สองบรรทัดเดิมตรงนี้ออกแล้ว
     
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     curl_close($ch); // 👈 ปล่อยให้มันปิดการเชื่อมต่อ cURL ตามปกติ
 }
 
@@ -71,6 +77,7 @@ $base_dn = "dc=swu,dc=ac,dc=th";
 $ldaprdn = "uid={$user_login}," . $base_dn;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* ===== helper ===== */
 =======
 <<<<<<< HEAD
@@ -87,11 +94,15 @@ $ldaprdn = "uid={$user_login}," . $base_dn;
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+/* ===== helper ===== */
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 function try_bind($conn, $rdn, $password)
 {
     return @ldap_bind($conn, $rdn, $password);
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -102,11 +113,14 @@ function try_bind($conn, $rdn, $password)
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 function fetchPersonId($user_login)
 {
     $user_login = trim($user_login);
     if ($user_login === '') return null;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -120,6 +134,8 @@ function fetchPesonId($user_login)
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     $apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apiapp/checkUserId/" . urlencode($user_login);
 
     // ✅ เปลี่ยนจาก file_get_contents → curl เหมือนที่ debug ผ่าน
@@ -128,10 +144,14 @@ function fetchPesonId($user_login)
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_SSL_VERIFYPEER => false,
 <<<<<<< HEAD
+<<<<<<< HEAD
         CURLOPT_TIMEOUT        => 3,
 =======
         CURLOPT_TIMEOUT        => 10,
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+        CURLOPT_TIMEOUT        => 3,
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     ]);
     $response = curl_exec($ch);
     curl_close($ch);
@@ -148,6 +168,7 @@ function fetchPesonId($user_login)
     return null;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -161,6 +182,8 @@ function fetchPesonId($user_login)
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 function login_success($user_login)
 {
     log_login_status($user_login, 'success');
@@ -208,6 +231,9 @@ function login_success($user_login)
 //     curl_close($ch);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 /* ===== ปรับแต่งการต่อ LDAP ให้ไวขึ้น ===== */
 // กำหนด Server เรียงตามลำดับความสำคัญ (ถ้า 636 ผ่าน จะไม่ไป 389)
 /* ===== ปรับปรุงการตรวจสอบ LDAP ทั้ง 3 Step ให้ทำงานเร็วขึ้นด้วย Timeout ===== */
@@ -226,6 +252,7 @@ foreach ($ldap_configs as $config) {
         // ⚡ เพิ่ม Timeout กันค้าง (ถ้าเซิร์ฟเวอร์ตอบช้า ให้ตัดใน 2 วินาที)
         ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 2);
         ldap_set_option($ldapconn, LDAP_OPT_TIMELIMIT, 2);
+<<<<<<< HEAD
 
         // ถ้าเป็น Step 2 ให้ทำ STARTTLS
         if ($config['use_tls']) {
@@ -288,11 +315,24 @@ if ($ldapconn) {
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
     if (@ldap_start_tls($ldapconn)) {
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+
+        // ถ้าเป็น Step 2 ให้ทำ STARTTLS
+        if ($config['use_tls']) {
+            if (!@ldap_start_tls($ldapconn)) {
+                ldap_unbind($ldapconn);
+                continue; // ถ้า TLS ไม่ผ่าน ให้ข้ามไป Step ถัดไปทันที
+            }
+        }
+
+        // ตรวจสอบรหัสผ่าน
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
         if (try_bind($ldapconn, $ldaprdn, $user_password)) {
             ldap_unbind($ldapconn);
             login_success($user_login); // เข้าสู่ระบบสำเร็จ
         }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 /* ===== Step 3: Plain LDAP 389 ===== */
@@ -314,6 +354,8 @@ if ($ldapconn) {
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
     if (try_bind($ldapconn, $ldaprdn, $user_password)) {
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
         ldap_unbind($ldapconn);
     }
 }
@@ -360,10 +402,14 @@ $login_failed = true;
 
 LOGIN_ERROR:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
 if (isset($login_failed)) {
     log_login_status($user_login, 'fail'); 
     // exit;
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -382,6 +428,8 @@ if (isset($login_failed)) {
     log_login_status($user_login, 'fail'); 
     exit;
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 }
 ?>
 <!DOCTYPE html>

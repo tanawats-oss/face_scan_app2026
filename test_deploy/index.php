@@ -78,6 +78,8 @@ function redirectToRegister($buasri_id)
     exit;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
 
 // ✅ ตรวจ person_id ที่ดึงมาแล้วข้างบน ไม่ดึงซ้ำจาก session อีก
 if (empty($person_id)) {
@@ -87,6 +89,26 @@ if (empty($person_id)) {
 <!DOCTYPE html>
 <html lang="th">
 
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
+    <meta name="developer-email" content="tanawats@g.swu.ac.th">
+    <meta name="system" content="Face Recognition Registration System">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Face Capture & Update</title>
+    <link rel="stylesheet" href="./css/face_scan.css">
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
+
+// ✅ ตรวจ person_id ที่ดึงมาแล้วข้างบน ไม่ดึงซ้ำจาก session อีก
+if (empty($person_id)) {
+    redirectToRegister($buasri_id);
+}
+?>
+<!DOCTYPE html>
+<html lang="th">
+
+<<<<<<< HEAD
 <head>
 
     <meta charset="UTF-8">
@@ -193,6 +215,30 @@ if (empty($person_id)) {
         $data = json_decode(callApi($apiUrl), true);
 
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+</head>
+
+<body>
+    <div class="container">
+        <!-- countdown -->
+        <div id="session-timer"
+            style="position:fixed;top:10px;right:10px;background:#222;color:#fff;padding:8px 12px;border-radius:6px;font-size:14px;z-index:9999">
+            Session เหลือเวลา: <span id="time-left">--:--</span>
+        </div>
+
+        <?php
+        // ✅ ใช้ $person_id ที่ดึงไว้แล้วด้านบน ไม่ต้องดึงจาก session อีก
+        echo "<p><b>รหัสผู้ใช้บริการ:</b> {$person_id}</p>";
+
+        /* ================== userList ================== */
+        $apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apidoor/userList"
+            . "?person_id={$person_id}"
+            . "&searchCategory=UniqueID"
+            . "&groupID=0&subInclude=true&offset=0&limit=10";
+
+        $data = json_decode(callApi($apiUrl), true);
+
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
         // filter หา "คนจริง"
         $userInfo = null;
         if (!empty($data['users'])) {
@@ -250,17 +296,27 @@ if (empty($person_id)) {
         <div class="panel" id="facePanel">
             <h4>Face Template</h4>
             <?php if (!$hasFacePermission): ?>
+<<<<<<< HEAD
                 <div class="center">
                     <img src="./no_face.png" style="max-width:200px;opacity:.6">
                     <p>ยังไม่ได้เปิดใช้งานใบหน้า</p>
                 </div>
             <?php else: ?>
                 <?php
+=======
+            <div class="center">
+                <img src="./no_face.png" style="max-width:200px;opacity:.6">
+                <p>ยังไม่ได้เปิดใช้งานใบหน้า</p>
+            </div>
+            <?php else: ?>
+            <?php
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                 $faceResp = json_decode(
                     callApi("https://lib.swu.ac.th/app/ci4_new/public/apidoor/showFaceTemplate/" . urlencode($userId)),
                     true
                 );
                 ?>
+<<<<<<< HEAD
                 <?php if (!empty($faceResp['template'])): ?>
                     <div class="center">
                         <img src="data:image/jpeg;base64,<?= $faceResp['template'] ?>" style="max-width:200px">
@@ -291,17 +347,62 @@ if (empty($person_id)) {
                         การที่สำนักหอสมุดกลางมหาวิทยาลัยศรีนครินทรวิโรฒ จะเก็บรวบรวม และใช้ข้อมูลใบหน้า (Facial Scans)
                         ของท่านถือว่าเป็นการเก็บรวบรวมและใช้ข้อมูลส่วนบุคคลที่อ่อนไหว
                         ที่วิทยาลัยฯ จะต้องให้ความคุ้มครองเป็นพิเศษ ดังนั้น</p>
+=======
+            <?php if (!empty($faceResp['template'])): ?>
+            <div class="center">
+                <img src="data:image/jpeg;base64,<?= $faceResp['template'] ?>" style="max-width:200px">
+            </div>
+            <div class="center">
+                <p>ขนาดรูป: <?= $faceResp['size'] ?? 0 ?> bytes</p>
+            </div>
+            <?php else: ?>
+            <div class="center">
+                <img src="./no_face.png" style="max-width:100px">
+            </div>
+            <div class="center">
+                <p>⚠️ ยังไม่มีข้อมูลใบหน้า</p>
+            </div>
+            <?php endif; ?>
+            <?php endif; ?>
+        </div>
+
+        <!-- =============== PDPA Modal =================== -->
+        <div id="pdpaModal">
+            <div>
+                <!-- ส่วน Header -->
+                <div style="text-align: center; flex-shrink: 0;">
+                    <img src="./PDF/lib_icon.png"
+                        style="max-width: 220px; height: auto; display: block; margin: 0 auto 10px;">
+                    <h4 style="font-size: 15px; margin: 0 0 10px 0; line-height: 1.4;">
+                        หนังสือขอความยินยอมให้ สำนักหอสมุดกลางมหาวิทยาลัยศรีนครินทรวิโรฒ เก็บรวบรวมและใช้ข้อมูลใบหน้า
+                        (Facial Scans) ของท่านเพื่อประโยชน์ในการยืนยันตัวตนของท่านสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
+                    </h4>
+                </div>
+
+                <!-- ส่วนข้อความที่เปิดให้เลื่อนอ่าน (Scroll Content) -->
+                <div id="pdpaScrollBox">
+                    <p>ภายใต้พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562
+                        การที่สำนักหอสมุดกลางมหาวิทยาลัยศรีนครินทรวิโรฒ จะเก็บรวบรวม และใช้ข้อมูลใบหน้า (Facial Scans)
+                        ของท่านถือว่าเป็นการเก็บรวบรวมและใช้ข้อมูลส่วนบุคคลที่อ่อนไหว ที่วิทยาลัยฯ
+                        จะต้องให้ความคุ้มครองเป็นพิเศษ ดังนั้น</p>
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                     <p>สำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ
                         จึงขอความยินยอมจากท่านในการให้สำนักหอสมุดกลางเก็บรวบรวมและใช้ข้อมูลใบหน้า (Facial Scans)
                         ของท่านเพื่อประโยชน์ในการยืนยันตัวตนของท่านสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
                         ของสำนักหอสมุดกลาง</p>
                     <p>ในภายหลัง ท่านมีสิทธิที่จะถอนการยินยอมในการให้สำนักหอสมุดกลาง เก็บรวบรวมและใช้ข้อมูลใบหน้า
+<<<<<<< HEAD
                         (Facial Scans) ของท่านในครั้งนี้ โดยท่านสามารถติดต่อเจ้าหน้าที่ดูแลระบบที่
                         kiattisak@g.swu.ac.th</p>
+=======
+                        (Facial Scans) ของท่านในครั้งนี้ โดยท่านสามารถติดต่อเจ้าหน้าที่ดูแลระบบที่ kiattisak@g.swu.ac.th
+                    </p>
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                     <p>โดยสำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ
                         จะรักษาข้อมูลส่วนบุคคลดังกล่าวของท่านไว้เป็นความลับและสำนักหอสมุดกลาง
                         รับรองว่าจะมีการดำเนินการรักษาความปลอดภัยที่มีมาตรฐาน
                         และจัดให้มีมาตรการด้านเทคนิคและการจัดการเพื่อป้องกันการเข้าถึงข้อมูลของท่านโดยมิชอบ</p>
+<<<<<<< HEAD
                     <p>ให้สำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ เก็บรวบรวมและใช้ข้อมูลใบหน้า (Facial Scans)
                         ของข้าพเจ้าเพื่อประโยชน์ในการยืนยันตัวตนของข้าพเจ้าสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
                         ของสำนักหอสมุดกลาง</p>
@@ -309,6 +410,22 @@ if (empty($person_id)) {
                 <div style="text-align:right;margin-bottom:15px;margin-top:0;">
                     <button id="pdpaDeclineBtn" class="btn btn-secondary">ไม่ยินยอม</button>
                     <button id="pdpaAcceptBtn" class="btn btn-primary">ยินยอม</button>
+=======
+                    <p style="margin-bottom: 0;">ให้สำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ
+                        เก็บรวบรวมและใช้ข้อมูลใบหน้า (Facial Scans)
+                        ของข้าพเจ้าเพื่อประโยชน์ในการยืนยันตัวตนของข้าพเจ้าสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
+                        ของสำนักหอสมุดกลาง</p>
+                </div>
+
+                <!-- ส่วน Footer และปุ่มกด -->
+                <div style="flex-shrink: 0; margin-top: 10px;">
+                    <!-- ลบข้อความแจ้งเตือนสีแดงออกได้เลย หรือซ่อนไว้ -->
+                    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                        <button type="button" id="pdpaDeclineBtn" class="btn btn-secondary">ไม่ยินยอม</button>
+                        <!-- ถอด disabled ออก เพื่อให้กดได้ทันที -->
+                        <button type="button" id="pdpaAcceptBtn" class="btn btn-primary">ยินยอม</button>
+                    </div>
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                 </div>
             </div>
         </div>
@@ -356,7 +473,11 @@ if (empty($person_id)) {
                         <tr>
                             <td>อนุญาตเปิดกล้อง</td>
                             <td>
+<<<<<<< HEAD
                                 <button type="button" id="AllowCamBtn" class="btn btn-primary" disabled>
+=======
+                                <button type="button" id="AllowCamBtn" class="btn btn-primary">
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                                     เปิดกล้องถ่ายรูป
                                 </button>
                             </td>
@@ -374,6 +495,13 @@ if (empty($person_id)) {
 
         <!-- ================== Camera & Capture ================== -->
         <div class="panel" id="Newtakephoto" style="display:none">
+<<<<<<< HEAD
+=======
+            <!-- ปุ่มปิดหน้าถ่ายรูป -->
+            <button type="button" onclick="closeCameraPanel()"
+                style="position: absolute; top: 15px; right: 15px; z-index: 9999; cursor: pointer;background: red;color: white;"><strong>✕</strong></button>
+            <br>
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
             <h2>ถ่ายรูป อัพเดทรูปใหม่</h2>
             <div class="stage row center">
                 <div class="video-container" id="videoContainer">
@@ -417,8 +545,12 @@ if (empty($person_id)) {
                 display:inline-block;background-color:#007bff;color:white;
                 padding:8px 20px;border-radius:20px;text-decoration:none;
                 font-weight:bold;box-shadow:0 4px 6px rgba(0,0,0,0.1);transition:0.3s;"
+<<<<<<< HEAD
                 onmouseover="this.style.backgroundColor='#0056b3'"
                 onmouseout="this.style.backgroundColor='#007bff'">
+=======
+                onmouseover="this.style.backgroundColor='#0056b3'" onmouseout="this.style.backgroundColor='#007bff'">
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                 📝 แบบประเมินความพึงพอใจ
             </a>
         </div>
@@ -443,7 +575,17 @@ if (empty($person_id)) {
 
     <script src="js/main.js"></script>
     <script src="./face-api.js-master/dist/face-api.min.js"></script>
+<<<<<<< HEAD
     <script>
+=======
+
+    <script>
+        
+    const SESSION_TIMEOUT = <?php echo SESSION_TIMEOUT; ?>;
+        /* ==========================================
+           1. ระบบ Session Timeout
+           ========================================== */
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
         (function () {
             const CHECK_INTERVAL = 30000;
             let remaining = SESSION_TIMEOUT;
@@ -458,6 +600,7 @@ if (empty($person_id)) {
             }
 
             function logoutAndRedirect() {
+<<<<<<< HEAD
                 fetch('logout.php', { method: 'POST', credentials: 'same-origin' })
                     .finally(() => { window.location.href = 'login.php?timeout=1'; });
             }
@@ -493,6 +636,100 @@ if (empty($person_id)) {
             setInterval(tick, 1000);
             setInterval(checkSession, CHECK_INTERVAL);
         })();
+=======
+                fetch('logout.php', {
+                        method: 'POST',
+                        credentials: 'same-origin'
+                    })
+                    .finally(() => {
+                        window.location.href = 'login.php?timeout=1';
+                    });
+            }
+
+            function tick() {
+                remaining--;
+                if (remaining <= 0) {
+                    display.textContent = '0:00';
+                    logoutAndRedirect();
+                    return;
+                }
+                display.textContent = format(remaining);
+            }
+
+            function checkSession() {
+                fetch('check_session.php', {
+                        credentials: 'same-origin'
+                    })
+                    .then(res => {
+                        if (res.status === 401 || res.status === 440) {
+                            logoutAndRedirect();
+                            return null;
+                        }
+                        return res.json();
+                    })
+                    .then(data => {
+                        if (!data) return;
+                        if (data.status === 'expired') logoutAndRedirect();
+                        if (data.status === 'ok') remaining = SESSION_TIMEOUT;
+                    })
+                    .catch(err => console.error('Session check error:', err));
+            }
+
+            display.textContent = format(remaining);
+            setInterval(tick, 1000);
+            setInterval(checkSession, CHECK_INTERVAL);
+        })();
+
+
+        /* ==========================================
+           2. ระบบควบคุม PDPA Modal
+           ========================================== */
+        document.addEventListener('DOMContentLoaded', () => {
+            const pdpaModal = document.getElementById('pdpaModal');
+            const acceptBtn = document.getElementById('pdpaAcceptBtn');
+            const declineBtn = document.getElementById('pdpaDeclineBtn');
+            const scrollNotice = document.getElementById('scrollNotice');
+
+            // ปล่อยปุ่มให้กดได้ทันที + ซ่อนข้อความแจ้งเตือนสีแดง
+            if (acceptBtn) acceptBtn.disabled = false;
+            if (scrollNotice) scrollNotice.style.display = 'none';
+
+            window.openPdpaModal = function () {
+                if (!pdpaModal) return;
+                pdpaModal.classList.add('active');
+                document.body.classList.add('modal-open');
+            };
+
+            window.closePdpaModal = function () {
+                if (!pdpaModal) return;
+                pdpaModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            };
+
+            if (acceptBtn) {
+                acceptBtn.addEventListener('click', () => {
+                    window.pdpaAccepted = true;
+                    window.closePdpaModal();
+
+                    if (typeof allowCam !== 'undefined') {
+                        allowCam = true;
+                        const allowCamBtn = document.getElementById('AllowCamBtn');
+                        if (allowCamBtn) allowCamBtn.textContent = 'ปิดกล้อง';
+                        if (typeof updateCameraPanel === 'function') {
+                            updateCameraPanel();
+                        }
+                    }
+                });
+            }
+
+            if (declineBtn) {
+                declineBtn.addEventListener('click', () => {
+                    window.pdpaAccepted = false;
+                    window.closePdpaModal();
+                });
+            }
+        });
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     </script>
 </body>
 

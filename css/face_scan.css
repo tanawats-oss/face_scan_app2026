@@ -79,6 +79,7 @@ padding-right: 5%;
   flex-shrink: 0;      
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -94,6 +95,8 @@ padding-right: 5%;
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
 
 .form-group  {
@@ -213,6 +216,7 @@ table td {
   padding: 12px 10px ; 
   vertical-align: middle ; 
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -354,6 +358,8 @@ table td {
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
 
 /* table td:has(input[type="checkbox"]) {
@@ -393,6 +399,7 @@ table {
   font-size: 16px;
 } 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -408,12 +415,15 @@ table {
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
 th {
   background: #f3f4f6;
   color: var(--primary);
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -427,6 +437,8 @@ th {
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 /* Inputs */
 input[type="text"], textarea {
   flex: 1;            
@@ -687,6 +699,7 @@ button.muted {
   color: var(--text);
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1266,11 +1279,14 @@ button.muted {
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -1286,6 +1302,8 @@ button.muted {
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 }
 .checkbox-container {
   display: inline-flex;  
@@ -1293,6 +1311,7 @@ button.muted {
   gap: 8px;              
   cursor: pointer;      
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -1309,4 +1328,6 @@ button.muted {
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 }

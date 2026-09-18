@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 (async function () {
 
   /* =======================
@@ -18,6 +21,8 @@
   const panelNewphoto = document.getElementById('Newtakephoto');
   const panelFaceDB = document.getElementById('facePanel');
   const panelUpdateData = document.getElementById('updatedata');
+<<<<<<< HEAD
+=======
 
   const updateBtn = document.getElementById('updateServerBtn');
   const form = document.getElementById('editUserForm');
@@ -25,6 +30,57 @@
   const loadingOverlay = document.getElementById('loadingOverlay');
   const captureBtn = document.getElementById('captureBtn');
 
+  const pdpaModal = document.getElementById('pdpaModal');
+  const pdpaAcceptBtn = document.getElementById('pdpaAcceptBtn');
+  const pdpaDeclineBtn = document.getElementById('pdpaDeclineBtn');
+
+  let animFrameId = null;
+  /* =======================
+      Guard DOM
+  ======================= */
+  if (!video || !overlay || !outCanvas || !updateBtn || !form || !panelResult || !captureBtn) {
+    console.error('❌ DOM ไม่ครบ');
+    return;
+  }
+
+  /* =======================
+      Loading
+  ======================= */
+  function showLoading(text = 'กำลังประมวลผล...') {
+    if (!loadingOverlay) return;
+    loadingOverlay.querySelector('.loading-text').textContent = text;
+    loadingOverlay.style.display = 'flex';
+  }
+
+  function hideLoading() {
+    if (!loadingOverlay) return;
+    loadingOverlay.style.display = 'none';
+  }
+
+  /* =======================
+      STATE
+  ======================= */
+  let pdpaAccepted = false;
+  let stream = null;
+  let cameraStarted = false;
+  let allowCam = false;
+  let overlayRunning = false;
+  let lastFaceBox = null;
+  let overlayRect = null;
+  let detecting = false;
+  let lastDetectTime = 0;
+  let oldFaceTemplate = window.oldFaceTemplate || null;
+
+  const userFaceArray = [];
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
+
+  const updateBtn = document.getElementById('updateServerBtn');
+  const form = document.getElementById('editUserForm');
+  const btnUpdateData = document.getElementById('btn-updatedata');
+  const loadingOverlay = document.getElementById('loadingOverlay');
+  const captureBtn = document.getElementById('captureBtn');
+
+<<<<<<< HEAD
   const pdpaModal = document.getElementById('pdpaModal');
   const pdpaAcceptBtn = document.getElementById('pdpaAcceptBtn');
   const pdpaDeclineBtn = document.getElementById('pdpaDeclineBtn');
@@ -647,10 +703,176 @@
 >>>>>>> b526410014d7415a9844022493031e415f988d72
     if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
     if (video.srcObject) { video.srcObject = null; }
+=======
+ /* =======================
+    PDPA CONTROL (แก้ไขใหม่)
+======================= */
+function showPdpa() { 
+    if (!pdpaModal) return;
+    pdpaModal.style.display = 'flex';
+    pdpaModal.classList.add('active');
+    document.body.classList.add('modal-open');
+}
+
+function hidePdpa() { 
+    if (!pdpaModal) return;
+    pdpaModal.style.display = 'none';
+    pdpaModal.classList.remove('active');
+    document.body.classList.remove('modal-open');
+}
+
+// เมื่อกด "ยินยอม" ใน PDPA
+if (pdpaAcceptBtn) {
+    pdpaAcceptBtn.addEventListener('click', () => {
+        pdpaAccepted = true;
+        hidePdpa();
+        allowCam = true;
+        updateCameraPanel(); // เปิด Panel กล้องและสั่ง startCamera() ทันที
+    });
+}
+
+if (pdpaDeclineBtn) {
+    pdpaDeclineBtn.addEventListener('click', () => {
+        pdpaAccepted = false;
+        hidePdpa();
+    });
+}
+  /* =======================
+      UI CONTROL
+======================= */
+function updateCameraPanel() {
+  if (!allowFaceCheckbox.checked) {
+    panelNewphoto.style.display = 'none';
+    panelResult.style.display = 'none';
+    panelFaceDB.style.display = 'block';
+    panelUpdateData.style.display = 'block';
+    document.body.style.overflow = '';
+    stopCamera();
+    return;
+  }
+
+  if (!allowCam) {
+    panelNewphoto.style.display = 'none';
+    panelResult.style.display = 'none';
+    panelFaceDB.style.display = 'block';
+    panelUpdateData.style.display = 'none';
+    document.body.style.overflow = '';
+    stopCamera();
+    return;
+  }
+
+  // เปิด Panel กล้องทับหน้าจอ
+  panelNewphoto.style.display = 'block';
+  panelNewphoto.scrollTop = 0; // เลื่อนกล่องถ่ายรูปไปบนสุด
+  document.body.style.overflow = 'hidden'; // ล็อกไม่ให้หน้าหลังเลื่อน
+  
+  panelFaceDB.style.display = 'none';
+  panelUpdateData.style.display = 'none';
+  startCamera();
+}
+
+
+// ฟังก์ชันปิดกล้องสำหรับปุ่มกากบาท (✕)
+window.closeCameraPanel = function () {
+  allowCam = false;
+  stopCamera();        // stopCamera() อยู่ใน IIFE เดียวกันกับ stream จะสั่งตัดไฟกล้องได้จริง 100%
+  updateCameraPanel(); // ซ่อนหน้าต่างและสลับ UI กลับ
+};
+// กำหนดสถานะเริ่มต้น
+allowCam = false;
+allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
+allowCamBtn.disabled = !allowFaceCheckbox.checked;
+
+updateCameraPanel();
+
+allowFaceCheckbox.addEventListener('change', () => {
+  allowCam = false;
+  allowCamBtn.disabled = !allowFaceCheckbox.checked;
+  updateCameraPanel();
+});
+
+allowCamBtn.addEventListener('click', () => {
+  if (!allowFaceCheckbox.checked) {
+    alert('กรุณาอนุญาตการลงทะเบียนใบหน้าก่อน');
+    return;
+  }
+  if (!pdpaAccepted) {
+    showPdpa();
+    return;
+  }
+  
+  // เปิดกล้อง (การปิดกล้องจะทำผ่านปุ่มกากบาท ✕ แทน)
+  allowCam = true;
+  updateCameraPanel();
+});
+
+  /* =======================
+      CAMERA
+  ====================== */
+  async function loadFaceModelOnce() {
+    if (window._faceModelLoaded) return;
+    await faceapi.nets.tinyFaceDetector.loadFromUri('./face-api.js-master/weights');
+    window._faceModelLoaded = true;
+  }
+
+  async function startCamera() {
+    if (cameraStarted) return;
+    cameraStarted = true;
+    try {
+      status.textContent = '📷 กำลังเปิดกล้อง...';
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user", width: { ideal: 300 }, height: { ideal: 300 }, frameRate: { ideal: 15 } },
+        audio: false
+      });
+      video.srcObject = stream;
+      video.setAttribute('playsinline', true);
+      await new Promise(r => video.addEventListener('loadedmetadata', r, { once: true }));
+      await video.play();
+
+      overlay.width = video.videoWidth || 300;
+      overlay.height = video.videoHeight || 300;
+      status.textContent = 'กำลังโหลด...';
+      await loadFaceModelOnce();
+      status.textContent = '✅ พร้อมตรวจจับใบหน้า';
+      overlayRunning = true;
+      drawOverlay();
+    } catch (e) {
+      console.error(e);
+      status.textContent = '❌ เปิดกล้องไม่สำเร็จ';
+      cameraStarted = false;
+    }
+  }
+
+  function stopCamera() {
+    if (animFrameId) {
+      cancelAnimationFrame(animFrameId);
+      animFrameId = null;
+    }
+
+    // 1. สั่ง stop ทุก Track ใน stream หลักเพื่อดับไฟฮาร์ดแวร์
+    if (stream) {
+      stream.getTracks().forEach(t => t.stop());
+      stream = null;
+    }
+
+    // 2. เคลียร์ Stream ค้างในแท็ก <video>
+    if (video) {
+      video.pause();
+      if (video.srcObject) {
+        const vStream = video.srcObject;
+        if (typeof vStream.getTracks === 'function') {
+          vStream.getTracks().forEach(t => t.stop());
+        }
+        video.srcObject = null;
+      }
+    }
+
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     cameraStarted = false;
     lastFaceBox = null;
     overlayRect = null;
     overlayRunning = false;
+<<<<<<< HEAD
     const ctx = overlay.getContext('2d');
     ctx.clearRect(0, 0, overlay.width, overlay.height);
   }
@@ -701,6 +923,17 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+
+    if (overlay) {
+      const ctx = overlay.getContext('2d');
+      ctx.clearRect(0, 0, overlay.width, overlay.height);
+    }
+  }
+
+  /* =======================
+      FACE DETECT & OVERLAY
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
   ======================= */
   async function detectFace() {
     if (video.readyState < 2) return null;
@@ -742,11 +975,15 @@
       detecting = false;
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     animFrameId = requestAnimationFrame(drawOverlay);
   }
 
   /* =======================
       CAPTURE
+<<<<<<< HEAD
 =======
     requestAnimationFrame(drawOverlay);
   }
@@ -809,6 +1046,23 @@
     const cy = box.y + box.height / 2;
     const size = Math.max(box.width, box.height) * 2;
 
+=======
+  ======================= */
+  function captureFace() {
+    captureBtn.disabled = true;
+    const box = lastFaceBox;
+    if (!box) return;
+
+    const ctx = outCanvas.getContext('2d');
+    outCanvas.width = 300;
+    outCanvas.height = 300;
+
+    const mirroredX = video.videoWidth - box.x - box.width;
+    const cx = mirroredX + box.width / 2;
+    const cy = box.y + box.height / 2;
+    const size = Math.max(box.width, box.height) * 2;
+
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     ctx.save();
     ctx.scale(-1, 1);
     ctx.drawImage(video, cx - size / 2, cy - size / 2, size, size, -300, 0, 300, 300);
@@ -817,6 +1071,9 @@
     const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
     const base64 = base64DataUrl.split(',')[1];
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
 
   let len = base64.length;
@@ -824,6 +1081,7 @@
     if (base64[len - 1] === '=') padding++;
     if (base64[len - 2] === '=') padding++;
     const actualByteSize = Math.floor((len * 0.75) - padding);
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
     
@@ -865,6 +1123,8 @@
     const padding = (base64.endsWith('=')) ? (base64.endsWith('==') ? 2 : 1) : 0;
     const actualByteSize = (base64.length * 0.75) - padding;
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
     userFaceArray.length = 0;
     userFaceArray.push({
@@ -874,6 +1134,7 @@
 
     panelResult.style.display = 'block';
     videoContainer.style.display = 'none';
+<<<<<<< HEAD
 <<<<<<< HEAD
     captureBtn.style.display = 'none';
     status.style.display = 'none';
@@ -926,6 +1187,10 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+    captureBtn.style.display = 'none';
+    status.style.display = 'none';
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     stopCamera();
   }
 
@@ -934,6 +1199,7 @@
     captureFace();
   });
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -958,6 +1224,8 @@
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
   retakeBtn?.addEventListener('click', (e) => {
     if (e) e.preventDefault();
     userFaceArray.length = 0;
@@ -981,6 +1249,7 @@
     cameraStarted = false;
     updateCameraPanel();
   });
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1023,6 +1292,8 @@
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
   /*==============================================================
     Function Bulid Userinfo
   ===============================================================*/
@@ -1050,12 +1321,16 @@
       APBExcept: 0,
       APBZone: 0,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       WorkCode: "0",
       MealCode: "0",
       MoneyCode: "0",
       MessageCode: 0,
       VerifyLevel: Number(fd.get('VerifyLevel')) || 0,
       PositionCode: Number(fd.get('PositionCode')) || 0,
+<<<<<<< HEAD
 =======
       WorkCode: "0000",
       MealCode: "0000",
@@ -1088,6 +1363,8 @@
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       EmployeeNum: "0",
       Email: String(fd.get('Email') || ''),
       Phone: "",
@@ -1109,6 +1386,7 @@
 
   /* =========================================================
      📥 UPDATE SERVER (ปุ่มถ่ายรูปอัปเดตใบหน้า)
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1143,6 +1421,8 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
      ========================================================= */
   updateBtn.addEventListener('click', async (e) => {
     e.preventDefault();
@@ -1156,6 +1436,9 @@
     const fd = new FormData(form);
     let rawId = String(fd.get('ID')).trim();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     let cleanNumber = rawId.replace(/[^0-9]/g, '');
     let currentUserId = rawId;
 
@@ -1183,6 +1466,7 @@
       const singleCard = fd.get('CardNum') || rawId;
       if (singleCard) cardValues.push(singleCard);
     }
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 
@@ -1293,12 +1577,15 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
     const cards = cardValues.map(c => {
       let cleanCard = String(c).trim();
       if (cleanCard.length === 8 && cleanCard.startsWith("00")) {
         cleanCard = cleanCard.substring(2);
       }
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1326,12 +1613,15 @@
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       return {
         CardNum: cleanCard,
         UserID: currentUserId
       };
     });
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1370,6 +1660,8 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     let hasFace = false;
     let faceInfo = null;
 
@@ -1378,6 +1670,7 @@
         hasFace = true;
         faceInfo = [{
 <<<<<<< HEAD
+<<<<<<< HEAD
           UserID: currentUserId,
 =======
 <<<<<<< HEAD
@@ -1418,6 +1711,9 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+          UserID: currentUserId,
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
           TemplateType: 1,
           TemplateSize: userFaceArray[0].TemplateSize,
           TemplateData: userFaceArray[0].TemplateData
@@ -1426,6 +1722,7 @@
         hasFace = true;
         faceInfo = [{
 <<<<<<< HEAD
+<<<<<<< HEAD
           UserID: currentUserId,
 =======
 <<<<<<< HEAD
@@ -1466,11 +1763,15 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+          UserID: currentUserId,
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
           TemplateType: 1,
           TemplateSize: oldFaceTemplate.TemplateSize,
           TemplateData: oldFaceTemplate.TemplateData
         }];
       }
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1501,11 +1802,14 @@
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     } else {
       faceInfo = null;
     }
 
     const userInfo = buildUserInfo(fd, currentUserId, hasFace); // ✅ เรียกใช้ function
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1574,6 +1878,8 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
     const payload = {
       UserInfo: userInfo,
@@ -1599,6 +1905,7 @@
       );
 
       const result = await res.json();
+<<<<<<< HEAD
 <<<<<<< HEAD
       console.log('🔍 SERVER RESPONSE (RAW):', result);
 
@@ -1667,11 +1974,16 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+      console.log('🔍 SERVER RESPONSE (RAW):', result);
+
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       const apiResult = result?.apiResult;
       const innerResult = apiResult?.Result || apiResult?.result;
       const resultCode = innerResult?.ResultCode !== undefined ? innerResult?.ResultCode : innerResult?.resultCode;
 
       console.log('🔍 Detected ResultCode:', resultCode);
+<<<<<<< HEAD
 <<<<<<< HEAD
 
       if ([33558286, "33558286", 33558281, "33558281"].includes(resultCode)) {
@@ -1704,6 +2016,10 @@
       if (resultCode === 33558286 || String(resultCode) === "33558286" ||
         resultCode === 33558281 || String(resultCode) === "33558281") {
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+
+      if ([33558286, "33558286", 33558281, "33558281"].includes(resultCode)) {
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
         alert('❌ อัปเดตไม่สำเร็จ: เครื่องสแกนไม่สามารถประมวลผลรูปภาพนี้ได้\n\n💡 สาเหตุ: รูปถ่ายอาจมืดเกินไป, ใบหน้าไม่ชัดเจน หรือไม่ตรงตามมาตรฐานของเครื่อง\nกรุณาลองถ่ายรูปใหม่อีกครั้งให้เห็นใบหน้าตรงและชัดเจนครับ');
         return;
       }
@@ -1715,6 +2031,7 @@
         const dupId = dupInfo?.DuplicateUniqueID || dupInfo?.duplicateUniqueID || 'ไม่ระบุ ID';
         alert(`❌ อัปเดตไม่สำเร็จ: ใบหน้าหรือเลขบัตรนี้ "ซ้ำซ้อน" กับพนักงานในเครื่องสแกน\n\nพบข้อมูลซ้ำกับ: ${dupName} (ID: ${dupId})\n\n💡 วิธีแก้: กรุณาลบพนักงานคนเดิมออกจากเครื่องสแกนก่อนอัปโหลดอีกครั้ง`);
         return;
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1756,10 +2073,13 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       }
 
       if (res.ok && (result.status === "success" || result.status === "SUCCESS")) {
         alert('✅ อัปเดตข้อมูลและใบหน้าสำเร็จเรียบร้อย');
+<<<<<<< HEAD
 <<<<<<< HEAD
         window.location.href = 'https://lib.swu.ac.th/app/face_scan/index.php';
 =======
@@ -1791,6 +2111,9 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/index.php';
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
         console.log('Payload Logged:', JSON.stringify(payload, null, 2));
       } else {
         alert('❌ อัปเดตไม่สำเร็จ: ' + (result.message || 'โครงสร้างข้อมูลผิดพลาด'));
@@ -1805,6 +2128,7 @@
     }
   });
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1836,6 +2160,8 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
   /* =========================================================
         💾 UPDATE DATA SERVER (ปุ่มบันทึกข้อมูลทั่วไปท้ายฟอร์ม)
      ========================================================= */
@@ -1845,6 +2171,9 @@
 
     const fd = new FormData(form);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
   let rawId = String(fd.get('ID')).trim();
     let cleanNumber = rawId.replace(/[^0-9]/g, '');
     let currentUserId = rawId;
@@ -1862,16 +2191,20 @@
     }else {
         // กรณีอื่น ๆ ที่ไม่เข้าพวก ให้ใช้ตัวเลขล้วนที่สกัดได้ไปก่อน
         currentUserId = cleanNumber;
+<<<<<<< HEAD
 =======
     let rawId = String(fd.get('ID')).trim();
     let currentUserId = rawId;
     if (rawId.length === 6) {
       currentUserId = "00" + rawId;
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     }
 
     let cardValues = fd.getAll('CardNum[]').filter(Boolean);
     if (cardValues.length === 0) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1899,11 +2232,14 @@
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       // 💡 แก้ไขบั๊กจาก trim(currentUserId) เดิม มาใช้ substring จัดการตัดหลักแทน
       const rawCard = fd.get('CardNum');
       const singleCard = rawCard
         ? String(rawCard).trim()
         : (currentUserId.startsWith("00") ? currentUserId.substring(2) : currentUserId);
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1943,10 +2279,13 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       if (singleCard) cardValues.push(singleCard);
     }
     const cards = cardValues.map(c => ({ CardNum: String(c).trim(), UserID: currentUserId }));
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้าของปุ่มเซฟทั่วไป
 =======
@@ -1991,6 +2330,9 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+    // ⭐ ตรวจสอบการติ๊กและชุดข้อมูลใบหน้าของปุ่มเซฟทั่วไป
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     let hasFace = false;
     let faceInfo = null;
 
@@ -2012,6 +2354,7 @@
           TemplateData: oldFaceTemplate.TemplateData
         }];
       }
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -2040,11 +2383,14 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     } else {
       // ❌ ถ้าไม่ติ๊ก ให้เคลียร์ก้อนนี้เป็น null เช่นเดียวกัน
       faceInfo = null;
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     const userInfo = buildUserInfo(fd, currentUserId, hasFace);
 =======
@@ -2109,6 +2455,9 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+    const userInfo = buildUserInfo(fd, currentUserId, hasFace);
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
     const payload = {
       UserInfo: userInfo,
@@ -2125,6 +2474,7 @@
 
     try {
       const res = await fetch(
+<<<<<<< HEAD
 <<<<<<< HEAD
         `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`,
 =======
@@ -2166,6 +2516,9 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+        `https://lib.swu.ac.th/app/ci4_new/public/apidoor/uploadPictureJson/${encodeURIComponent(userInfo.ID)}`,
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -2173,6 +2526,9 @@
         }
       );
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       // พิ่ม ResultCode check 
       const result = await res.json();
       const apiResult = result?.apiResult;
@@ -2191,6 +2547,7 @@
     }
   });
 
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 
@@ -2293,4 +2650,6 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 })();

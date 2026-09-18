@@ -16,6 +16,9 @@ Developed   : 2025
 
 <head>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     <!-- Google Tag Manager -->
     <script>
             function loadGTM() {
@@ -37,6 +40,7 @@ Developed   : 2025
         setTimeout(loadGTM, 3500);
     </script>
 <!-- End Google Tag Manager -->
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
     <!-- Google Tag Manager -->
@@ -56,6 +60,8 @@ Developed   : 2025
     <!-- End Google Tag Manager -->
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     <meta charset="UTF-8">
     <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
     <meta name="developer-email" content="tanawats@g.swu.ac.th">
@@ -157,15 +163,19 @@ Developed   : 2025
 
 <body>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 <!-- Google Tag Manager (noscript) -->
 <noscript>
     <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8ZD4T59"
     height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
 <!-- End Google Tag Manager (noscript) -->
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -186,6 +196,8 @@ Developed   : 2025
         <!-- End Google Tag Manager (noscript) -->
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     <script>
         (function() {
             const ua = navigator.userAgent;

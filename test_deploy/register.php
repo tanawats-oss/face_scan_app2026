@@ -81,6 +81,7 @@ $_SESSION['person_id'] = $userId;
 
 <head>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     <meta charset="UTF-8">
     <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
@@ -168,11 +169,22 @@ $_SESSION['person_id'] = $userId;
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+
+    <meta charset="UTF-8">
+    <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register Face</title>
+    <link rel="stylesheet" href="./css/face_scan.css">
+   
+    <script>
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
         const SESSION_TIMEOUT = <?= SESSION_TIMEOUT ?>;
     </script>
 </head>
 
 <body>
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 =======
@@ -198,9 +210,17 @@ $_SESSION['person_id'] = $userId;
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     <div style="padding: 10px; background: #eee; font-size: 12px; text-align: center;">ID ผู้ใช้งานระบบ: <?php echo htmlspecialchars($userId); ?></div>
 
     <div class="container">
+<!-- countdown -->
+        <div id="session-timer"
+            style="position:fixed;top:10px;right:10px;background:#222;color:#fff;padding:8px 12px;border-radius:6px;font-size:14px;z-index:9999">
+            Session เหลือเวลา: <span id="time-left">--:--</span>
+        </div>
         <form id="editUserForm" action="" method="post">
 
             <div class="panel" id="facePanel">
@@ -232,6 +252,7 @@ $_SESSION['person_id'] = $userId;
                         </div>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -253,6 +274,8 @@ $_SESSION['person_id'] = $userId;
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                         <div class="col-md-8 mx-auto mb-3">
                             <label>ตำแหน่ง:</label>
                             <input class="form-control" value="<?php
@@ -269,6 +292,7 @@ $_SESSION['person_id'] = $userId;
                                 } else {
                                     echo htmlspecialchars($userType);
                                 }
+<<<<<<< HEAD
 ?>" readonly>
                         </div>
                         <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' || $userType == '1000' ? '1000' : '3000') ?>">
@@ -318,6 +342,11 @@ $_SESSION['person_id'] = $userId;
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+								?>" readonly>
+                        </div>
+                        <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' || $userType == '1000' ? '1000' : '3000') ?>">
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
                         <div class="col-md-8 mx-auto mb-3">
                             <label>รหัสผู้ใช้งาน:</label>
@@ -325,6 +354,7 @@ $_SESSION['person_id'] = $userId;
                         </div>
                     </div>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -347,10 +377,13 @@ $_SESSION['person_id'] = $userId;
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                     <h4 class="mt-5">สิทธิ์การใช้งานสแกนใบหน้า</h4>
                     <div class="col-md-8 mx-auto mb-3">
                         <table class="table table-sm" id="tableAuth">
                             <tr>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -361,11 +394,14 @@ $_SESSION['person_id'] = $userId;
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                                 <td>เปิด-ปิดการใช้สแกนใบหน้า</td>
                                 <td>
                                     <label class="checkbox-container" >
                                         <input type="checkbox" id="AllowFaceRegister" name="AllowFaceRegister" <?= $hasFacePermission ? 'checked' : '' ?>>
                                         อนุญาตลงทะเบียนใบหน้า
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -381,6 +417,8 @@ $_SESSION['person_id'] = $userId;
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                                     </label>
                                 </td>
                             </tr>
@@ -406,6 +444,7 @@ $_SESSION['person_id'] = $userId;
                     <input type="hidden" name="EmployeeNo" value="">
                     <input type="hidden" name="LoginAllowed" value="<?= ($userId == '708967') ? '1' : '0' ?>">
                     <input type="hidden" name="LoginPW" value="<?= ($userId == '708967') ? '708967' : '' ?>">
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -481,10 +520,19 @@ $_SESSION['person_id'] = $userId;
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                 </div>
             </div>
 
             <div class="panel" id="Newtakephoto" name="Newtakephoto" style="display:none">
+<<<<<<< HEAD
+=======
+			 <!-- ปุ่มปิดหน้าถ่ายรูป -->
+            <button type="button" onclick="closeCameraPanel()"
+                style="position: absolute; top: 15px; right: 15px; z-index: 9999; cursor: pointer;background: red;color: white;"><strong>✕</strong></button>
+            <br>
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                 <h2>ถ่ายรูป</h2>
                 <div class="stage row center">
                     <div class="video-container" id="videoContainer">
@@ -541,6 +589,7 @@ $_SESSION['person_id'] = $userId;
     </div>
 
 
+<<<<<<< HEAD
     <div id="pdpaModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999;">
         <div style="max-width:600px; margin:10vh auto; background:#fff; padding:20px; border-radius:8px;">
             <img src="./PDF/lib_icon.png" style="width:300px; height:120px; display:block; margin:0 auto;">
@@ -555,10 +604,56 @@ $_SESSION['person_id'] = $userId;
             <div style="text-align:right; margin-top:15px;">
                 <button id="pdpaDeclineBtn" type="button" class="btn btn-secondary">ไม่ยินยอม</button>
                 <button id="pdpaAcceptBtn" type="button" class="btn btn-primary">ยินยอม</button>
+=======
+   <div id="pdpaModal">
+            <div>
+                <!-- ส่วน Header -->
+                <div style="text-align: center; flex-shrink: 0;">
+                    <img src="./PDF/lib_icon.png"
+                        style="max-width: 220px; height: auto; display: block; margin: 0 auto 10px;">
+                    <h4 style="font-size: 15px; margin: 0 0 10px 0; line-height: 1.4;">
+                        หนังสือขอความยินยอมให้ สำนักหอสมุดกลางมหาวิทยาลัยศรีนครินทรวิโรฒ เก็บรวบรวมและใช้ข้อมูลใบหน้า
+                        (Facial Scans) ของท่านเพื่อประโยชน์ในการยืนยันตัวตนของท่านสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
+                    </h4>
+                </div>
+
+                <!-- ส่วนข้อความที่เปิดให้เลื่อนอ่าน (Scroll Content) -->
+                <div id="pdpaScrollBox">
+                    <p>ภายใต้พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562
+                        การที่สำนักหอสมุดกลางมหาวิทยาลัยศรีนครินทรวิโรฒ จะเก็บรวบรวม และใช้ข้อมูลใบหน้า (Facial Scans)
+                        ของท่านถือว่าเป็นการเก็บรวบรวมและใช้ข้อมูลส่วนบุคคลที่อ่อนไหว ที่วิทยาลัยฯ
+                        จะต้องให้ความคุ้มครองเป็นพิเศษ ดังนั้น</p>
+                    <p>สำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ
+                        จึงขอความยินยอมจากท่านในการให้สำนักหอสมุดกลางเก็บรวบรวมและใช้ข้อมูลใบหน้า (Facial Scans)
+                        ของท่านเพื่อประโยชน์ในการยืนยันตัวตนของท่านสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
+                        ของสำนักหอสมุดกลาง</p>
+                    <p>ในภายหลัง ท่านมีสิทธิที่จะถอนการยินยอมในการให้สำนักหอสมุดกลาง เก็บรวบรวมและใช้ข้อมูลใบหน้า
+                        (Facial Scans) ของท่านในครั้งนี้ โดยท่านสามารถติดต่อเจ้าหน้าที่ดูแลระบบที่ kiattisak@g.swu.ac.th
+                    </p>
+                    <p>โดยสำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ
+                        จะรักษาข้อมูลส่วนบุคคลดังกล่าวของท่านไว้เป็นความลับและสำนักหอสมุดกลาง
+                        รับรองว่าจะมีการดำเนินการรักษาความปลอดภัยที่มีมาตรฐาน
+                        และจัดให้มีมาตรการด้านเทคนิคและการจัดการเพื่อป้องกันการเข้าถึงข้อมูลของท่านโดยมิชอบ</p>
+                    <p style="margin-bottom: 0;">ให้สำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ
+                        เก็บรวบรวมและใช้ข้อมูลใบหน้า (Facial Scans)
+                        ของข้าพเจ้าเพื่อประโยชน์ในการยืนยันตัวตนของข้าพเจ้าสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
+                        ของสำนักหอสมุดกลาง</p>
+                </div>
+
+                <!-- ส่วน Footer และปุ่มกด -->
+                <div style="flex-shrink: 0; margin-top: 10px;">
+                    <!-- ลบข้อความแจ้งเตือนสีแดงออกได้เลย หรือซ่อนไว้ -->
+                    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                        <button type="button" id="pdpaDeclineBtn" class="btn btn-secondary">ไม่ยินยอม</button>
+                        <!-- ถอด disabled ออก เพื่อให้กดได้ทันที -->
+                        <button type="button" id="pdpaAcceptBtn" class="btn btn-primary">ยินยอม</button>
+                    </div>
+                </div>
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
             </div>
         </div>
-    </div>
 
+<<<<<<< HEAD
     <div id="session-timer" style="position:fixed;bottom:10px;right:10px; background:#222;color:#fff; padding:8px 12px;border-radius:6px; font-size:14px;z-index:9999">
         เหลือเวลา: <span id="time-left">--:--</span>
     </div>
@@ -571,13 +666,50 @@ $_SESSION['person_id'] = $userId;
         let remaining = SESSION_TIMEOUT;
         const display = document.getElementById('time-left');
         if (!display) return;
+=======
+  
 
-        function format(sec) {
-            const m = Math.floor(sec / 60);
-            const s = sec % 60;
-            return `${m}:${String(s).padStart(2, '0')}`;
-        }
+    <script src="./face-api.js-master/dist/face-api.min.js"></script>
+   <script src="./js/register-face_new.js"></script> 
 
+    <script>
+(function () {
+  var VERSION_URL = './js/version_register.json';       
+  var SCRIPT_URL  = './js/register-face_new.js';         
+  var STORAGE_KEY = 'registerJsVersion';
+
+  function loadScript(url) {
+    var s = document.createElement('script');
+    s.src = url;
+    s.async = false; // รักษาลำดับการรันให้เหมือน <script> ปกติ
+    document.head.appendChild(s);
+  }
+
+  function fallbackLoad() {
+    // เผื่อกรณี fetch version.json ล้มเหลว (เช่น ยังไม่ได้สร้างไฟล์ หรือ network พลาด)
+    // ยังโหลด register.js ให้ได้ตามปกติ โดยแปะ timestamp กันไว้เป็นเซฟตี้เน็ต
+    loadScript(SCRIPT_URL + '?v=' + Date.now());
+  }
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
+
+  async function clearOldCachesIfNeeded() {
+    try {
+      // ล้าง Cache Storage API (เผื่อมี Service Worker เก็บไฟล์นี้ไว้)
+      if (window.caches && caches.keys) {
+        var keys = await caches.keys();
+        await Promise.all(keys.map(function (k) { return caches.delete(k); }));
+      }
+      // ยกเลิก Service Worker ทั้งหมดของหน้านี้ (ถ้ามี)
+      if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+        var regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(function (r) { return r.unregister(); }));
+      }
+    } catch (e) {
+      console.warn('clearOldCachesIfNeeded:', e);
+    }
+  }
+
+<<<<<<< HEAD
         let isLoggingOut = false;
         function logoutAndRedirect() {
             if (isLoggingOut) return;
@@ -597,10 +729,95 @@ $_SESSION['person_id'] = $userId;
                 display.textContent = '0:00';
                 logoutAndRedirect();
                 return;
+=======
+  async function boot() {
+    try {
+      // cache: 'no-store' บังคับให้เบราว์เซอร์ยิง network จริงเสมอ
+      // ไม่ใช้ค่าจาก HTTP cache เลย ไม่ว่า server จะตั้ง header ไว้อย่างไร
+      var res = await fetch(VERSION_URL, { cache: 'no-store' });
+      if (!res.ok) throw new Error('version.json fetch failed: ' + res.status);
+
+      var data = await res.json();          // คาดหวังรูปแบบ { "version": "2026-08-28-01" }
+      var latestVersion = String(data.version || Date.now());
+      var storedVersion = localStorage.getItem(STORAGE_KEY);
+
+      if (storedVersion !== latestVersion) {
+        console.log('🔄 พบเวอร์ชันใหม่ (' + storedVersion + ' -> ' + latestVersion + ') กำลังล้างแคชและโหลดไฟล์ใหม่');
+        await clearOldCachesIfNeeded();
+        localStorage.setItem(STORAGE_KEY, latestVersion);
+        loadScript(SCRIPT_URL + '?v=' + encodeURIComponent(latestVersion));
+      } else {
+        // เวอร์ชันเดิม ให้เบราว์เซอร์ใช้ cache ปกติได้ (เร็วกว่า ไม่ต้องยิงใหม่ทุกครั้ง)
+        loadScript(SCRIPT_URL + '?v=' + encodeURIComponent(latestVersion));
+      }
+    } catch (e) {
+      console.warn('⚠️ ตรวจสอบเวอร์ชันไม่สำเร็จ ใช้ fallback:', e);
+      fallbackLoad();
+    }
+  }
+
+  boot();
+})();
+</script>
+    <script>
+      (function () {
+            const CHECK_INTERVAL = 30000;
+            let remaining = SESSION_TIMEOUT;
+
+            const display = document.getElementById('time-left');
+            if (!display) return;
+
+            function format(sec) {
+                const m = Math.floor(sec / 60);
+                const s = sec % 60;
+                return `${m}:${String(s).padStart(2, '0')}`;
+            }
+
+            function logoutAndRedirect() {
+                fetch('logout.php', {
+                        method: 'POST',
+                        credentials: 'same-origin'
+                    })
+                    .finally(() => {
+                        window.location.href = 'login.php?timeout=1';
+                    });
+            }
+
+            function tick() {
+                remaining--;
+                if (remaining <= 0) {
+                    display.textContent = '0:00';
+                    logoutAndRedirect();
+                    return;
+                }
+                display.textContent = format(remaining);
+            }
+
+            function checkSession() {
+                fetch('check_session.php', {
+                        credentials: 'same-origin'
+                    })
+                    .then(res => {
+                        if (res.status === 401 || res.status === 440) {
+                            logoutAndRedirect();
+                            return null;
+                        }
+                        return res.json();
+                    })
+                    .then(data => {
+                        if (!data) return;
+                        if (data.status === 'expired') logoutAndRedirect();
+                        if (data.status === 'ok') remaining = SESSION_TIMEOUT;
+                    })
+                    .catch(err => console.error('Session check error:', err));
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
             }
             display.textContent = format(remaining);
-        }
+            setInterval(tick, 1000);
+            setInterval(checkSession, CHECK_INTERVAL);
+        })();
 
+<<<<<<< HEAD
         function checkSession() {
             fetch('check_session.php', { credentials: 'same-origin' })
                 .then(res => {
@@ -621,10 +838,62 @@ $_SESSION['person_id'] = $userId;
         setInterval(tick, 1000);
         setInterval(checkSession, CHECK_INTERVAL);
     })();
+=======
+
+        /* ==========================================
+           2. ระบบควบคุม PDPA Modal
+           ========================================== */
+        document.addEventListener('DOMContentLoaded', () => {
+            const pdpaModal = document.getElementById('pdpaModal');
+            const acceptBtn = document.getElementById('pdpaAcceptBtn');
+            const declineBtn = document.getElementById('pdpaDeclineBtn');
+            const scrollNotice = document.getElementById('scrollNotice');
+
+            // ปล่อยปุ่มให้กดได้ทันที + ซ่อนข้อความแจ้งเตือนสีแดง
+            if (acceptBtn) acceptBtn.disabled = false;
+            if (scrollNotice) scrollNotice.style.display = 'none';
+
+            window.openPdpaModal = function () {
+                if (!pdpaModal) return;
+                pdpaModal.classList.add('active');
+                document.body.classList.add('modal-open');
+            };
+
+            window.closePdpaModal = function () {
+                if (!pdpaModal) return;
+                pdpaModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            };
+
+            if (acceptBtn) {
+                acceptBtn.addEventListener('click', () => {
+                    window.pdpaAccepted = true;
+                    window.closePdpaModal();
+
+                    if (typeof allowCam !== 'undefined') {
+                        allowCam = true;
+                        const allowCamBtn = document.getElementById('AllowCamBtn');
+                        if (allowCamBtn) allowCamBtn.textContent = 'ปิดกล้อง';
+                        if (typeof updateCameraPanel === 'function') {
+                            updateCameraPanel();
+                        }
+                    }
+                });
+            }
+
+            if (declineBtn) {
+                declineBtn.addEventListener('click', () => {
+                    window.pdpaAccepted = false;
+                    window.closePdpaModal();
+                });
+            }
+        });
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     </script>
 <<<<<<< HEAD
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -636,6 +905,8 @@ $_SESSION['person_id'] = $userId;
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 </body>
 
 </html>

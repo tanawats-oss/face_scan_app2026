@@ -109,7 +109,7 @@
       panelNewphoto.style.display = 'none';
       panelResult.style.display = 'none';
       panelFaceDB.style.display = 'block';
-      // panelUpdateData.style.display = 'block';
+      document.body.style.overflow = '';
       stopCamera();
       return;
     }
@@ -119,18 +119,24 @@
       panelNewphoto.style.display = 'none';
       panelResult.style.display = 'none';
       panelFaceDB.style.display = 'block';
-      // panelUpdateData.style.display = 'none';
+      document.body.style.overflow = '';
       stopCamera();
       return;
     }
 
     // ✅ พร้อมถ่าย
     panelNewphoto.style.display = 'block';
-    panelFaceDB.style.display = 'none';
-    // panelUpdateData.style.display = 'none';
-
+	panelNewphoto.scrollTop = 0; // เลื่อนกล่องถ่ายรูปไปบนสุด
+	document.body.style.overflow = 'hidden'; // ล็อกไม่ให้หน้าหลังเลื่อน
     startCamera();
   }
+  // ฟังก์ชันปิดกล้องสำหรับปุ่มกากบาท (✕)
+	window.closeCameraPanel = function () {
+	allowCam = false;
+	stopCamera();        // stopCamera() 
+	updateCameraPanel(); // ซ่อนหน้าต่างและสลับ UI กลับ
+	};
+	
   /* ====== initial state from backend ====== */
   if (allowFaceCheckbox.checked) {
     allowCamBtn.disabled = false;
@@ -306,21 +312,39 @@ allowFaceCheckbox.addEventListener('change', () => {
   }
 
 
-  function stopCamera() {
+   function stopCamera() {
+    if (animFrameId) {
+      cancelAnimationFrame(animFrameId);
+      animFrameId = null;
+    }
+
+    // 1. สั่ง stop ทุก Track ใน stream หลักเพื่อดับไฟฮาร์ดแวร์
     if (stream) {
       stream.getTracks().forEach(t => t.stop());
       stream = null;
     }
-    if (video.srcObject) {
-      video.srcObject = null; // ⭐ เพิ่ม
+
+    // 2. เคลียร์ Stream ค้างในแท็ก <video>
+    if (video) {
+      video.pause();
+      if (video.srcObject) {
+        const vStream = video.srcObject;
+        if (typeof vStream.getTracks === 'function') {
+          vStream.getTracks().forEach(t => t.stop());
+        }
+        video.srcObject = null;
+      }
     }
+
     cameraStarted = false;
     lastFaceBox = null;
     overlayRect = null;
     overlayRunning = false;
 
-    const ctx = overlay.getContext('2d');
-    ctx.clearRect(0, 0, overlay.width, overlay.height);
+    if (overlay) {
+      const ctx = overlay.getContext('2d');
+      ctx.clearRect(0, 0, overlay.width, overlay.height);
+    }
   }
 
 
@@ -400,9 +424,12 @@ allowFaceCheckbox.addEventListener('change', () => {
     requestAnimationFrame(drawOverlay);
   }
 
+<<<<<<< HEAD
   /* ===================================================
      [REGIS FILE] - JAVASCRIPT CODE FOR REGISTER PAGE
      =================================================== */
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
   /* =======================
      CAPTURE (ถ่ายรูปและคำนวณขนาดไฟล์จริง)
@@ -437,6 +464,7 @@ allowFaceCheckbox.addEventListener('change', () => {
     const cx = mirroredX + box.width / 2;
     const cy = box.y + box.height / 2;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
     
@@ -466,12 +494,15 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
     const size = Math.max(box.width, box.height) * 2;
 
     ctx.save();
     ctx.scale(-1, 1); 
     ctx.drawImage(video, cx - size / 2, cy - size / 2, size, size, -300, 0, 300, 300);
+<<<<<<< HEAD
 <<<<<<< HEAD
     ctx.restore();
 
@@ -631,11 +662,22 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+    ctx.restore();
+
+   
+    const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
+    console.log('Preview:', base64DataUrl);
+    const base64 = base64DataUrl.split(',')[1];
+
+    // คำนวณขนาดไบต์จริงของไฟล์ JPEG ที่ถูกบีบอัดแล้ว
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     const padding = (base64.endsWith('=')) ? (base64.endsWith('==') ? 2 : 1) : 0;
     const actualByteSize = Math.floor((base64.length * 0.75) - padding);
 
     userFaceArray.length = 0;
     userFaceArray.push({
+<<<<<<< HEAD
 <<<<<<< HEAD
       TemplateData: base64,       
       TemplateSize: Math.floor(actualByteSize)
@@ -667,10 +709,15 @@ allowFaceCheckbox.addEventListener('change', () => {
       TemplateSize: Math.floor(actualByteSize)
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+      TemplateData: base64,       
+      TemplateSize: Math.floor(actualByteSize)
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     });
 
     console.log(`📸 Captured & Compressed! New Size: ${actualByteSize} Bytes`);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     panelResult.style.display = 'block';
     videoContainer.style.display = 'none';
@@ -767,6 +814,12 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+    panelResult.style.display = 'block';
+    videoContainer.style.display = 'none';
+    captureBtn.style.display = 'none';
+    status.style.display = 'none';
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     status.textContent = '✅ จับใบหน้าแล้ว';
     stopCamera();
   }
@@ -803,6 +856,7 @@ allowFaceCheckbox.addEventListener('change', () => {
 
     status.textContent = 'พร้อมตรวจจับใบหน้า';
     status.style.color = '#333';
+<<<<<<< HEAD
 <<<<<<< HEAD
     status.style.display = 'block';
 =======
@@ -844,11 +898,17 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+    status.style.display = 'block';
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
     cameraStarted = false;
     updateCameraPanel();
   });
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
   /* =======================
      UPDATE SERVER (ปุ่มลงทะเบียน)
@@ -856,6 +916,7 @@ allowFaceCheckbox.addEventListener('change', () => {
   updateBtn.addEventListener('click', async (e) => {
     e.preventDefault();
 
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 
@@ -992,10 +1053,34 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+    console.log('%c--- [เริ่มการตรวจสอบข้อมูลลงทะเบียน] ---', 'font-weight: bold;');
+    const fd = new FormData(form);
+
+    let rawId = String(fd.get('ID') || "").trim();
+    let userId = rawId;
+    let cleanNumber = rawId.replace(/[^0-9]/g, '');
+    
+    if (cleanNumber.length === 11) {
+        // === เงื่อนไขใหม่: ถ้ารหัสมาเป็น 11 หลัก (เช่น 57110010277) ===
+        let first5 = cleanNumber.substring(0, 5); // "69102" (5 หลักแรก)
+    let last3  = cleanNumber.substring(8, 11); // "277"   (3 หลักสุดท้าย)
+    
+    userId = first5 + last3; // ผลลัพธ์: "69102277" (8 หลัก ไม่ชนกัน)
+
+    }else if (cleanNumber.length === 6) {
+        // === เงื่อนไขเดิม: ถ้าเป็นเลข 6 หลัก ให้เติม 00 ข้างหน้า ===
+        userId = "00" + cleanNumber; // ผลลัพธ์: "00xxxx" (กลายเป็น 8 หลักเช่นกัน)
+
+    }else {
+        // กรณีอื่น ๆ ที่ไม่เข้าพวก ให้ใช้ตัวเลขล้วนที่สกัดได้ไปก่อน
+        userId = cleanNumber;
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     }
 
     // 1️⃣ ตรวจสอบเงื่อนไขการกรอก: ติ๊กเปิดกล้องไว้แต่ยังไม่ได้กดถ่ายรูปใบหน้า
     if (allowFaceCheckbox.checked && allowCam && !userFaceArray.length) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1054,10 +1139,13 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       alert('⚠️ กรุณากดถ่ายรูปใบหน้า หรือปิดกล้องก่อนบันทึกข้อมูล');
       return;
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1091,12 +1179,15 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     // ตรวจสอบสถานะการติ๊กและภาพที่ถ่ายจริง
     const isFaceEnabled = allowFaceCheckbox.checked;
     const hasFacePhoto = userFaceArray.length > 0;
 
     // ดึงค่า Base64 รูปภาพที่ถ่ายไว้ (ถ้าติ๊กและถ่ายรูปแล้ว ให้ส่งไป / ถ้าไม่ติ๊ก ให้ส่งค่าว่าง)
     const capturedBase64 = (isFaceEnabled && hasFacePhoto) ? userFaceArray[0].TemplateData : "";
+<<<<<<< HEAD
 <<<<<<< HEAD
     // เปลี่ยนเงื่อนไขให้รัดกุมขึ้น (ต้องติ๊กด้วย และต้องมีรูปด้วย ถึงจะเป็น 9 และ 1)
     const isFaceActive = isFaceEnabled && hasFacePhoto;
@@ -1144,11 +1235,16 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+    // เปลี่ยนเงื่อนไขให้รัดกุมขึ้น (ต้องติ๊กด้วย และต้องมีรูปด้วย ถึงจะเป็น 9 และ 1)
+    const isFaceActive = isFaceEnabled && hasFacePhoto;
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
     const userInfo = {
       ID: userId,
       UniqueID: String(fd.get('UniqueID')),
       Name: String(fd.get('Name')),
+<<<<<<< HEAD
 <<<<<<< HEAD
       AuthInfo: [2, (isFaceActive ? 9 : 0), 30, 0, 0, 0, 0, 0],
       Privilege: Number(fd.get('Privilege')) || 2,
@@ -1206,6 +1302,10 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+      AuthInfo: [2, (isFaceActive ? 9 : 0), 30, 0, 0, 0, 0, 0],
+      Privilege: Number(fd.get('Privilege')) || 2,
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       CreateDate: new Date().toISOString().replace('T', ' ').split('.')[0],
       UsePeriodFlag: 0,
       RegistDate: String(fd.get('RegistDate') || ''),
@@ -1217,6 +1317,7 @@ allowFaceCheckbox.addEventListener('change', () => {
       TimezoneCode: 0,
       BlackList: 0,
       FPIdentify: 0,
+<<<<<<< HEAD
 <<<<<<< HEAD
       FaceIdentify: isFaceActive ? 1 : 0,
 =======
@@ -1262,6 +1363,9 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+      FaceIdentify: isFaceActive ? 1 : 0,
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       DuressFinger: null,
       Partition: 0,
       APBExcept: 0,
@@ -1271,6 +1375,7 @@ allowFaceCheckbox.addEventListener('change', () => {
       MoneyCode: "0",
       MessageCode: 0,
 <<<<<<< HEAD
+<<<<<<< HEAD
       VerifyLevel: Number(fd.get('VerifyLevel')) || 0,
 =======
 <<<<<<< HEAD
@@ -1279,10 +1384,14 @@ allowFaceCheckbox.addEventListener('change', () => {
       VerifyLevel: Number(fd.get('VerifyLevel')) || 5,
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+      VerifyLevel: Number(fd.get('VerifyLevel')) || 0,
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       PositionCode: Number(fd.get('Position')) || 9997,
       EmployeeNum: "0",
       Email: String(fd.get('Email') || ''),
       Phone: "",
+<<<<<<< HEAD
 <<<<<<< HEAD
       Department: String(fd.get('Department') || ''),
       LoginPW: String(fd.get('LoginPW') || ''),
@@ -1345,6 +1454,11 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+      Department: String(fd.get('Department') || ''),
+      LoginPW: String(fd.get('LoginPW') || ''),
+      LoginAllowed: Number(fd.get('LoginAllowed')) || 0,
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       Picture: "",
 =======
       LoginAllowed: "0",
@@ -1371,6 +1485,7 @@ allowFaceCheckbox.addEventListener('change', () => {
       return;
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1399,11 +1514,14 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     // 2️⃣ [จุดประสงค์หลัก] ตรวจสอบเงื่อนไข Checkbox เพื่อแยกก้อนข้อมูลส่ง
     let faceInfo = null;
     if (isFaceEnabled && hasFacePhoto) {
       // ติ๊กเลือก -> ส่งอาร์เรย์ข้อมูลใบหน้าตามโครงสร้าง API ของเครื่องสแกน
       faceInfo = [{
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1413,10 +1531,13 @@ allowFaceCheckbox.addEventListener('change', () => {
         TemplateType: 1                      
 =======
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
         UserID: userId,
         TemplateSize: userFaceArray[0].TemplateSize,
         TemplateData: capturedBase64,
         TemplateType: 1
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1462,6 +1583,8 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       }];
     } else {
       // ไม่ติ๊กเลือก -> ส่งเป็น null ชัดเจน ข้อมูลใบหน้าจะไม่ถูกลงทะเบียนเข้าไปกวนฐานข้อมูล
@@ -1478,6 +1601,7 @@ allowFaceCheckbox.addEventListener('change', () => {
       UserFaceWTInfo: faceInfo // ผูกตัวแปรที่ผ่านการตรวจสอบเงื่อนไขแล้ว
     };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     console.group(' REGISTER PAYLOAD');
 =======
@@ -1515,10 +1639,14 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+    console.group(' REGISTER PAYLOAD');
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     console.log('Object View:', payload);
     console.groupEnd();
 
     try {
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1546,6 +1674,8 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       showLoading('กำลังอัปโหลดข้อมูลและใบหน้าไปยังเครื่องสแกน...');
       updateBtn.disabled = true;
 
@@ -1553,6 +1683,7 @@ allowFaceCheckbox.addEventListener('change', () => {
       const controller = new AbortController();
       const timeout = setTimeout(() => {
         controller.abort();
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1575,12 +1706,15 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
         console.warn('Timeout! ตัด session แล้ว');
       }, 12000);
 
       console.log(' Sending payload...');
       console.log(' Payload size:', JSON.stringify(payload).length, 'bytes');
       console.log(' TemplateSize:', userFaceArray[0]?.TemplateSize, 'bytes');
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1622,6 +1756,8 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
       let response;
       try {
@@ -1640,12 +1776,16 @@ allowFaceCheckbox.addEventListener('change', () => {
       const result = await response.json();
       console.log('🔍 SERVER RESPONSE (RAW):', result);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
       // ✅ เพิ่มใหม่: เช็ค HTTP status ก่อน เพื่อแยก error "เซิร์ฟเวอร์ล่ม" ออกจาก "เครื่องสแกนปฏิเสธ"
       if (!response.ok) {
         console.error('%c❌ HTTP Error:', 'color: red;', response.status, result);
         alert(`❌ เซิร์ฟเวอร์ตอบกลับผิดปกติ (HTTP ${response.status})\n${result?.message || 'กรุณาลองใหม่อีกครั้ง'}`);
         return;
+<<<<<<< HEAD
 =======
       const apiResult = result?.apiResult;
       const innerResult = apiResult?.Result || apiResult?.result;
@@ -1788,7 +1928,60 @@ allowFaceCheckbox.addEventListener('change', () => {
 =======
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       }
+
+      const apiResult = result?.apiResult;
+      const innerResult = apiResult?.Result || apiResult?.result;
+      const rawResultCode = innerResult?.ResultCode !== undefined ? innerResult?.ResultCode : innerResult?.resultCode;
+      const resultCode = Number(rawResultCode);
+      console.log('🔍 Detected ResultCode:', resultCode);
+
+      // whitelist: 0 (ErrorNone) เท่านั้นที่ถือว่าสำเร็จจริง
+      if (result.status === 'success' && resultCode === 0) {
+        console.log('%c✅ Success:', 'color: green; font-weight: bold;', result);
+        alert('✅ บันทึกข้อมูลและลงทะเบียนเรียบร้อยแล้ว');
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/logout.php';
+        return;
+      }
+
+      // ------ Error mapping (ตาม ErrorCode ของเครื่องสแกน) ------
+      const ERROR_MAP = {
+        // 0x02 Face capture errors
+        33558281: '❌ ไม่พบใบหน้าในภาพ กรุณาถ่ายรูปใหม่',                      // ErrorFacewtNoFace
+        33558282: '❌ พบใบหน้ามากกว่า 1 หน้าในภาพ',                           // ErrorFacewtMultiFace
+        33558283: '❌ ใบหน้าในภาพเล็กเกินไป กรุณาเข้าใกล้กล้อง',              // ErrorFacewtSmall
+        33558284: '❌ คุณภาพใบหน้าต่ำเกินไป กรุณาถ่ายในที่แสงสว่างพอ',       // ErrorFacewtLowScore
+        33558285: '❌ กรุณาหันหน้าตรงเข้ากล้อง',                              // ErrorFacewtSideFace
+        33558286: '❌ ภาพไม่ชัด กรุณาถ่ายรูปใหม่',                            // ErrorFacewtVague
+        33558287: '❌ กรุณาเข้าใกล้กล้องมากขึ้น',                             // ErrorFacewtTooFar
+        33558288: '❌ ระบบจดจำใบหน้าล้มเหลว กรุณาลองใหม่',                   // ErrorFacewtRecogFail
+        33558295: '❌ กรุณาถอดหน้ากากอนามัยก่อนถ่ายรูป',                     // ErrorWearingMask
+        33558296: '❌ ไฟล์ภาพเสียหาย กรุณาถ่ายรูปใหม่',                      // ErrorImageBroken
+
+        // 0x01 Duplicate / ID errors
+        16777217: '❌ รหัสผู้ใช้นี้มีอยู่ในระบบแล้ว (Duplicate ID) กรุณาตรวจสอบรหัสผู้ใช้',
+        16777222: '❌ UniqueID ซ้ำกับผู้ใช้ในระบบ',
+        16777223: '❌ UniqueID ซ้ำ (Not Unique)',
+        16777224: '❌ ผู้ใช้นี้มีอยู่แล้วในระบบ (User Exist)',
+        16777235: '❌ บัตร RF ซ้ำกับผู้ใช้อื่น',
+        16777236: '❌ ใบหน้านี้คล้าย/ซ้ำกับผู้ใช้อื่นในระบบ',
+        16777237: '❌ บัตรนี้คล้าย/ซ้ำกับผู้ใช้อื่นในระบบ',
+      };
+
+      if (resultCode === 16777236 || resultCode === 16777237) {
+        const dupInfo = apiResult?.DuplicateInfo || apiResult?.duplicateInfo;
+        const dupName = dupInfo?.DuplicateName || dupInfo?.duplicateName || 'ไม่ระบุชื่อ';
+        const dupId = dupInfo?.DuplicateUniqueID || dupInfo?.duplicateUniqueID || 'ไม่ระบุ ID';
+        alert(`${ERROR_MAP[resultCode]}\n\nพบข้อมูลซ้ำกับ: ${dupName} (ID: ${dupId})\n\n💡 วิธีแก้: กรุณาลบพนักงานคนเดิมออกจากเครื่องสแกนก่อนอัปโหลดอีกครั้ง`);
+        return;
+      }
+
+      // ✅ แก้ NaN: เช็คด้วย Number.isNaN แทน ?? เพราะ Number(undefined) = NaN ไม่ใช่ undefined
+      const codeDisplay = Number.isNaN(resultCode) ? 'ไม่ทราบ' : resultCode;
+      console.error('%c❌ API Error / Unhandled ResultCode:', 'color: red;', { resultCode, result });
+      alert(ERROR_MAP[resultCode] || `❌ เกิดข้อผิดพลาด (Code: ${codeDisplay})\n${result.message || 'กรุณาลองใหม่ หรือแจ้งผู้ดูแลระบบพร้อมรหัสนี้'}`);
 
     } catch (error) {
       if (error.name === 'AbortError') {
@@ -1807,6 +2000,7 @@ allowFaceCheckbox.addEventListener('change', () => {
     } finally {
       hideLoading();
       updateBtn.disabled = false;
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
       }
@@ -1993,6 +2187,8 @@ allowFaceCheckbox.addEventListener('change', () => {
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> ce24c2c256c4d4388e87684b2d4298785c247604
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     }
   });
 })();

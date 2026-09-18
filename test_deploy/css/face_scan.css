@@ -56,9 +56,9 @@ body {
 
 .userInfo{
   display: block;
-width: 100%;
-padding-left: 5%;
-padding-right: 5%;
+  width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .userInfo .col-md-8 {
@@ -79,7 +79,6 @@ padding-right: 5%;
   flex-shrink: 0;      
 }
 
-
 .form-group  {
   width: 180px;       
   min-width: 180px;
@@ -93,8 +92,8 @@ padding-right: 5%;
 
 .form-control {
   width: 100%;
-   display: flex; 
-   align-items: center;
+  display: flex; 
+  align-items: center;
 }
 
 /* ปรับสี ฟอนต์ และบังคับให้ค่าที่ดึงมาแสดงชิดซ้ายอ่านง่าย */
@@ -198,21 +197,6 @@ table td {
   vertical-align: middle ; 
 }
 
-
-/* table td:has(input[type="checkbox"]) {
-  display: flex;             
-  align-items: center;       
-  gap: 8px;                 
-  border: none;              
-}
-table input[type="checkbox"] {
-  margin: 0;
-  width: 16px;    
-  height: 16px; 
-  cursor: pointer;
-  flex-shrink: 0;            
-}  */
-
 .table-responsive {
   width: 100%;
   overflow-x: auto;
@@ -227,12 +211,8 @@ table {
   background: var(--panel);
 }
 
- th, td {
+th, td {
   border: 1px solid var(--border);
-  /* padding: 8px 10px;  */
-  /* vertical-align: top; */
-  /* word-wrap: break-word; */
-  /* white-space: normal; */
   font-size: 16px;
 } 
 
@@ -454,8 +434,6 @@ button.muted {
 
 /*  จัดความเรียบร้อยให้รูปและข้อความเรียงลงมาตรงกลางแนวตั้งสากล */
 .center {
-  /* display: flex;
-  flex-direction: column; */
   margin-left: 0;
   margin-right: 0;
   justify-content: center;
@@ -507,9 +485,109 @@ button.muted {
     transform: rotate(360deg);
   }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 .checkbox-container {
   display: inline-flex;  
   align-items: center;   
   gap: 8px;              
   cursor: pointer;      
+<<<<<<< HEAD
+=======
+}
+
+/* ==========================================
+   PDPA Modal Fix (ส่วนเพิ่มขยายต่อท้าย)
+   ========================================== */
+
+/* ล็อกการเลื่อนหน้าจอหลักเฉพาะตอนเปิด Modal */
+body.modal-open {
+  overflow: hidden !important;
+  touch-action: none;
+}
+
+/* Container หลังมืด */
+#pdpaModal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    background-color: rgba(0, 0, 0, 0.65) !important;
+    z-index: 99999 !important;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 15px !important;
+    box-sizing: border-box !important;
+}
+
+#pdpaModal.active {
+    display: flex !important;
+}
+/* กล่องขาว Modal */
+#pdpaModal > div {
+    background: #ffffff !important;
+    width: 100% !important;
+    max-width: 400px !important;
+    max-height: 85vh !important;
+    max-height: 85dvh !important;
+    border-radius: 16px !important;
+    padding: 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3) !important;
+}
+/* ช่องข้อความที่ตั้งให้เลื่อนได้ง่ายๆ */
+#pdpaScrollBox {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    max-height: 40vh !important; /* กำหนดความสูงกรอบข้อความ */
+    margin: 10px 0 !important;
+    padding-right: 5px;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+/* เปลี่ยน Panel ถ่ายรูปให้เป็น Popup เต็มจอแบบยืดหยุ่นตามความสูงจอมือถือ */
+#Newtakephoto {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important; /* ป้องกัน Navbar มือถือบัง */
+    background-color: #ffffff !important;
+    z-index: 99990 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px 15px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+}
+
+/* ปุ่มปิดหน้าถ่ายรูป (กากบาทมุมขวาบน) */
+.close-camera-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 99991;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 }

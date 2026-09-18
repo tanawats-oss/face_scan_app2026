@@ -16,6 +16,7 @@ Developed   : 2025
 
 <head>
 <<<<<<< HEAD
+<<<<<<< HEAD
  
 =======
       <!-- Google Tag Manager -->
@@ -24,6 +25,9 @@ Developed   : 2025
     </script>
     <!-- End Google Tag Manager -->
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+ 
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     <meta charset="UTF-8">
     <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
     <meta name="developer-email" content="tanawats@g.swu.ac.th">

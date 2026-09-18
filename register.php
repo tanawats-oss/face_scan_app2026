@@ -3,6 +3,7 @@ session_start();
 
 /* ================== CONFIG ================== */
 <<<<<<< HEAD
+<<<<<<< HEAD
 define('SESSION_TIMEOUT', 600); // วินาที
 =======
 <<<<<<< HEAD
@@ -27,6 +28,9 @@ define('SESSION_TIMEOUT', 5000); // วินาที
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+define('SESSION_TIMEOUT', 600); // วินาที
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
 /* ================== AUTH CHECK ================== */
 if (empty($_SESSION['auth_ldap'])) {
@@ -105,6 +109,7 @@ $_SESSION['person_id'] = $userId;
 
 <head>
 <<<<<<< HEAD
+<<<<<<< HEAD
    <!-- Google Tag Manager -->
 =======
 <<<<<<< HEAD
@@ -132,6 +137,9 @@ $_SESSION['person_id'] = $userId;
      <!-- Google Tag Manager -->
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+   <!-- Google Tag Manager -->
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     <script>
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-W8ZD4T59');
     </script>
@@ -142,6 +150,7 @@ $_SESSION['person_id'] = $userId;
     <title>Register Face</title>
     <link rel="stylesheet" href="./css/face_scan.css">
    
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -164,12 +173,15 @@ $_SESSION['person_id'] = $userId;
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     <script>
         const SESSION_TIMEOUT = <?= SESSION_TIMEOUT ?>;
     </script>
 </head>
 
 <body>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -186,12 +198,15 @@ $_SESSION['person_id'] = $userId;
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
         <!-- Google Tag Manager (noscript) -->
         <noscript>
             <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8ZD4T59"height="0" width="0" style="display:none;visibility:hidden">
             </iframe>
         </noscript>
         <!-- End Google Tag Manager (noscript) -->
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -209,6 +224,8 @@ $_SESSION['person_id'] = $userId;
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     <div style="padding: 10px; background: #eee; font-size: 12px; text-align: center;">ID ผู้ใช้งานระบบ: <?php echo htmlspecialchars($userId); ?></div>
 
     <div class="container">
@@ -362,6 +379,7 @@ $_SESSION['person_id'] = $userId;
     </div>
 
 
+<<<<<<< HEAD
     <div id="pdpaModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999;">
         <div style="max-width:600px; margin:10vh auto; background:#fff; padding:20px; border-radius:8px;">
             <img src="./PDF/lib_icon.png" style="width:300px; height:120px; display:block; margin:0 auto;">
@@ -389,6 +407,44 @@ $_SESSION['person_id'] = $userId;
 =======
     <div id="session-timer" style="position:fixed;bottom:10px;right:10px; background:#222;color:#fff; padding:8px 12px;border-radius:6px; font-size:14px;z-index:9999">
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+     <div id="pdpaModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;">
+            <div style="max-width:600px;margin:10vh auto;background:#fff;padding:20px;border-radius:8px;">
+                <img src="./PDF/lib_icon.png" style="width:300px;height:120px;display:block;margin:0 auto;">
+                <h4>หนังสือขอความยินยอมให้ สำนักหอสมุดกลางมหาวิทยาลัยศรีนครินทรวิโรฒ เก็บรวบรวมและใช้ข้อมูลใบหน้า
+                    (Facial Scans) ของท่านเพื่อประโยชน์ในการยืนยันตัวตนของท่านสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
+                </h4>
+                <div style="max-height:300px;overflow:auto;font-size:14px;">
+                    <p>ภายใต้พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562
+                        การที่สำนักหอสมุดกลางมหาวิทยาลัยศรีนครินทรวิโรฒ จะเก็บรวบรวม และใช้ข้อมูลใบหน้า (Facial Scans)
+                        ของท่านถือว่าเป็นการเก็บรวบรวมและใช้ข้อมูลส่วนบุคคลที่อ่อนไหว
+                        ที่วิทยาลัยฯ จะต้องให้ความคุ้มครองเป็นพิเศษ ดังนั้น</p>
+                    <p>สำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ
+                        จึงขอความยินยอมจากท่านในการให้สำนักหอสมุดกลางเก็บรวบรวมและใช้ข้อมูลใบหน้า (Facial Scans)
+                        ของท่านเพื่อประโยชน์ในการยืนยันตัวตนของท่านสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
+                        ของสำนักหอสมุดกลาง</p>
+                    <p>ในภายหลัง ท่านมีสิทธิที่จะถอนการยินยอมในการให้สำนักหอสมุดกลาง เก็บรวบรวมและใช้ข้อมูลใบหน้า
+                        (Facial Scans) ของท่านในครั้งนี้ โดยท่านสามารถติดต่อเจ้าหน้าที่ดูแลระบบที่
+                        kiattisak@g.swu.ac.th</p>
+                    <p>โดยสำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ
+                        จะรักษาข้อมูลส่วนบุคคลดังกล่าวของท่านไว้เป็นความลับและสำนักหอสมุดกลาง
+                        รับรองว่าจะมีการดำเนินการรักษาความปลอดภัยที่มีมาตรฐาน
+                        และจัดให้มีมาตรการด้านเทคนิคและการจัดการเพื่อป้องกันการเข้าถึงข้อมูลของท่านโดยมิชอบ</p>
+                    <p>ให้สำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ เก็บรวบรวมและใช้ข้อมูลใบหน้า (Facial Scans)
+                        ของข้าพเจ้าเพื่อประโยชน์ในการยืนยันตัวตนของข้าพเจ้าสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
+                        ของสำนักหอสมุดกลาง<br>
+                        <p style="text-align: right;">
+                            <button id="pdpaDeclineBtn" class="btn btn-secondary">ไม่ยินยอม</button>
+                            <button id="pdpaAcceptBtn" class="btn btn-primary">ยินยอม</button>
+                        </p>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    <div id="session-timer" style="position:fixed;bottom:10px;left:10px; background:#222;color:#fff; padding:8px 12px;border-radius:6px; font-size:14px;z-index:9999">
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
         เหลือเวลา: <span id="time-left">--:--</span>
     </div>
 
@@ -452,6 +508,7 @@ $_SESSION['person_id'] = $userId;
     })();
     </script>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 =======
@@ -481,6 +538,10 @@ $_SESSION['person_id'] = $userId;
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+
+
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 </body>
 
 </html>

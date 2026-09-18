@@ -144,6 +144,7 @@ function login_success($user_login)
 //     curl_close($ch);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 //     echo "<pre>";
 //     echo "user_login: " . htmlspecialchars($user_login) . "\n";
@@ -154,6 +155,8 @@ function login_success($user_login)
 //     die();
 // }
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 /* ===== Step 1: LDAPS 636 ===== */
 $ldapconn = @ldap_connect("ldaps://ldap.swu.ac.th", 636);
 if ($ldapconn) {
@@ -200,6 +203,7 @@ LOGIN_ERROR:
 if (isset($login_failed)) {
     log_login_status($user_login, 'fail'); 
 <<<<<<< HEAD
+<<<<<<< HEAD
     // exit;
 =======
 <<<<<<< HEAD
@@ -212,6 +216,9 @@ if (isset($login_failed)) {
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+    // exit;
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 }
 ?>
 <!DOCTYPE html>

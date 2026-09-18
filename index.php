@@ -1,5 +1,6 @@
 <?php
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -48,6 +49,8 @@ header("Expires: 0");
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 /*
 ==================================================
 System      : Face Recognition Registration System
@@ -59,6 +62,9 @@ Developed   : 2025
 ==================================================
 */
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 //เปิดการบีบอัดข้อมูลแบบ Gzip ส่งไปยัง Browser (ช่วยให้ส่งไฟล์เร็วขึ้นมาก)
 if (!ob_start("ob_gzhandler")) ob_start();
 // ✅ session_start() เรียกแค่ครั้งเดียวบรรทัดแรกสุดเท่านั้น
@@ -72,6 +78,7 @@ if (empty($_SESSION['auth_ldap'])) {
     exit;
 }
 
+<<<<<<< HEAD
 =======
 
 // ✅ session_start() เรียกแค่ครั้งเดียวบรรทัดแรกสุดเท่านั้น
@@ -94,6 +101,8 @@ if (empty($_SESSION['auth_ldap'])) {
 <<<<<<< HEAD
 
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 // หมดเวลา
 if (
     isset($_SESSION['last_activity']) &&
@@ -107,6 +116,7 @@ if (
     </script>";
     exit;
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 // ✅ ต่ออายุ session ทุกครั้งที่ใช้งาน
@@ -246,11 +256,27 @@ header("Expires: 0");
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+
+// ✅ ต่ออายุ session ทุกครั้งที่ใช้งาน
+$_SESSION['last_activity'] = time();
+
+// ✅ ดึงค่าจาก session ครั้งเดียวที่นี่ที่เดียว ไม่ดึงซ้ำอีก
+$buasri_id = $_SESSION['user_login'] ?? '';
+$person_id = trim($_SESSION['person_id'] ?? '');
+
+/* ===== ป้องกัน Cache (สำคัญกับ Edge) ===== */
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 /* ================== helper ================== */
 function callApi($url)
 {
     $ch = curl_init($url);
     curl_setopt_array($ch, [
+<<<<<<< HEAD
 <<<<<<< HEAD
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_SSL_VERIFYPEER => false
@@ -343,6 +369,20 @@ function redirectToRegister($buasri_id)
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_SSL_VERIFYPEER => false
+    ]);
+    $resp = curl_exec($ch);
+    curl_close($ch);
+    return $resp ?: false;
+}
+
+/* ================== error + redirect ================== */
+function redirectToRegister($buasri_id)
+{
+    echo "
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     <div style='min-height:100vh;display:flex;justify-content:center;align-items:center;'>
         <div style='background:#ffffff;width:100%;max-width:420px;padding:30px;
                     border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,0.08);
@@ -366,9 +406,12 @@ if (empty($person_id)) {
 <html lang="th">
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 <head>
     <!-- Google Tag Manager -->
     <script>
@@ -383,6 +426,7 @@ if (empty($person_id)) {
                 dl = l != 'dataLayer' ? '&l=' + l : '';
             j.async = true;
             j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -407,6 +451,8 @@ if (empty($person_id)) {
             j.async = true; j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
             f.parentNode.insertBefore(j, f);
         })(window, document, 'script', 'dataLayer', 'GTM-W8ZD4T59');
     </script>
@@ -419,6 +465,9 @@ if (empty($person_id)) {
     <title>Face Capture & Update</title>
     <link rel="stylesheet" href="./css/face_scan.css">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     <!-- เพิ่มมาช่วยโหลด Google tag manager -->
     <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
@@ -432,6 +481,7 @@ if (empty($person_id)) {
 
 <body>
 <!-- Google Tag Manager (noscript) -->
+<<<<<<< HEAD
 =======
     <script>
         const SESSION_TIMEOUT = <?= SESSION_TIMEOUT ?>;
@@ -514,6 +564,31 @@ if (!empty($data['users'])) {
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8ZD4T59" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div class="container">
+        <!-- countdown -->
+        <div id="session-timer"
+            style="position:fixed;top:10px;right:10px;background:#222;color:#fff;padding:8px 12px;border-radius:6px;font-size:14px;z-index:9999">
+            Session เหลือเวลา: <span id="time-left">--:--</span>
+        </div>
+
+        <?php
+        // ✅ ใช้ $person_id ที่ดึงไว้แล้วด้านบน ไม่ต้องดึงจาก session อีก
+        echo "<p><b>รหัสผู้ใช้บริการ:</b> {$person_id}</p>";
+
+        /* ================== userList ================== */
+        $apiUrl = "https://lib.swu.ac.th/app/ci4_new/public/apidoor/userList"
+            . "?person_id={$person_id}"
+            . "&searchCategory=UniqueID"
+            . "&groupID=0&subInclude=true&offset=0&limit=10";
+
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
         $data = json_decode(callApi($apiUrl), true);
 
         // filter หา "คนจริง"
@@ -549,6 +624,7 @@ if (!empty($data['users'])) {
 
         $userId = $userInfo['ID'];
         echo "<h2 style='text-align:center;'>Selfie to Scan<br>ระบบลงทะเบียนใบหน้าอัตโนมัติ<br>(LIBSWU Automated Face Registration System)</h2>";
+<<<<<<< HEAD
 <<<<<<< HEAD
 
         /* ================== userDetail ================== */
@@ -932,6 +1008,18 @@ foreach ($userInfoDetail as $key => $value) {
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+
+        /* ================== userDetail ================== */
+        $detailResp = json_decode(
+            callApi("https://lib.swu.ac.th/app/ci4_new/public/apidoor/userDetail/" . urlencode($userId)),
+            true
+        );
+
+        if (!$detailResp || ($detailResp['status'] ?? '') !== 'success') {
+            echo "<p>⚠️ {$userId} : ไม่พบข้อมูลผู้ใช้บริการ กรุณาติดต่อเจ้าหน้าที่</p>";
+            exit;
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
         }
 
         $detail         = $detailResp['userDetail'];
@@ -948,10 +1036,14 @@ foreach ($userInfoDetail as $key => $value) {
             <?php if (!$hasFacePermission): ?>
                 <div class="center">
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <img src="./no_face.png" style="max-width:200px;opacity:.6" loading="lazy">
 =======
                     <img src="./no_face.png" style="max-width:200px;opacity:.6">
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+                    <img src="./no_face.png" style="max-width:200px;opacity:.6" loading="lazy">
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                     <p>ยังไม่ได้เปิดใช้งานใบหน้า</p>
                 </div>
             <?php else: ?>
@@ -971,10 +1063,14 @@ foreach ($userInfoDetail as $key => $value) {
                 <?php else: ?>
                     <div class="center">
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <img src="./no_face.png" style="max-width:100px" loading="lazy">
 =======
                         <img src="./no_face.png" style="max-width:100px">
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+                        <img src="./no_face.png" style="max-width:100px" loading="lazy">
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                     </div>
                     <div class="center">
                         <p>⚠️ ยังไม่มีข้อมูลใบหน้า</p>
@@ -984,6 +1080,7 @@ foreach ($userInfoDetail as $key => $value) {
         </div>
 
         <!-- =============== PDPA =================== -->
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -1010,14 +1107,20 @@ foreach ($userInfoDetail as $key => $value) {
 =======
 =======
         <div id="pdpaModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;">
+=======
+         <div id="pdpaModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;">
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
             <div style="max-width:600px;margin:10vh auto;background:#fff;padding:20px;border-radius:8px;">
                 <img src="./PDF/lib_icon.png" style="width:300px;height:120px;display:block;margin:0 auto;">
                 <h4>หนังสือขอความยินยอมให้ สำนักหอสมุดกลางมหาวิทยาลัยศรีนครินทรวิโรฒ เก็บรวบรวมและใช้ข้อมูลใบหน้า
                     (Facial Scans) ของท่านเพื่อประโยชน์ในการยืนยันตัวตนของท่านสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
                 </h4>
                 <div style="max-height:300px;overflow:auto;font-size:14px;">
+<<<<<<< HEAD
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                     <p>ภายใต้พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562
                         การที่สำนักหอสมุดกลางมหาวิทยาลัยศรีนครินทรวิโรฒ จะเก็บรวบรวม และใช้ข้อมูลใบหน้า (Facial Scans)
                         ของท่านถือว่าเป็นการเก็บรวบรวมและใช้ข้อมูลส่วนบุคคลที่อ่อนไหว
@@ -1035,6 +1138,7 @@ foreach ($userInfoDetail as $key => $value) {
                         และจัดให้มีมาตรการด้านเทคนิคและการจัดการเพื่อป้องกันการเข้าถึงข้อมูลของท่านโดยมิชอบ</p>
                     <p>ให้สำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ เก็บรวบรวมและใช้ข้อมูลใบหน้า (Facial Scans)
                         ของข้าพเจ้าเพื่อประโยชน์ในการยืนยันตัวตนของข้าพเจ้าสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
+<<<<<<< HEAD
 <<<<<<< HEAD
                         ของสำนักหอสมุดกลาง<br>
                      <!-- ส่วนปุ่มกด ยินยอม / ไม่ยินยอม -->
@@ -1067,6 +1171,15 @@ foreach ($userInfoDetail as $key => $value) {
                 </div>
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+                        ของสำนักหอสมุดกลาง<br>
+                        <p style="text-align: right;">
+                            <button id="pdpaDeclineBtn" class="btn btn-secondary">ไม่ยินยอม</button>
+                            <button id="pdpaAcceptBtn" class="btn btn-primary">ยินยอม</button>
+                        </p>
+                    </p>
+                </div>
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
             </div>
         </div>
 
@@ -1199,6 +1312,7 @@ foreach ($userInfoDetail as $key => $value) {
     </footer>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     <!-- <script src="js/main.js"></script>
     <script src="./face-api.js-master/dist/face-api.min.js"></script> -->
     <script>
@@ -1213,6 +1327,11 @@ foreach ($userInfoDetail as $key => $value) {
         (function () {
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+
+    <script>
+        (function() {
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
             const CHECK_INTERVAL = 30000;
             let remaining = SESSION_TIMEOUT;
 
@@ -1227,9 +1346,12 @@ foreach ($userInfoDetail as $key => $value) {
 
             function logoutAndRedirect() {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                 fetch('logout.php', {
                         method: 'POST',
                         credentials: 'same-origin'
@@ -1238,12 +1360,15 @@ foreach ($userInfoDetail as $key => $value) {
                         window.location.href = 'login.php?timeout=1';
                     });
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
                 fetch('logout.php', { method: 'POST', credentials: 'same-origin' })
                     .finally(() => { window.location.href = 'login.php?timeout=1'; });
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
             }
 
             function tick() {
@@ -1258,6 +1383,7 @@ foreach ($userInfoDetail as $key => $value) {
 
             function checkSession() {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 fetch('check_session.php', {
                         credentials: 'same-origin'
                     })
@@ -1270,6 +1396,11 @@ foreach ($userInfoDetail as $key => $value) {
                 fetch('check_session.php', { credentials: 'same-origin' })
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+                fetch('check_session.php', {
+                        credentials: 'same-origin'
+                    })
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
                     .then(res => {
                         if (res.status === 401 || res.status === 440) {
                             logoutAndRedirect();

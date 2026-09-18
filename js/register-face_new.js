@@ -3,10 +3,6 @@
   /* =======================
      DOM
   ======================= */
-<<<<<<< HEAD
-=======
-  console.log('%c📌 register-face_new.js LOADED — build XXXX', 'color:#2196F3;font-weight:bold;');
->>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
   const video = document.getElementById('video');
   const overlay = document.getElementById('overlay');
   const outCanvas = document.getElementById('out');
@@ -33,10 +29,6 @@
   const pdpaModal = document.getElementById('pdpaModal');
   const pdpaAcceptBtn = document.getElementById('pdpaAcceptBtn');
   const pdpaDeclineBtn = document.getElementById('pdpaDeclineBtn');
-<<<<<<< HEAD
-=======
-  let animFrameId = null;
->>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
   /* =======================
      Guard DOM
@@ -116,41 +108,26 @@
   ======================= */
   function updateCameraPanel() {
 
-<<<<<<< HEAD
     // ❌ ยังไม่อนุญาตใบหน้า
-=======
->>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     if (!allowFaceCheckbox.checked) {
       panelNewphoto.style.display = 'none';
       panelResult.style.display = 'none';
       panelFaceDB.style.display = 'block';
-<<<<<<< HEAD
       // panelUpdateData.style.display = 'block';
-=======
-      document.body.style.overflow = '';
->>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       stopCamera();
       return;
     }
 
-<<<<<<< HEAD
     // ❌ ยังไม่กดเปิดกล้อง
-=======
->>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     if (!allowCam) {
       panelNewphoto.style.display = 'none';
       panelResult.style.display = 'none';
       panelFaceDB.style.display = 'block';
-<<<<<<< HEAD
       // panelUpdateData.style.display = 'none';
-=======
-      document.body.style.overflow = '';
->>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       stopCamera();
       return;
     }
 
-<<<<<<< HEAD
     // ✅ พร้อมถ่าย
     panelNewphoto.style.display = 'block';
     panelFaceDB.style.display = 'none';
@@ -186,52 +163,6 @@
 
     updateCameraPanel();
   });
-=======
-    // พร้อมถ่าย
-	panelNewphoto.style.display = 'block';
-	panelNewphoto.scrollTop = 0; // เลื่อนกล่องถ่ายรูปไปบนสุด
-	document.body.style.overflow = 'hidden'; // ล็อกไม่ให้หน้าหลังเลื่อน
-    startCamera();
-  }
-  window.closeCameraPanel = function () {
-  allowCam = false;
-  stopCamera();        // stopCamera() อยู่ใน IIFE เดียวกันกับ stream จะสั่งตัดไฟกล้องได้จริง 100%
-  updateCameraPanel(); // ซ่อนหน้าต่างและสลับ UI กลับ
-};
-// ฟังก์ชันปิดกล้องสำหรับปุ่มกากบาท (✕)
-window.closeCameraPanel = function () {
-  allowCam = false;
-  stopCamera();        // stopCamera() อยู่ใน IIFE เดียวกันกับ stream จะสั่งตัดไฟกล้องได้จริง 100%
-  updateCameraPanel(); // ซ่อนหน้าต่างและสลับ UI กลับ
-};
-// กำหนดสถานะเริ่มต้น
-allowCam = false;
-allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
-allowCamBtn.disabled = !allowFaceCheckbox.checked;
-
-updateCameraPanel();
-
-allowFaceCheckbox.addEventListener('change', () => {
-  allowCam = false;
-  allowCamBtn.disabled = !allowFaceCheckbox.checked;
-  updateCameraPanel();
-});
-
-allowCamBtn.addEventListener('click', () => {
-  if (!allowFaceCheckbox.checked) {
-    alert('กรุณาอนุญาตการลงทะเบียนใบหน้าก่อน');
-    return;
-  }
-  if (!pdpaAccepted) {
-    showPdpa();
-    return;
-  }
-  
-  // เปิดกล้อง (การปิดกล้องจะทำผ่านปุ่มกากบาท ✕ แทน)
-  allowCam = true;
-  updateCameraPanel();
-});
->>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
 
 
@@ -363,10 +294,6 @@ allowCamBtn.addEventListener('click', () => {
 
 
   function stopCamera() {
-<<<<<<< HEAD
-=======
-    if (animFrameId) cancelAnimationFrame(animFrameId);
->>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     if (stream) {
       stream.getTracks().forEach(t => t.stop());
       stream = null;
@@ -539,11 +466,7 @@ allowCamBtn.addEventListener('click', () => {
       TemplateSize: Math.floor(actualByteSize)
     });
 
-<<<<<<< HEAD
     console.log(`📸 Captured & Compressed! New Size: ${actualByteSize} Bytes`);
-=======
-    console.log(`Captured & Compressed! New Size: ${actualByteSize} Bytes`);
->>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
     panelResult.style.display = 'block';
     videoContainer.style.display = 'none';
@@ -757,7 +680,6 @@ allowCamBtn.addEventListener('click', () => {
       const resultCode = innerResult?.ResultCode !== undefined ? innerResult?.ResultCode : innerResult?.resultCode;
       console.log('🔍 Detected ResultCode:', resultCode, '(type:', typeof resultCode, ')');
 
-<<<<<<< HEAD
       // ⭐ FIX: เดิมโค้ดใช้ "blacklist" คือเช็คแค่ error code ที่รู้จัก แล้วถ้าไม่ตรงกับตัวไหนเลย
       // จะตกไปเช็ค response.ok && result.status === 'success' ซึ่งเป็นแค่สถานะว่า
       // "เรียก API/relay ไปเครื่องสแกนสำเร็จ" ไม่ใช่สถานะว่า "เครื่องสแกนบันทึกข้อมูลสำเร็จจริง"
@@ -771,9 +693,6 @@ allowCamBtn.addEventListener('click', () => {
       // ประเภทนี้ที่ 0 = สำเร็จ) กรุณายืนยันค่านี้จาก log "🔍 Detected ResultCode" ตอนที่ทราบแน่ชัดว่า
       // ลงทะเบียนสำเร็จและมีข้อมูลจริงในเครื่อง แล้วปรับ array นี้ให้ตรง ถ้าเครื่องสแกนส่ง resultCode
       // สำเร็จเป็นค่าอื่น (เช่น ไม่มี key ResultCode เลยตอนสำเร็จ) ต้องปรับ logic ตรงนี้ตาม
-=======
-
->>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       const KNOWN_SUCCESS_CODES = [0, "0"];
       const KNOWN_FAIL_CODES_IMAGE = [33558286, "33558286", 33558281, "33558281"];
       const KNOWN_FAIL_CODES_DUPLICATE = [16777237, "16777237", 16777241, "16777241"];

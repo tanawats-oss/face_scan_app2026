@@ -481,6 +481,7 @@
     let rawId = String(fd.get('ID') || "").trim();
     let userId = rawId;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -493,18 +494,24 @@
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     let cleanNumber = rawId.replace(/[^0-9]/g, '');
     
     if (cleanNumber.length === 11) {
         // === เงื่อนไขใหม่: ถ้ารหัสมาเป็น 11 หลัก (เช่น 57110010277) ===
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 		let first5 = cleanNumber.substring(0, 5); // "69102" (5 หลักแรก)
 		let last3  = cleanNumber.substring(8, 11); // "277"   (3 หลักสุดท้าย)
     
     userId = first5 + last3; // ผลลัพธ์: "69102277" (8 หลัก ไม่ชนกัน)
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -515,6 +522,8 @@
         userId = year + facultyGroup + sequence; // ผลลัพธ์: "57100277" (8 หลักพอดี ไม่ซ้ำคนอื่น)
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
 
     }else if (cleanNumber.length === 6) {
         // === เงื่อนไขเดิม: ถ้าเป็นเลข 6 หลัก ให้เติม 00 ข้างหน้า ===
@@ -523,6 +532,7 @@
     }else {
         // กรณีอื่น ๆ ที่ไม่เข้าพวก ให้ใช้ตัวเลขล้วนที่สกัดได้ไปก่อน
         userId = cleanNumber;
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -539,6 +549,8 @@
 >>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
     }
 
     // 1️⃣ ตรวจสอบเงื่อนไขการกรอก: ติ๊กเปิดกล้องไว้แต่ยังไม่ได้กดถ่ายรูปใบหน้า
@@ -579,14 +591,18 @@
       APBExcept: 0,
       APBZone: 0,
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       WorkCode: "0",
       MealCode: "0",
       MoneyCode: "0",
       MessageCode: 0,
       VerifyLevel: Number(fd.get('VerifyLevel')) || 0,
+<<<<<<< HEAD
 <<<<<<< HEAD
       PositionCode: Number(fd.get('Position')) || 0,
 =======
@@ -599,6 +615,9 @@
 >>>>>>> 9c964d47494378f89daac9bea17e84d646686554
       PositionCode: Number(fd.get('Position')) || 9997,
 >>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+      PositionCode: Number(fd.get('Position')) || 0,
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
       EmployeeNum: "0",
       Email: String(fd.get('Email') || ''),
       Phone: "",
