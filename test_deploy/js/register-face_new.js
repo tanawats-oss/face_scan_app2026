@@ -1,8 +1,21 @@
 (async function () {
 
   /* =======================
+     GUARD: กันสคริปต์นี้ถูกโหลด/รันซ้ำมากกว่า 1 ครั้งในหน้าเดียว
+     (เช่น กรณีมีทั้ง <script src> แบบตรง ๆ และตัว dynamic loader
+     ที่ inject ไฟล์เดิมซ้ำอีกรอบ — จะทำให้เกิด state/listener ซ้อนกัน
+     กล้องเปิด 2 stream, การถ่ายรูปสุ่มไม่ขึ้นภาพ ฯลฯ)
+  ======================= */
+  if (window.__registerFaceJsInitialized) {
+    console.warn('⚠️ register-face_new.js ถูกเรียกซ้ำ — ข้ามการรันรอบนี้');
+    return;
+  }
+  window.__registerFaceJsInitialized = true;
+
+  /* =======================
      DOM
   ======================= */
+  console.log('%c📌 register-face_new.js LOADED — build XXXX', 'color:#2196F3;font-weight:bold;');
   const video = document.getElementById('video');
   const overlay = document.getElementById('overlay');
   const outCanvas = document.getElementById('out');
@@ -29,6 +42,7 @@
   const pdpaModal = document.getElementById('pdpaModal');
   const pdpaAcceptBtn = document.getElementById('pdpaAcceptBtn');
   const pdpaDeclineBtn = document.getElementById('pdpaDeclineBtn');
+  let animFrameId = null;
 
   /* =======================
      Guard DOM
@@ -55,7 +69,7 @@
   /* =======================
      STATE
   ======================= */
-  let pdpaAccepted = false; //สถานะยินยอม PDPA
+  let pdpaAccepted = false; // ⭐ สถานะยินยอม PDPA
 
   let stream = null;
   let cameraStarted = false;
@@ -69,9 +83,11 @@
   let detecting = false;
   let lastDetectTime = 0;
   let oldFaceTemplate = window.oldFaceTemplate || null;
-  //  NEW: นับจำนวนเฟรมที่เจอใบหน้าติดต่อกัน เพื่อรอให้กล้อง auto-exposure/focus นิ่งก่อนอนุญาตให้ถ่าย
+
+  // ⭐ NEW: นับจำนวนเฟรมที่เจอใบหน้าติดต่อกัน เพื่อรอให้กล้อง auto-exposure/focus นิ่งก่อนอนุญาตให้ถ่าย
   let stableFrameCount = 0;
   const STABLE_FRAMES_REQUIRED = 6; // ~6 เฟรม * 200ms ≈ 1.2 วินาทีที่เจอหน้านิ่ง ๆ ต่อเนื่อง
+
   const userFaceArray = [];
   function getAuthInfoValue() { return (allowFaceCheckbox && allowFaceCheckbox.checked) ? [2, 9, 30, 0, 0, 0, 0, 0] : [2, 0, 30, 0, 0, 0, 0, 0]; }
 
@@ -92,7 +108,6 @@
     hidePdpa();
 
     allowCam = true;
-    allowCamBtn.textContent = 'ปิดกล้อง';
     updateCameraPanel();
   });
 
@@ -106,7 +121,6 @@
   ======================= */
   function updateCameraPanel() {
 
-    // ❌ ยังไม่อนุญาตใบหน้า
     if (!allowFaceCheckbox.checked) {
       panelNewphoto.style.display = 'none';
       panelResult.style.display = 'none';
@@ -116,7 +130,6 @@
       return;
     }
 
-    // ❌ ยังไม่กดเปิดกล้อง
     if (!allowCam) {
       panelNewphoto.style.display = 'none';
       panelResult.style.display = 'none';
@@ -126,80 +139,49 @@
       return;
     }
 
-    // ✅ พร้อมถ่าย
-    panelNewphoto.style.display = 'block';
+    // พร้อมถ่าย
+	panelNewphoto.style.display = 'block';
 	panelNewphoto.scrollTop = 0; // เลื่อนกล่องถ่ายรูปไปบนสุด
 	document.body.style.overflow = 'hidden'; // ล็อกไม่ให้หน้าหลังเลื่อน
     startCamera();
   }
-  // ฟังก์ชันปิดกล้องสำหรับปุ่มกากบาท (✕)
-	window.closeCameraPanel = function () {
-	allowCam = false;
-	stopCamera();        // stopCamera() 
-	updateCameraPanel(); // ซ่อนหน้าต่างและสลับ UI กลับ
-	};
-	
-  /* ====== initial state from backend ====== */
-  if (allowFaceCheckbox.checked) {
-    allowCamBtn.disabled = false;
-  } else {
-    allowCamBtn.disabled = true;
-  }
-
+// ฟังก์ชันปิดกล้องสำหรับปุ่มกากบาท (✕)
+window.closeCameraPanel = function () {
   allowCam = false;
-  allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
+  stopCamera();        // stopCamera() อยู่ใน IIFE เดียวกันกับ stream จะสั่งตัดไฟกล้องได้จริง 100%
+  updateCameraPanel(); // ซ่อนหน้าต่างและสลับ UI กลับ
+};
+// กำหนดสถานะเริ่มต้น
+allowCam = false;
+allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
+allowCamBtn.disabled = !allowFaceCheckbox.checked;
 
-  // กันการแสดงกล้องตอนโหลด
+updateCameraPanel();
+
+allowFaceCheckbox.addEventListener('change', () => {
+  allowCam = false;
+  allowCamBtn.disabled = !allowFaceCheckbox.checked;
   updateCameraPanel();
+});
 
-  /* ====== อนุญาตใบหน้า ====== */
-  allowFaceCheckbox.addEventListener('change', () => {
-    if (!allowFaceCheckbox.checked) {
-      allowCam = false;
-      allowCamBtn.disabled = true;
-      allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
-    } else {
-      // 💡 เพิ่มเติมแก้ไขจุดนี้: เคลียร์สถานะกล้องให้พร้อมเปิดใหม่เมื่อมีการติ๊กเลือก
-      allowCam = false;
-      allowCamBtn.disabled = false;
-      allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
-    }
-
-    updateCameraPanel();
-  });
-
+allowCamBtn.addEventListener('click', () => {
+  if (!allowFaceCheckbox.checked) {
+    alert('กรุณาอนุญาตการลงทะเบียนใบหน้าก่อน');
+    return;
+  }
+  if (!pdpaAccepted) {
+    showPdpa();
+    return;
+  }
+  
+  // เปิดกล้อง (การปิดกล้องจะทำผ่านปุ่มกากบาท ✕ แทน)
+  allowCam = true;
+  updateCameraPanel();
+});
 
 
-  /* ====== ปุ่มเปิดกล้อง ====== */
-  allowCamBtn.addEventListener('click', () => {
 
-    // 🔹 ถ้ากล้องเปิดอยู่ → ปิดได้ทันที (ไม่เช็ค PDPA)
-    if (allowCam) {
-      allowCam = false;
-      allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
-      updateCameraPanel();
-      return;
-    }
 
-    // 🔹 กรณีกำลังจะ "เปิดกล้อง"
-
-    // 1️⃣ ยังไม่เลือกใช้ใบหน้า
-    if (!allowFaceCheckbox.checked) {
-      alert('กรุณาอนุญาตการลงทะเบียนใบหน้าก่อน');
-      return;
-    }
-
-    // 2️⃣ ยังไม่ยินยอม PDPA
-    if (!pdpaAccepted) {
-      showPdpa();
-      return;
-    }
-
-    // 3️⃣ ผ่านครบ → เปิดกล้อง
-    allowCam = true;
-    allowCamBtn.textContent = 'ปิดกล้อง';
-    updateCameraPanel();
-  });
 
 
 
@@ -225,11 +207,7 @@
 
   async function loadFaceModelOnce() {
     if (window._faceModelLoaded) return;
-
-    await faceapi.nets.tinyFaceDetector.loadFromUri(
-      './face-api.js-master/weights'
-    );
-
+    await faceapi.nets.tinyFaceDetector.loadFromUri('./face-api.js-master/weights');
     window._faceModelLoaded = true;
   }
 
@@ -245,11 +223,12 @@
       stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: "user",
+          //  FIX: เพิ่มความละเอียดจาก 300x300 -> 480x480
           width: {
-            ideal: 300
+            ideal: 480
           },
           height: {
-            ideal: 300
+            ideal: 480
           },
           frameRate: {
             ideal: 15
@@ -283,6 +262,7 @@
 
       status.textContent = '✅ พร้อมตรวจจับใบหน้า';
       overlayRunning = true;
+      stableFrameCount = 0; // reset ตัวนับความนิ่งทุกครั้งที่เปิดกล้องใหม่
       drawOverlay();
 
     } catch (e) {
@@ -293,39 +273,23 @@
   }
 
 
-   function stopCamera() {
-    if (animFrameId) {
-      cancelAnimationFrame(animFrameId);
-      animFrameId = null;
-    }
-
-    // 1. สั่ง stop ทุก Track ใน stream หลักเพื่อดับไฟฮาร์ดแวร์
+  function stopCamera() {
+    if (animFrameId) cancelAnimationFrame(animFrameId);
     if (stream) {
       stream.getTracks().forEach(t => t.stop());
       stream = null;
     }
-
-    // 2. เคลียร์ Stream ค้างในแท็ก <video>
-    if (video) {
-      video.pause();
-      if (video.srcObject) {
-        const vStream = video.srcObject;
-        if (typeof vStream.getTracks === 'function') {
-          vStream.getTracks().forEach(t => t.stop());
-        }
-        video.srcObject = null;
-      }
+    if (video.srcObject) {
+      video.srcObject = null; //  เพิ่ม
     }
-
     cameraStarted = false;
     lastFaceBox = null;
     overlayRect = null;
     overlayRunning = false;
+    stableFrameCount = 0; //  reset
 
-    if (overlay) {
-      const ctx = overlay.getContext('2d');
-      ctx.clearRect(0, 0, overlay.width, overlay.height);
-    }
+    const ctx = overlay.getContext('2d');
+    ctx.clearRect(0, 0, overlay.width, overlay.height);
   }
 
 
@@ -356,19 +320,18 @@
   ======================= */
   async function drawOverlay() {
     if (!overlayRunning) return;
-
     const now = Date.now();
     const ctx = overlay.getContext('2d');
 
     if (!detecting && now - lastDetectTime > 200) {
       detecting = true;
       lastDetectTime = now;
-
       const box = await detectFace();
       ctx.clearRect(0, 0, overlay.width, overlay.height);
 
-      if (box) {
-        lastFaceBox = box;
+
+      if(box){
+         lastFaceBox = box;
         overlayRect = {
           x: video.videoWidth - box.x - box.width,
           y: box.y,
@@ -384,27 +347,36 @@
           overlayRect.w,
           overlayRect.h
         );
-        status.textContent = '✅ พบใบหน้า';
-        status.style.color = '#00c853';
-
-        captureBtn.disabled = false;
-        captureBtn.style.opacity = '1';
-      } else {
+        stableFrameCount = Math.min(stableFrameCount + 1, STABLE_FRAMES_REQUIRED);
+         if (stableFrameCount >= STABLE_FRAMES_REQUIRED) {
+          status.textContent = '✅ พบใบหน้า';
+          status.style.color = '#00c853';
+          captureBtn.disabled = false;
+          captureBtn.style.opacity = '1';
+        } else {
+          status.textContent = `🔎 กำลังปรับกล้อง... (${stableFrameCount}/${STABLE_FRAMES_REQUIRED})`;
+          status.style.color = '#f9a825';
+          captureBtn.disabled = true;
+          captureBtn.style.opacity = '0.5';
+        }
+      }
+      
+      else {
         lastFaceBox = null;
         overlayRect = null;
         status.textContent = '❌ ไม่พบใบหน้า';
         status.style.color = '#d50000';
-
         captureBtn.disabled = true;
         captureBtn.style.opacity = '0.5';
       }
-
       detecting = false;
     }
-
-    requestAnimationFrame(drawOverlay);
+    animFrameId = requestAnimationFrame(drawOverlay);
   }
 
+  /* ===================================================
+     [REGIS FILE] - JAVASCRIPT CODE FOR REGISTER PAGE
+     =================================================== */
 
   /* =======================
      CAPTURE (ถ่ายรูปและคำนวณขนาดไฟล์จริง)
@@ -421,48 +393,45 @@
     const mirroredX = video.videoWidth - box.x - box.width;
     const cx = mirroredX + box.width / 2;
     const cy = box.y + box.height / 2;
-
     const size = Math.max(box.width, box.height) * 2;
 
     ctx.save();
-    ctx.scale(-1, 1); 
+    ctx.scale(-1, 1);
     ctx.drawImage(video, cx - size / 2, cy - size / 2, size, size, -300, 0, 300, 300);
     ctx.restore();
 
-   
     const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
-    console.log('Preview:', base64DataUrl);
     const base64 = base64DataUrl.split(',')[1];
 
-    // คำนวณขนาดไบต์จริงของไฟล์ JPEG ที่ถูกบีบอัดแล้ว
-    const padding = (base64.endsWith('=')) ? (base64.endsWith('==') ? 2 : 1) : 0;
-    const actualByteSize = Math.floor((base64.length * 0.75) - padding);
+
+  let len = base64.length;
+    let padding = 0;
+    if (base64[len - 1] === '=') padding++;
+    if (base64[len - 2] === '=') padding++;
+    const actualByteSize = Math.floor((len * 0.75) - padding);
 
     userFaceArray.length = 0;
     userFaceArray.push({
-      TemplateData: base64,       
+      TemplateData: base64,
       TemplateSize: Math.floor(actualByteSize)
     });
-
-    console.log(`📸 Captured & Compressed! New Size: ${actualByteSize} Bytes`);
 
     panelResult.style.display = 'block';
     videoContainer.style.display = 'none';
     captureBtn.style.display = 'none';
     status.style.display = 'none';
-    status.textContent = '✅ จับใบหน้าแล้ว';
     stopCamera();
   }
 
   /* =======================
     BIND CAPTURE BUTTON
   ======================= */
-  captureBtn.addEventListener('click', () => {
+  captureBtn.addEventListener('click', async () => {
     if (!lastFaceBox) {
       status.textContent = '❌ ยังไม่พบใบหน้า';
       return;
     }
-    captureFace();
+    await captureFace();
   });
 
   /* =======================
@@ -489,6 +458,7 @@
     status.style.display = 'block';
 
     cameraStarted = false;
+    stableFrameCount = 0; // ⭐ reset
     updateCameraPanel();
   });
 
@@ -507,8 +477,8 @@
     
     if (cleanNumber.length === 11) {
         // === เงื่อนไขใหม่: ถ้ารหัสมาเป็น 11 หลัก (เช่น 57110010277) ===
-        let first5 = cleanNumber.substring(0, 5); // "69102" (5 หลักแรก)
-    let last3  = cleanNumber.substring(8, 11); // "277"   (3 หลักสุดท้าย)
+		let first5 = cleanNumber.substring(0, 5); // "69102" (5 หลักแรก)
+		let last3  = cleanNumber.substring(8, 11); // "277"   (3 หลักสุดท้าย)
     
     userId = first5 + last3; // ผลลัพธ์: "69102277" (8 หลัก ไม่ชนกัน)
 
@@ -563,7 +533,7 @@
       MoneyCode: "0",
       MessageCode: 0,
       VerifyLevel: Number(fd.get('VerifyLevel')) || 0,
-      PositionCode: Number(fd.get('Position')) || 9997,
+      PositionCode: Number(fd.get('Position')) || 0,
       EmployeeNum: "0",
       Email: String(fd.get('Email') || ''),
       Phone: "",
@@ -624,12 +594,13 @@
       showLoading('กำลังอัปโหลดข้อมูลและใบหน้าไปยังเครื่องสแกน...');
       updateBtn.disabled = true;
 
-      // ⏱ ตัดที่ 5 วินาที
+      // ⏱ ตัดที่ 12 วินาที
       const controller = new AbortController();
+      const TIMEOUT_MS = 12000;
       const timeout = setTimeout(() => {
         controller.abort();
-        console.warn('Timeout! ตัด session แล้ว');
-      }, 12000);
+        console.warn(`Timeout! ตัด session แล้ว (${TIMEOUT_MS}ms)`);
+      }, TIMEOUT_MS);
 
       console.log(' Sending payload...');
       console.log(' Payload size:', JSON.stringify(payload).length, 'bytes');
@@ -651,68 +622,52 @@
       }
       const result = await response.json();
       console.log('🔍 SERVER RESPONSE (RAW):', result);
-
-      // ✅ เพิ่มใหม่: เช็ค HTTP status ก่อน เพื่อแยก error "เซิร์ฟเวอร์ล่ม" ออกจาก "เครื่องสแกนปฏิเสธ"
-      if (!response.ok) {
-        console.error('%c❌ HTTP Error:', 'color: red;', response.status, result);
-        alert(`❌ เซิร์ฟเวอร์ตอบกลับผิดปกติ (HTTP ${response.status})\n${result?.message || 'กรุณาลองใหม่อีกครั้ง'}`);
-        return;
-      }
-
       const apiResult = result?.apiResult;
       const innerResult = apiResult?.Result || apiResult?.result;
-      const rawResultCode = innerResult?.ResultCode !== undefined ? innerResult?.ResultCode : innerResult?.resultCode;
-      const resultCode = Number(rawResultCode);
-      console.log('🔍 Detected ResultCode:', resultCode);
+      const resultCode = innerResult?.ResultCode !== undefined ? innerResult?.ResultCode : innerResult?.resultCode;
+      console.log('🔍 Detected ResultCode:', resultCode, '(type:', typeof resultCode, ')');
 
-      // whitelist: 0 (ErrorNone) เท่านั้นที่ถือว่าสำเร็จจริง
-      if (result.status === 'success' && resultCode === 0) {
-        console.log('%c✅ Success:', 'color: green; font-weight: bold;', result);
-        alert('✅ บันทึกข้อมูลและลงทะเบียนเรียบร้อยแล้ว');
-        window.location.href = 'https://lib.swu.ac.th/app/face_scan/logout.php';
+
+      const KNOWN_SUCCESS_CODES = [0, "0"];
+      const KNOWN_FAIL_CODES_IMAGE = [33558286, "33558286", 33558281, "33558281"];
+      const KNOWN_FAIL_CODES_DUPLICATE = [16777237, "16777237", 16777241, "16777241"];
+
+      if (KNOWN_FAIL_CODES_IMAGE.includes(resultCode)) {
+        alert('❌ อัปเดตไม่สำเร็จ: เครื่องสแกนไม่สามารถประมวลผลรูปภาพนี้ได้\n\n💡 สาเหตุ: รูปถ่ายอาจมืดเกินไป, ใบหน้าไม่ชัดเจน หรือไม่ตรงตามมาตรฐานของเครื่อง\nกรุณาลองถ่ายรูปใหม่อีกครั้งให้เห็นใบหน้าตรงและชัดเจนครับ');
         return;
       }
 
-      // ------ Error mapping (ตาม ErrorCode ของเครื่องสแกน) ------
-      const ERROR_MAP = {
-        // 0x02 Face capture errors
-        33558281: '❌ ไม่พบใบหน้าในภาพ กรุณาถ่ายรูปใหม่',                      // ErrorFacewtNoFace
-        33558282: '❌ พบใบหน้ามากกว่า 1 หน้าในภาพ',                           // ErrorFacewtMultiFace
-        33558283: '❌ ใบหน้าในภาพเล็กเกินไป กรุณาเข้าใกล้กล้อง',              // ErrorFacewtSmall
-        33558284: '❌ คุณภาพใบหน้าต่ำเกินไป กรุณาถ่ายในที่แสงสว่างพอ',       // ErrorFacewtLowScore
-        33558285: '❌ กรุณาหันหน้าตรงเข้ากล้อง',                              // ErrorFacewtSideFace
-        33558286: '❌ ภาพไม่ชัด กรุณาถ่ายรูปใหม่',                            // ErrorFacewtVague
-        33558287: '❌ กรุณาเข้าใกล้กล้องมากขึ้น',                             // ErrorFacewtTooFar
-        33558288: '❌ ระบบจดจำใบหน้าล้มเหลว กรุณาลองใหม่',                   // ErrorFacewtRecogFail
-        33558295: '❌ กรุณาถอดหน้ากากอนามัยก่อนถ่ายรูป',                     // ErrorWearingMask
-        33558296: '❌ ไฟล์ภาพเสียหาย กรุณาถ่ายรูปใหม่',                      // ErrorImageBroken
-
-        // 0x01 Duplicate / ID errors
-        16777217: '❌ รหัสผู้ใช้นี้มีอยู่ในระบบแล้ว (Duplicate ID) กรุณาตรวจสอบรหัสผู้ใช้',
-        16777222: '❌ UniqueID ซ้ำกับผู้ใช้ในระบบ',
-        16777223: '❌ UniqueID ซ้ำ (Not Unique)',
-        16777224: '❌ ผู้ใช้นี้มีอยู่แล้วในระบบ (User Exist)',
-        16777235: '❌ บัตร RF ซ้ำกับผู้ใช้อื่น',
-        16777236: '❌ ใบหน้านี้คล้าย/ซ้ำกับผู้ใช้อื่นในระบบ',
-        16777237: '❌ บัตรนี้คล้าย/ซ้ำกับผู้ใช้อื่นในระบบ',
-      };
-
-      if (resultCode === 16777236 || resultCode === 16777237) {
+      if (KNOWN_FAIL_CODES_DUPLICATE.includes(resultCode)) {
         const dupInfo = apiResult?.DuplicateInfo || apiResult?.duplicateInfo;
         const dupName = dupInfo?.DuplicateName || dupInfo?.duplicateName || 'ไม่ระบุชื่อ';
         const dupId = dupInfo?.DuplicateUniqueID || dupInfo?.duplicateUniqueID || 'ไม่ระบุ ID';
-        alert(`${ERROR_MAP[resultCode]}\n\nพบข้อมูลซ้ำกับ: ${dupName} (ID: ${dupId})\n\n💡 วิธีแก้: กรุณาลบพนักงานคนเดิมออกจากเครื่องสแกนก่อนอัปโหลดอีกครั้ง`);
+        alert(`❌ อัปเดตไม่สำเร็จ: ใบหน้าหรือเลขบัตรนี้ "ซ้ำซ้อน" กับพนักงานในเครื่องสแกน\n\nพบข้อมูลซ้ำกับ: ${dupName} (ID: ${dupId})\n\n💡 วิธีแก้: กรุณาลบพนักงานคนเดิมออกจากเครื่องสแกนก่อนอัปโหลดอีกครั้ง`);
         return;
       }
 
-      // ✅ แก้ NaN: เช็คด้วย Number.isNaN แทน ?? เพราะ Number(undefined) = NaN ไม่ใช่ undefined
-      const codeDisplay = Number.isNaN(resultCode) ? 'ไม่ทราบ' : resultCode;
-      console.error('%c❌ API Error / Unhandled ResultCode:', 'color: red;', { resultCode, result });
-      alert(ERROR_MAP[resultCode] || `❌ เกิดข้อผิดพลาด (Code: ${codeDisplay})\n${result.message || 'กรุณาลองใหม่ หรือแจ้งผู้ดูแลระบบพร้อมรหัสนี้'}`);
+      const deviceConfirmedSuccess =
+        response.ok &&
+        result.status === 'success' &&
+        (resultCode === undefined || KNOWN_SUCCESS_CODES.includes(resultCode));
+
+      if (deviceConfirmedSuccess) {
+        console.log('%c✅ Success:', 'color: green; font-weight: bold;', result);
+        alert('✅ บันทึกข้อมูลและลงทะเบียนเรียบร้อยแล้ว');
+        window.location.href = 'https://lib.swu.ac.th/app/face_scan/logout.php';
+      } else if (response.ok && result.status === 'success' && resultCode !== undefined) {
+        // ⭐ เจอกรณี response wrapper บอกว่า success แต่ resultCode จากเครื่องสแกน
+        // เป็นค่าที่ไม่รู้จัก (ไม่ใช่ทั้ง success และ fail ที่ลิสต์ไว้) — ไม่ redirect
+        // ให้ผู้ใช้/ผู้ดูแลระบบเห็น resultCode จริงเพื่อไปตรวจสอบและเพิ่มลง whitelist/blacklist ต่อไป
+        console.error('%c⚠️ Unknown ResultCode (ไม่ยืนยันว่าสำเร็จ):', 'color: orange; font-weight: bold;', resultCode, result);
+        alert(`⚠️ ไม่สามารถยืนยันผลการลงทะเบียนได้\n\nระบบได้รับการตอบกลับ แต่ผลลัพธ์จากเครื่องสแกน (ResultCode: ${resultCode}) ไม่ตรงกับรหัส "สำเร็จ" ที่ระบบรู้จัก\n\nกรุณาตรวจสอบข้อมูลในเครื่องสแกนก่อนยืนยันว่าลงทะเบียนสำเร็จ และแจ้งผู้ดูแลระบบพร้อม ResultCode นี้`);
+      } else {
+        console.error('%c❌ API Error:', 'color: red;', result);
+        alert('❌ เกิดข้อผิดพลาด: ' + (result.message || 'Unknown Error'));
+      }
 
     } catch (error) {
       if (error.name === 'AbortError') {
-        console.warn(' ตัด request แล้ว (5 วินาที)');
+        console.warn(' ตัด request แล้ว');
         // ⭐ ไม่ alert ที่ทำให้ user งง แค่แสดง status
         alert(' ระบบใช้เวลานาน\nข้อมูลอาจถูกบันทึกแล้ว กรุณาตรวจสอบในระบบอีกครั้ง');
       } else if (error.message?.includes('Connection reset') ||

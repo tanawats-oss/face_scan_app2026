@@ -15,13 +15,35 @@ Developed   : 2025
 <html lang="th">
 
 <head>
+    <!-- Google Tag Manager -->
+    <script>
+            function loadGTM() {
+            if (window.gtmLoaded) return;
+            window.gtmLoaded = true;
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-W8ZD4T59');
+        }
+
+        // ดักจับการเคลื่อนไหวของผู้ใช้ แล้วค่อยโหลด GTM
+        ['mousemove', 'touchstart', 'scroll', 'keydown'].forEach(function(evt) {
+            window.addEventListener(evt, loadGTM, { once: true, passive: true });
+        });
+
+        // หรือถ้าผู้ใช้ไม่ขยับเลย จะโหลดให้อัตโนมัติหลังผ่านไป 3.5 วินาที
+        setTimeout(loadGTM, 3500);
+    </script>
+<!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
     <meta name="developer-email" content="tanawats@g.swu.ac.th">
     <meta name="system" content="Face Recognition Registration System">
     <title>ระบบลงทะเบียนใบหน้า</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<!-- ปรับแก้ไขบรรทัดนี้ใน <head> -->
+    <link rel="preload" as="image" href="SWU_Central_Library_EN_Color.webp" type="image/webp" fetchpriority="high">
     <style>
         /* CSS จัดหน้า Login (บังคับแนวตั้ง เพื่อไม่ให้เลย์เอาต์ซ้อน) */
         body {
@@ -34,6 +56,13 @@ Developed   : 2025
             min-height: 100vh;
             margin: 0;
             padding: 15px;
+        }
+        .logo-img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 100%;
+            height: auto;
         }
 
         .login-card {
@@ -107,7 +136,12 @@ Developed   : 2025
 </head>
 
 <body>
-
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8ZD4T59"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
     <script>
         (function() {
             const ua = navigator.userAgent;
@@ -182,11 +216,7 @@ Developed   : 2025
 
 
      <div class="login-card">
-        <img src="SWU_Central_Library_EN_Color.png" class="center" alt="Lib_Logo" width="500 px" height="150 px"
-        style="display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 100%;">
+        <img src="SWU_Central_Library_EN_Color.webp" alt="Lib_Logo" width="500" height="150" fetchpriority="high" class="center logo-img">
         <h2>Selfie to Scan<br>ระบบลงทะเบียนใบหน้าอัตโนมัติ<br>(LIBSWU Automated Face Registration System)</h2><br>
         <form method="post" action="auth.php" onsubmit="return showLoading()">
             <div class="form-group">
@@ -221,25 +251,7 @@ Developed   : 2025
             document.getElementById('loadingOverlay').style.display = 'flex';
         }
 
-        function handleLoginSubmit() {
-            showLoading();
-
-            const buasriId = document.getElementById('user_login').value;
-
-            // ✅ log แค่ว่า "พยายาม login"
-            fetch('/app/ci4_new/public/api/login-log', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    buasri_id: buasriId,
-                    status: 'attempt'
-                })
-            }).catch(() => {});
-
-            return true; // ให้ auth.php ทำงานต่อ
-        }
+        
     </script>
 
 </body>

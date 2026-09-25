@@ -127,37 +127,27 @@ function login_success($user_login)
 
 /* ===== ปรับแต่งการต่อ LDAP ให้ไวขึ้น ===== */
 // กำหนด Server เรียงตามลำดับความสำคัญ (ถ้า 636 ผ่าน จะไม่ไป 389)
-/* ===== ปรับปรุงการตรวจสอบ LDAP ทั้ง 3 Step ให้ทำงานเร็วขึ้นด้วย Timeout ===== */
-$ldap_configs = [
-    ['url' => 'ldaps://ldap.swu.ac.th:636', 'use_tls' => false], // Step 1: LDAPS 636
-    ['url' => 'ldap://ldap.swu.ac.th:389',  'use_tls' => true],  // Step 2: STARTTLS 389
-    ['url' => 'ldap://ldap.swu.ac.th:389',  'use_tls' => false]  // Step 3: Plain LDAP 389
+$ldap_servers = [
+    'ldaps://ldap.swu.ac.th:636',
+    'ldap://ldap.swu.ac.th:389'
 ];
 
-foreach ($ldap_configs as $config) {
-    $ldapconn = @ldap_connect($config['url']);
+foreach ($ldap_servers as $server) {
+    $ldapconn = @ldap_connect($server);
     if ($ldapconn) {
         ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
         ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
-        
-        // ⚡ เพิ่ม Timeout กันค้าง (ถ้าเซิร์ฟเวอร์ตอบช้า ให้ตัดใน 2 วินาที)
-        ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 2);
-        ldap_set_option($ldapconn, LDAP_OPT_TIMELIMIT, 2);
+        ldap_set_option($ldapconn, LDAP_OPT_NETWORK_TIMEOUT, 2); // ⚡ กันค้าง: สั่ง Timeout ภายใน 2 วินาทีพอ
 
-        // ถ้าเป็น Step 2 ให้ทำ STARTTLS
-        if ($config['use_tls']) {
-            if (!@ldap_start_tls($ldapconn)) {
-                ldap_unbind($ldapconn);
-                continue; // ถ้า TLS ไม่ผ่าน ให้ข้ามไป Step ถัดไปทันที
-            }
+        // ถ้าเป็น 389 ให้ลอง STARTTLS ก่อน
+        if (strpos($server, '389') !== false) {
+            @ldap_start_tls($ldapconn);
         }
 
-        // ตรวจสอบรหัสผ่าน
         if (try_bind($ldapconn, $ldaprdn, $user_password)) {
             ldap_unbind($ldapconn);
-            login_success($user_login); // เข้าสู่ระบบสำเร็จ
+            login_success($user_login);
         }
-
         ldap_unbind($ldapconn);
     }
 }
