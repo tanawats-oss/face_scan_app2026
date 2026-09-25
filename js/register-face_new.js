@@ -1,6 +1,7 @@
 (async function () {
 
   /* =======================
+<<<<<<< HEAD
      GUARD: กันสคริปต์นี้ถูกโหลด/รันซ้ำมากกว่า 1 ครั้งในหน้าเดียว
      (เช่น กรณีมีทั้ง <script src> แบบตรง ๆ และตัว dynamic loader
      ที่ inject ไฟล์เดิมซ้ำอีกรอบ — จะทำให้เกิด state/listener ซ้อนกัน
@@ -16,6 +17,10 @@
      DOM
   ======================= */
   console.log('%c📌 register-face_new.js LOADED — build XXXX', 'color:#2196F3;font-weight:bold;');
+=======
+     DOM
+  ======================= */
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
   const video = document.getElementById('video');
   const overlay = document.getElementById('overlay');
   const outCanvas = document.getElementById('out');
@@ -42,7 +47,10 @@
   const pdpaModal = document.getElementById('pdpaModal');
   const pdpaAcceptBtn = document.getElementById('pdpaAcceptBtn');
   const pdpaDeclineBtn = document.getElementById('pdpaDeclineBtn');
+<<<<<<< HEAD
   let animFrameId = null;
+=======
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
 
   /* =======================
      Guard DOM
@@ -95,6 +103,7 @@
     PDPA
   ======================= */
 
+<<<<<<< HEAD
 function showPdpa() { 
     if (!pdpaModal) return;
     pdpaModal.style.display = 'flex';
@@ -109,11 +118,25 @@ function hidePdpa() {
     document.body.classList.remove('modal-open');
 }
 // เมื่อกด "ยินยอม" ใน PDPA
+=======
+  function showPdpa() {
+    pdpaModal.style.display = 'block';
+  }
+
+  function hidePdpa() {
+    pdpaModal.style.display = 'none';
+  }
+
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
   pdpaAcceptBtn.addEventListener('click', () => {
     pdpaAccepted = true;
     hidePdpa();
 
     allowCam = true;
+<<<<<<< HEAD
+=======
+    allowCamBtn.textContent = 'ปิดกล้อง';
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
     updateCameraPanel();
   });
 
@@ -127,24 +150,41 @@ function hidePdpa() {
   ======================= */
   function updateCameraPanel() {
 
+<<<<<<< HEAD
+=======
+    // ❌ ยังไม่อนุญาตใบหน้า
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
     if (!allowFaceCheckbox.checked) {
       panelNewphoto.style.display = 'none';
       panelResult.style.display = 'none';
       panelFaceDB.style.display = 'block';
+<<<<<<< HEAD
       document.body.style.overflow = '';
+=======
+      // panelUpdateData.style.display = 'block';
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
       stopCamera();
       return;
     }
 
+<<<<<<< HEAD
+=======
+    // ❌ ยังไม่กดเปิดกล้อง
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
     if (!allowCam) {
       panelNewphoto.style.display = 'none';
       panelResult.style.display = 'none';
       panelFaceDB.style.display = 'block';
+<<<<<<< HEAD
       document.body.style.overflow = '';
+=======
+      // panelUpdateData.style.display = 'none';
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
       stopCamera();
       return;
     }
 
+<<<<<<< HEAD
     // พร้อมถ่าย
 	panelNewphoto.style.display = 'block';
 	panelNewphoto.scrollTop = 0; // เลื่อนกล่องถ่ายรูปไปบนสุด
@@ -188,6 +228,76 @@ allowCamBtn.addEventListener('click', () => {
 
 
 
+=======
+    // ✅ พร้อมถ่าย
+    panelNewphoto.style.display = 'block';
+    panelFaceDB.style.display = 'none';
+    // panelUpdateData.style.display = 'none';
+
+    startCamera();
+  }
+  /* ====== initial state from backend ====== */
+  if (allowFaceCheckbox.checked) {
+    allowCamBtn.disabled = false;
+  } else {
+    allowCamBtn.disabled = true;
+  }
+
+  allowCam = false;
+  allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
+
+  // กันการแสดงกล้องตอนโหลด
+  updateCameraPanel();
+
+  /* ====== อนุญาตใบหน้า ====== */
+  allowFaceCheckbox.addEventListener('change', () => {
+    if (!allowFaceCheckbox.checked) {
+      allowCam = false;
+      allowCamBtn.disabled = true;
+      allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
+    } else {
+      // 💡 เพิ่มเติมแก้ไขจุดนี้: เคลียร์สถานะกล้องให้พร้อมเปิดใหม่เมื่อมีการติ๊กเลือก
+      allowCam = false;
+      allowCamBtn.disabled = false;
+      allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
+    }
+
+    updateCameraPanel();
+  });
+
+
+
+  /* ====== ปุ่มเปิดกล้อง ====== */
+  allowCamBtn.addEventListener('click', () => {
+
+    // 🔹 ถ้ากล้องเปิดอยู่ → ปิดได้ทันที (ไม่เช็ค PDPA)
+    if (allowCam) {
+      allowCam = false;
+      allowCamBtn.textContent = 'เปิดกล้องถ่ายรูป';
+      updateCameraPanel();
+      return;
+    }
+
+    // 🔹 กรณีกำลังจะ "เปิดกล้อง"
+
+    // 1️⃣ ยังไม่เลือกใช้ใบหน้า
+    if (!allowFaceCheckbox.checked) {
+      alert('กรุณาอนุญาตการลงทะเบียนใบหน้าก่อน');
+      return;
+    }
+
+    // 2️⃣ ยังไม่ยินยอม PDPA
+    if (!pdpaAccepted) {
+      showPdpa();
+      return;
+    }
+
+    // 3️⃣ ผ่านครบ → เปิดกล้อง
+    allowCam = true;
+    allowCamBtn.textContent = 'ปิดกล้อง';
+    updateCameraPanel();
+  });
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
 
 
 
@@ -213,7 +323,15 @@ allowCamBtn.addEventListener('click', () => {
 
   async function loadFaceModelOnce() {
     if (window._faceModelLoaded) return;
+<<<<<<< HEAD
     await faceapi.nets.tinyFaceDetector.loadFromUri('./face-api.js-master/weights');
+=======
+
+    await faceapi.nets.tinyFaceDetector.loadFromUri(
+      './face-api.js-master/weights'
+    );
+
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
     window._faceModelLoaded = true;
   }
 
@@ -229,7 +347,13 @@ allowCamBtn.addEventListener('click', () => {
       stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: "user",
+<<<<<<< HEAD
           //  FIX: เพิ่มความละเอียดจาก 300x300 -> 480x480
+=======
+          // ⭐ FIX: เพิ่มความละเอียดจาก 300x300 -> 480x480
+          // ที่ความละเอียดต่ำมาก รูปที่ครอปซ้อนอีกชั้นจะยิ่งเบลอ/แตก
+          // จนบางครั้งเครื่องสแกนปฏิเสธว่า "รูปไม่ชัดเจน/ไม่ตรงมาตรฐาน"
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
           width: {
             ideal: 480
           },
@@ -268,7 +392,11 @@ allowCamBtn.addEventListener('click', () => {
 
       status.textContent = '✅ พร้อมตรวจจับใบหน้า';
       overlayRunning = true;
+<<<<<<< HEAD
       stableFrameCount = 0; // reset ตัวนับความนิ่งทุกครั้งที่เปิดกล้องใหม่
+=======
+      stableFrameCount = 0; // ⭐ reset ตัวนับความนิ่งทุกครั้งที่เปิดกล้องใหม่
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
       drawOverlay();
 
     } catch (e) {
@@ -280,19 +408,30 @@ allowCamBtn.addEventListener('click', () => {
 
 
   function stopCamera() {
+<<<<<<< HEAD
     if (animFrameId) cancelAnimationFrame(animFrameId);
+=======
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
     if (stream) {
       stream.getTracks().forEach(t => t.stop());
       stream = null;
     }
     if (video.srcObject) {
+<<<<<<< HEAD
       video.srcObject = null; //  เพิ่ม
+=======
+      video.srcObject = null; // ⭐ เพิ่ม
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
     }
     cameraStarted = false;
     lastFaceBox = null;
     overlayRect = null;
     overlayRunning = false;
+<<<<<<< HEAD
     stableFrameCount = 0; //  reset
+=======
+    stableFrameCount = 0; // ⭐ reset
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
 
     const ctx = overlay.getContext('2d');
     ctx.clearRect(0, 0, overlay.width, overlay.height);
@@ -326,18 +465,31 @@ allowCamBtn.addEventListener('click', () => {
   ======================= */
   async function drawOverlay() {
     if (!overlayRunning) return;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
     const now = Date.now();
     const ctx = overlay.getContext('2d');
 
     if (!detecting && now - lastDetectTime > 200) {
       detecting = true;
       lastDetectTime = now;
+<<<<<<< HEAD
       const box = await detectFace();
       ctx.clearRect(0, 0, overlay.width, overlay.height);
 
 
       if(box){
          lastFaceBox = box;
+=======
+
+      const box = await detectFace();
+      ctx.clearRect(0, 0, overlay.width, overlay.height);
+
+      if (box) {
+        lastFaceBox = box;
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
         overlayRect = {
           x: video.videoWidth - box.x - box.width,
           y: box.y,
@@ -353,8 +505,17 @@ allowCamBtn.addEventListener('click', () => {
           overlayRect.w,
           overlayRect.h
         );
+<<<<<<< HEAD
         stableFrameCount = Math.min(stableFrameCount + 1, STABLE_FRAMES_REQUIRED);
          if (stableFrameCount >= STABLE_FRAMES_REQUIRED) {
+=======
+
+        // ⭐ FIX: นับความนิ่งต่อเนื่อง แทนที่จะ enable ปุ่มทันทีที่เจอครั้งแรก
+        // เฟรมแรก ๆ หลังเปิดกล้องมักมืด/เบลอเพราะ auto-exposure/focus ยังไม่นิ่ง
+        stableFrameCount = Math.min(stableFrameCount + 1, STABLE_FRAMES_REQUIRED);
+
+        if (stableFrameCount >= STABLE_FRAMES_REQUIRED) {
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
           status.textContent = '✅ พบใบหน้า';
           status.style.color = '#00c853';
           captureBtn.disabled = false;
@@ -365,6 +526,7 @@ allowCamBtn.addEventListener('click', () => {
           captureBtn.disabled = true;
           captureBtn.style.opacity = '0.5';
         }
+<<<<<<< HEAD
       }
       
       else {
@@ -378,6 +540,23 @@ allowCamBtn.addEventListener('click', () => {
       detecting = false;
     }
     animFrameId = requestAnimationFrame(drawOverlay);
+=======
+      } else {
+        lastFaceBox = null;
+        overlayRect = null;
+        stableFrameCount = 0; // ⭐ หลุดเฟรม -> เริ่มนับใหม่
+        status.textContent = '❌ ไม่พบใบหน้า';
+        status.style.color = '#d50000';
+
+        captureBtn.disabled = true;
+        captureBtn.style.opacity = '0.5';
+      }
+
+      detecting = false;
+    }
+
+    requestAnimationFrame(drawOverlay);
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
   }
 
   /* ===================================================
@@ -386,11 +565,35 @@ allowCamBtn.addEventListener('click', () => {
 
   /* =======================
      CAPTURE (ถ่ายรูปและคำนวณขนาดไฟล์จริง)
+<<<<<<< HEAD
   ======================= */
   function captureFace() {
     captureBtn.disabled = true;
     const box = lastFaceBox;
     if (!box) return;
+=======
+     ⭐ FIX: capture ตอนนี้ทำ 2 อย่างที่ต่างจากเดิม
+       1) re-detect ใบหน้าสด ๆ ณ วินาทีที่กดปุ่ม แทนที่จะใช้ lastFaceBox ที่อาจเก่าไปแล้ว
+          200ms+ ทำให้กรอบไม่ตรงตำแหน่งจริงถ้าผู้ใช้ขยับหัวเล็กน้อย
+       2) clamp พิกัดที่จะ crop ให้อยู่ในขอบเขตของวิดีโอเสมอ กันไม่ให้เผลอ crop
+          พื้นที่นอกเฟรม (กลายเป็นส่วนดำ/ว่าง) ปนเข้าไปในรูป ซึ่งเป็นสาเหตุหลักที่
+          เครื่องสแกนบางครั้งฟ้อง resultCode 33558286 / 33558281 (รูปไม่ชัดเจน)
+  ======================= */
+  async function captureFace() {
+    captureBtn.disabled = true;
+
+    // 1) re-detect สด ๆ แทนใช้ lastFaceBox ที่อาจเก่า
+    let box = await detectFace();
+    if (!box) {
+      // fallback: ถ้าเฟรมนี้ตรวจไม่เจอพอดี (เช่น เพิ่งกระพริบตา) ใช้ค่าล่าสุดที่มี
+      box = lastFaceBox;
+    }
+    if (!box) {
+      status.textContent = '❌ ไม่พบใบหน้า กรุณาลองใหม่';
+      captureBtn.disabled = false;
+      return;
+    }
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
 
     const ctx = outCanvas.getContext('2d');
     outCanvas.width = 300;
@@ -399,6 +602,7 @@ allowCamBtn.addEventListener('click', () => {
     const mirroredX = video.videoWidth - box.x - box.width;
     const cx = mirroredX + box.width / 2;
     const cy = box.y + box.height / 2;
+<<<<<<< HEAD
     const size = Math.max(box.width, box.height) * 2;
 
     ctx.save();
@@ -415,6 +619,32 @@ allowCamBtn.addEventListener('click', () => {
     if (base64[len - 1] === '=') padding++;
     if (base64[len - 2] === '=') padding++;
     const actualByteSize = Math.floor((len * 0.75) - padding);
+=======
+
+    let size = Math.max(box.width, box.height) * 2;
+    // กันไม่ให้ size ใหญ่กว่าตัววิดีโอเอง (เช่นตรวจจับ box ผิดปกติ)
+    size = Math.min(size, video.videoWidth, video.videoHeight);
+
+    // 2) clamp จุดเริ่ม crop (sx, sy) ให้อยู่ในขอบเขต [0, videoWidth/Height - size]
+    let sx = cx - size / 2;
+    let sy = cy - size / 2;
+    sx = Math.max(0, Math.min(sx, video.videoWidth - size));
+    sy = Math.max(0, Math.min(sy, video.videoHeight - size));
+
+    ctx.save();
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, sx, sy, size, size, -300, 0, 300, 300);
+    ctx.restore();
+
+
+    const base64DataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
+    console.log('Preview:', base64DataUrl);
+    const base64 = base64DataUrl.split(',')[1];
+
+    // คำนวณขนาดไบต์จริงของไฟล์ JPEG ที่ถูกบีบอัดแล้ว
+    const padding = (base64.endsWith('=')) ? (base64.endsWith('==') ? 2 : 1) : 0;
+    const actualByteSize = Math.floor((base64.length * 0.75) - padding);
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
 
     userFaceArray.length = 0;
     userFaceArray.push({
@@ -422,10 +652,19 @@ allowCamBtn.addEventListener('click', () => {
       TemplateSize: Math.floor(actualByteSize)
     });
 
+<<<<<<< HEAD
+=======
+    console.log(`📸 Captured & Compressed! New Size: ${actualByteSize} Bytes`);
+
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
     panelResult.style.display = 'block';
     videoContainer.style.display = 'none';
     captureBtn.style.display = 'none';
     status.style.display = 'none';
+<<<<<<< HEAD
+=======
+    status.textContent = '✅ จับใบหน้าแล้ว';
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
     stopCamera();
   }
 
@@ -633,7 +872,23 @@ allowCamBtn.addEventListener('click', () => {
       const resultCode = innerResult?.ResultCode !== undefined ? innerResult?.ResultCode : innerResult?.resultCode;
       console.log('🔍 Detected ResultCode:', resultCode, '(type:', typeof resultCode, ')');
 
+<<<<<<< HEAD
 
+=======
+      // ⭐ FIX: เดิมโค้ดใช้ "blacklist" คือเช็คแค่ error code ที่รู้จัก แล้วถ้าไม่ตรงกับตัวไหนเลย
+      // จะตกไปเช็ค response.ok && result.status === 'success' ซึ่งเป็นแค่สถานะว่า
+      // "เรียก API/relay ไปเครื่องสแกนสำเร็จ" ไม่ใช่สถานะว่า "เครื่องสแกนบันทึกข้อมูลสำเร็จจริง"
+      // ผลคือถ้าเครื่องสแกนตอบ resultCode แปลก ๆ ที่ไม่อยู่ในลิสต์ที่รู้จัก หน้าเว็บจะขึ้นว่า
+      // "สำเร็จ" และ redirect ออกไปทันที ทั้งที่ข้อมูลไม่ได้ถูกบันทึกจริง (บันทึกทุกรอบแต่ไม่มีข้อมูล)
+      //
+      // แก้เป็น "whitelist": ต้องเจอ resultCode ที่รู้จักว่าคือ "สำเร็จ" เท่านั้นถึงจะถือว่าสำเร็จ
+      // ค่าอื่นที่ไม่รู้จัก (รวมถึงกรณีไม่มี resultCode เลย) จะถือว่า "ไม่ยืนยันว่าสำเร็จ" และไม่ redirect
+      //
+      // ⚠️ TODO: ค่า KNOWN_SUCCESS_CODES ด้านล่างเดาไว้ที่ 0 (มาตรฐานทั่วไปของ SDK เครื่องสแกน
+      // ประเภทนี้ที่ 0 = สำเร็จ) กรุณายืนยันค่านี้จาก log "🔍 Detected ResultCode" ตอนที่ทราบแน่ชัดว่า
+      // ลงทะเบียนสำเร็จและมีข้อมูลจริงในเครื่อง แล้วปรับ array นี้ให้ตรง ถ้าเครื่องสแกนส่ง resultCode
+      // สำเร็จเป็นค่าอื่น (เช่น ไม่มี key ResultCode เลยตอนสำเร็จ) ต้องปรับ logic ตรงนี้ตาม
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
       const KNOWN_SUCCESS_CODES = [0, "0"];
       const KNOWN_FAIL_CODES_IMAGE = [33558286, "33558286", 33558281, "33558281"];
       const KNOWN_FAIL_CODES_DUPLICATE = [16777237, "16777237", 16777241, "16777241"];
@@ -690,4 +945,8 @@ allowCamBtn.addEventListener('click', () => {
       updateBtn.disabled = false;
     }
   });
+<<<<<<< HEAD
 })();
+=======
+})();
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0

@@ -2,7 +2,39 @@
 session_start();
 
 /* ================== CONFIG ================== */
+<<<<<<< HEAD
 define('SESSION_TIMEOUT', 600); // วินาที
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+define('SESSION_TIMEOUT', 600); // วินาที
+=======
+<<<<<<< HEAD
+define('SESSION_TIMEOUT', 600); // วินาที
+=======
+<<<<<<< HEAD
+define('SESSION_TIMEOUT', 600); // วินาที
+=======
+<<<<<<< HEAD
+define('SESSION_TIMEOUT', 600); // วินาที
+=======
+<<<<<<< HEAD
+define('SESSION_TIMEOUT', 600); // วินาที
+=======
+<<<<<<< HEAD
+define('SESSION_TIMEOUT', 600); // วินาที
+=======
+define('SESSION_TIMEOUT', 5000); // วินาที
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+define('SESSION_TIMEOUT', 600); // วินาที
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
 
 /* ================== AUTH CHECK ================== */
 if (empty($_SESSION['auth_ldap'])) {
@@ -80,7 +112,42 @@ $_SESSION['person_id'] = $userId;
 <html lang="th">
 
 <head>
+<<<<<<< HEAD
    <!-- Google Tag Manager -->
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+   <!-- Google Tag Manager -->
+=======
+<<<<<<< HEAD
+   <!-- Google Tag Manager -->
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C48T4MMF9L"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-C48T4MMF9L');
+    </script>
+     <!-- Google Tag Manager -->
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+   <!-- Google Tag Manager -->
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
     <script>
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-W8ZD4T59');
     </script>
@@ -90,16 +157,71 @@ $_SESSION['person_id'] = $userId;
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Register Face</title>
     <link rel="stylesheet" href="./css/face_scan.css">
+<<<<<<< HEAD
 
 </head>
 
 <body>
+=======
+   
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+    <meta charset="UTF-8">
+    <meta name="author" content="นายธนวัฒน์ เสริฐสุวรรณกุล">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Face Capture & Update Template</title>
+    <link rel="stylesheet" href="./css/face_scan.css">
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
+    <script>
+        const SESSION_TIMEOUT = <?= SESSION_TIMEOUT ?>;
+    </script>
+</head>
+
+<body>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
         <!-- Google Tag Manager (noscript) -->
         <noscript>
             <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8ZD4T59"height="0" width="0" style="display:none;visibility:hidden">
             </iframe>
         </noscript>
         <!-- End Google Tag Manager (noscript) -->
+<<<<<<< HEAD
     <div style="padding: 10px; background: #eee; font-size: 12px; text-align: center;">ID ผู้ใช้งานระบบ: <?php echo htmlspecialchars($userId); ?></div>
 
     <div class="container">
@@ -107,6 +229,31 @@ $_SESSION['person_id'] = $userId;
         <div id="session-timer" style="position:fixed;bottom:10px;left:10px; background:#222;color:#fff; padding:8px 12px;border-radius:6px; font-size:14px;z-index:9999">
          เหลือเวลา: <span id="time-left">--:--</span>
         </div>
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
+    <div style="padding: 10px; background: #eee; font-size: 12px; text-align: center;">ID ผู้ใช้งานระบบ: <?php echo htmlspecialchars($userId); ?></div>
+
+    <div class="container">
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
         <form id="editUserForm" action="" method="post">
 
             <div class="panel" id="facePanel">
@@ -153,7 +300,11 @@ $_SESSION['person_id'] = $userId;
                                 } else {
                                     echo htmlspecialchars($userType);
                                 }
+<<<<<<< HEAD
                         ?>" readonly>
+=======
+?>" readonly>
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
                         </div>
                         <input type="hidden" name="AccessGroupCode" value="<?= ($userType == 'student' || $userType == '1000' ? '1000' : '3000') ?>">
 
@@ -200,6 +351,7 @@ $_SESSION['person_id'] = $userId;
                 </div>
             </div>
 
+<<<<<<< HEAD
             <!-- ================== Camera & Capture ================== -->
             <div class="panel" id="Newtakephoto" style="display:none">
                 <!-- ปุ่มปิดหน้าถ่ายรูป -->
@@ -207,11 +359,16 @@ $_SESSION['person_id'] = $userId;
                     style="position: absolute; top: 15px; right: 15px; z-index: 9999; cursor: pointer;background: red;color: white;"><strong>✕</strong></button>
                 <br>
                 <h2>ถ่ายรูป อัพเดทรูปใหม่</h2>
+=======
+            <div class="panel" id="Newtakephoto" name="Newtakephoto" style="display:none">
+                <h2>ถ่ายรูป</h2>
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
                 <div class="stage row center">
                     <div class="video-container" id="videoContainer">
                         <h3>Live Camera</h3>
                         <video id="video" autoplay playsinline muted></video>
                         <canvas id="overlay"></canvas>
+<<<<<<< HEAD
                         <p style="margin-top:8px;font-size:0.9rem;color:#555;">กรุณาจัดใบหน้าให้อยู่ในกรอบ</p>
                     </div>
                 </div>
@@ -226,16 +383,48 @@ $_SESSION['person_id'] = $userId;
                         <div class="result-container">
                             <h3>Result</h3>
                             <canvas id="out" width="250" height="250"></canvas>
+=======
+                        <p style="margin-top:8px; font-size:0.9rem; color:#555;">
+                            กรุณาจัดใบหน้าให้อยู่ในกรอบ
+                        </p>
+                    </div>
+                </div>
+
+                <div style="text-align:center; margin-top:15px;">
+                    <button id="captureBtn" type="button" class="btn-update btn-large" disabled>
+                        📸 ถ่ายรูป
+                    </button>
+                </div>
+
+                <div style="text-align:center; margin-top:10px;">
+                    <div id="status" style="font-size:20px;">
+                        กำลังเตรียมกล้อง…
+                    </div>
+                </div>
+
+                <div class="panel-result" style="display:none;">
+                    <div class="stage row center">
+                        <div class="result-container">
+                            <h3>Result</h3>
+                            <canvas id="out" width="300" height="300"></canvas>
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
                         </div>
                     </div>
                     <div style="margin-top:10px;">
                         <div class="row btn-row">
+<<<<<<< HEAD
                             <button id="retakeBtn" class="btn-muted">📸 ถ่ายรูปใหม่</button>
                             <button type="button" id="updateServerBtn" class="btn-update btn-large">⬆️ อัพโหลดรูป</button>
+=======
+                            <button id="retakeBtn" type="button" class="btn-muted">
+                                🔁 ถ่ายรูปใหม่
+                            </button>
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
                         </div>
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
             </form> <div class="panel" style="text-align:center; margin-top: 10px;">
                 <form action="logout.php" method="post">
                     <button type="submit" class="btn-update btn-large-danger">ออกจากระบบ</button>
@@ -263,17 +452,81 @@ $_SESSION['person_id'] = $userId;
                         การที่สำนักหอสมุดกลางมหาวิทยาลัยศรีนครินทรวิโรฒ จะเก็บรวบรวม และใช้ข้อมูลใบหน้า (Facial Scans)
                         ของท่านถือว่าเป็นการเก็บรวบรวมและใช้ข้อมูลส่วนบุคคลที่อ่อนไหว ที่วิทยาลัยฯ
                         จะต้องให้ความคุ้มครองเป็นพิเศษ ดังนั้น</p>
+=======
+
+            <div class="action-bar" style="display: flex; gap: 16px; margin-top: 20px; justify-content: center;">
+                <div class="panel" style="text-align:center;">
+                    <button type="button" id="updateServerBtn" class="btn-update btn-large">
+                        บันทึกข้อมูล
+                    </button>
+                </div>
+            </div>
+        </form> <div class="panel" style="text-align:center; margin-top: 10px;">
+            <form action="logout.php" method="post">
+                <button type="submit" class="btn-update btn-large-danger">ออกจากระบบ</button>
+            </form>
+        </div>
+    </div>
+
+
+<<<<<<< HEAD
+    <div id="pdpaModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999;">
+        <div style="max-width:600px; margin:10vh auto; background:#fff; padding:20px; border-radius:8px;">
+            <img src="./PDF/lib_icon.png" style="width:300px; height:120px; display:block; margin:0 auto;">
+            <h4>📄 หนังสือขอความยินยอมให้ สำนักหอสมุดกลางมหาวิทยาลัยศรีนครินทรวิโรฒ เก็บรวบรวมและใช้ข้อมูลใบหน้า (Facial Scans)...</h4>
+            <div style="max-height:300px; overflow:auto; font-size:14px;">
+                <p>ภายใต้พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 การที่สำนักหอสมุดกลางมหาวิทยาลัยศรีนครินทรวิโรฒ จะเก็บรวบรวม และใช้ข้อมูลใบหน้า (Facial Scans) ของท่านถือว่าเป็นการเก็บรวบรวมและใช้ข้อมูลส่วนบุคคลที่อ่อนไหว ที่วิทยาลัยฯ จะต้องให้ความคุ้มครองเป็นพิเศษ ดังนั้น</p>
+                <p>สำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ จึงขอความยินยอมจากท่านในการให้สำนักหอสมุดกลางเก็บรวบรวมและใช้ข้อมูลใบหน้า (Facial Scans) ของท่านเพื่อประโยชน์ในการยืนยันตัวตนของท่านสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ ของสำนักหอสมุดกลาง</p>
+                <p>ในภายหลัง ท่านมีสิทธิที่จะถอนการยินยอมในการให้สำนักหอสมุดกลาง เก็บรวบรวมและใช้ข้อมูลใบหน้า (Facial Scans) ของท่านในครั้งนี้ โดยท่านสามารถติดต่อเจ้าหน้าที่ดูแลระบบที่ kiattisak@g.swu.ac.th</p>
+                <p>โดยสำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ จะรักษาข้อมูลส่วนบุคคลดังกล่าวของท่านไว้เป็นความลับและสำนักหอสมุดกลาง รับรองว่าจะมีการดำเนินการรักษาความปลอดภัยที่มีมาตรฐาน และจัดให้มีมาตรการด้านเทคนิคและการจัดการเพื่อป้องกันการเข้าถึงข้อมูลของท่านโดยมิชอบ </p>
+                <p>ให้สำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ เก็บรวบรวมและใช้ข้อมูลใบหน้า (Facial Scans) ของข้าพเจ้าเพื่อประโยชน์ในการยืนยันตัวตนของข้าพเจ้าสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ ของสำนักหอสมุดกลาง</p>
+            </div><br>
+<<<<<<< HEAD
+            <div style="text-align:right; margin-bottom:10px;  z-index:9999;">
+=======
+            <div style="text-align:right; margin-top:15px;">
+>>>>>>> b526410014d7415a9844022493031e415f988d72
+                <button id="pdpaDeclineBtn" type="button" class="btn btn-secondary">ไม่ยินยอม</button>
+                <button id="pdpaAcceptBtn" type="button" class="btn btn-primary">ยินยอม</button>
+            </div>
+        </div>
+    </div>
+
+<<<<<<< HEAD
+    <div id="session-timer" style="position:fixed;bottom:10px;left:10px; background:#222;color:#fff; padding:8px 12px;border-radius:6px; font-size:14px;z-index:9999">
+=======
+    <div id="session-timer" style="position:fixed;bottom:10px;right:10px; background:#222;color:#fff; padding:8px 12px;border-radius:6px; font-size:14px;z-index:9999">
+>>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+     <div id="pdpaModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;">
+            <div style="max-width:600px;margin:10vh auto;background:#fff;padding:20px;border-radius:8px;">
+                <img src="./PDF/lib_icon.png" style="width:300px;height:120px;display:block;margin:0 auto;">
+                <h4>หนังสือขอความยินยอมให้ สำนักหอสมุดกลางมหาวิทยาลัยศรีนครินทรวิโรฒ เก็บรวบรวมและใช้ข้อมูลใบหน้า
+                    (Facial Scans) ของท่านเพื่อประโยชน์ในการยืนยันตัวตนของท่านสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
+                </h4>
+                <div style="max-height:300px;overflow:auto;font-size:14px;">
+                    <p>ภายใต้พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562
+                        การที่สำนักหอสมุดกลางมหาวิทยาลัยศรีนครินทรวิโรฒ จะเก็บรวบรวม และใช้ข้อมูลใบหน้า (Facial Scans)
+                        ของท่านถือว่าเป็นการเก็บรวบรวมและใช้ข้อมูลส่วนบุคคลที่อ่อนไหว
+                        ที่วิทยาลัยฯ จะต้องให้ความคุ้มครองเป็นพิเศษ ดังนั้น</p>
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
                     <p>สำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ
                         จึงขอความยินยอมจากท่านในการให้สำนักหอสมุดกลางเก็บรวบรวมและใช้ข้อมูลใบหน้า (Facial Scans)
                         ของท่านเพื่อประโยชน์ในการยืนยันตัวตนของท่านสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
                         ของสำนักหอสมุดกลาง</p>
                     <p>ในภายหลัง ท่านมีสิทธิที่จะถอนการยินยอมในการให้สำนักหอสมุดกลาง เก็บรวบรวมและใช้ข้อมูลใบหน้า
+<<<<<<< HEAD
                         (Facial Scans) ของท่านในครั้งนี้ โดยท่านสามารถติดต่อเจ้าหน้าที่ดูแลระบบที่ kiattisak@g.swu.ac.th
                     </p>
+=======
+                        (Facial Scans) ของท่านในครั้งนี้ โดยท่านสามารถติดต่อเจ้าหน้าที่ดูแลระบบที่
+                        kiattisak@g.swu.ac.th</p>
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
                     <p>โดยสำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ
                         จะรักษาข้อมูลส่วนบุคคลดังกล่าวของท่านไว้เป็นความลับและสำนักหอสมุดกลาง
                         รับรองว่าจะมีการดำเนินการรักษาความปลอดภัยที่มีมาตรฐาน
                         และจัดให้มีมาตรการด้านเทคนิคและการจัดการเพื่อป้องกันการเข้าถึงข้อมูลของท่านโดยมิชอบ</p>
+<<<<<<< HEAD
                     <p style="margin-bottom: 0;">ให้สำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ
                         เก็บรวบรวมและใช้ข้อมูลใบหน้า (Facial Scans)
                         ของข้าพเจ้าเพื่อประโยชน์ในการยืนยันตัวตนของข้าพเจ้าสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
@@ -476,6 +729,120 @@ $_SESSION['person_id'] = $userId;
     </script>
 
 
+=======
+                    <p>ให้สำนักหอสมุดกลาง มหาวิทยาลัยศรีนครินทรวิโรฒ เก็บรวบรวมและใช้ข้อมูลใบหน้า (Facial Scans)
+                        ของข้าพเจ้าเพื่อประโยชน์ในการยืนยันตัวตนของข้าพเจ้าสำหรับบันทึกการเข้า-ออกพื้นที่ต่าง ๆ
+                        ของสำนักหอสมุดกลาง<br>
+                        <p style="text-align: right;">
+                            <button id="pdpaDeclineBtn" class="btn btn-secondary">ไม่ยินยอม</button>
+                            <button id="pdpaAcceptBtn" class="btn btn-primary">ยินยอม</button>
+                        </p>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    <div id="session-timer" style="position:fixed;bottom:10px;left:10px; background:#222;color:#fff; padding:8px 12px;border-radius:6px; font-size:14px;z-index:9999">
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
+        เหลือเวลา: <span id="time-left">--:--</span>
+    </div>
+
+    <script src="./face-api.js-master/dist/face-api.min.js"></script>
+    <script src="./js/register.js"></script>
+    <script>
+    (function() {
+        const CHECK_INTERVAL = 30000;
+        let remaining = SESSION_TIMEOUT;
+        const display = document.getElementById('time-left');
+        if (!display) return;
+
+        function format(sec) {
+            const m = Math.floor(sec / 60);
+            const s = sec % 60;
+            return `${m}:${String(s).padStart(2, '0')}`;
+        }
+
+        let isLoggingOut = false;
+        function logoutAndRedirect() {
+            if (isLoggingOut) return;
+            isLoggingOut = true;
+            alert('กรุณาเข้าสู่ระบบใหม่');
+            fetch('logout.php', {
+                method: 'POST',
+                credentials: 'same-origin'
+            }).finally(() => {
+                window.location.href = 'login.php?timeout=1';
+            });
+        }
+
+        function tick() {
+            remaining--;
+            if (remaining <= 0) {
+                display.textContent = '0:00';
+                logoutAndRedirect();
+                return;
+            }
+            display.textContent = format(remaining);
+        }
+
+        function checkSession() {
+            fetch('check_session.php', { credentials: 'same-origin' })
+                .then(res => {
+                    if (res.status === 401 || res.status === 440) {
+                        logoutAndRedirect();
+                        return null;
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (!data) return;
+                    if (data.status === 'expired') logoutAndRedirect();
+                })
+                .catch(err => { console.error('Session check error:', err); });
+        }
+
+        display.textContent = format(remaining);
+        setInterval(tick, 1000);
+        setInterval(checkSession, CHECK_INTERVAL);
+    })();
+    </script>
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+
+=======
+<<<<<<< HEAD
+
+
+=======
+<<<<<<< HEAD
+
+
+=======
+<<<<<<< HEAD
+
+
+=======
+<<<<<<< HEAD
+
+
+=======
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 0c10d01e96d440a150bc2101ac5b544cfc1247ee
+>>>>>>> f4b7380d7d1097f926cfe05c390d330b8c631086
+>>>>>>> 2c5c1bd700fe5ae6ea5970851e4efefcaa83787e
+>>>>>>> 1375e768bdf85915bcf4fdf66241405e1f5294ac
+>>>>>>> 9c964d47494378f89daac9bea17e84d646686554
+>>>>>>> b526410014d7415a9844022493031e415f988d72
+=======
+
+
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
 </body>
 
 </html>

@@ -479,17 +479,30 @@ button.muted {
   color: var(--text);
 }
 
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
 .checkbox-container {
   display: inline-flex;  
   align-items: center;   
   gap: 8px;              
   cursor: pointer;      
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
 }
 
 /* ==========================================
@@ -583,4 +596,8 @@ body.modal-open {
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+<<<<<<< HEAD
+=======
+>>>>>>> 33c3c78 (Modify page Photo and Fix size PDPA)
+>>>>>>> 1e4782216a4002c59c30390c19d73243f29cfdf0
 }
